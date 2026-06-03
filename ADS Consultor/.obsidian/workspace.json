@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Bem-vindo.md",
+                "file": "00-INDICE.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Bem-vindo"
+              "title": "00-INDICE"
             }
           }
         ]
@@ -184,8 +184,9 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "a44d5af3dbe5bc39",
+  "active": "c8536663da66f224",
   "lastOpenFiles": [
+    "Bem-vindo.md",
     "00-INDICE.md",
     "PRODUTOS/Raio X",
     "PRODUTOS/Protocolo Ativação",
@@ -196,7 +197,6 @@
     "SISTEMAS/Kommo CRM",
     "SISTEMAS/Google Ads",
     "SISTEMAS",
-    "CLIENTES/Ojas",
-    "Bem-vindo.md"
+    "CLIENTES/Ojas"
   ]
 }
