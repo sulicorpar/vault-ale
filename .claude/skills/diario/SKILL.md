@@ -1,0 +1,1 @@
+Abrir ou criar a nota diária de hoje em diario/. Verificar inbox/ para arquivos não processados. Checar projetos/ para itens em aberto. Destacar as 3 principais prioridades do dia. Perguntar: "No que vamos trabalhar hoje?"

@@ -1,0 +1,1 @@
+Carregar contexto completo de um cliente: ler arquivo em clientes/[nome].md, verificar propostas/2026/[nome]/, buscar campanhas/ por menções ao cliente. Resumir: histórico, status atual, métricas recentes, próximos passos. Perguntar o que precisa trabalhar.

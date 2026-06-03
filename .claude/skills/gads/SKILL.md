@@ -1,0 +1,1 @@
+Análise completa de Google Ads: carregar dados do cliente em campanhas/. Avaliar Quality Score, Impression Share, budget share, CPC, conversões, ROAS. Verificar performance por palavra-chave e grupo de anúncio. Sugerir otimizações de lance, estrutura e copy. Usar expertise em skills/google-ads-expert.md como referência.

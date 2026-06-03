@@ -1,0 +1,1 @@
+Carregar template base de templates/proposta-base.md. Buscar dados do cliente em clientes/[nome].md e histórico em propostas/2026/[nome]/. Montar draft de proposta personalizada com escopo, entregáveis, investimento e próximos passos. Salvar em propostas/2026/[nome]/.

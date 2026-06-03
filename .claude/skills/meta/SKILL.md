@@ -1,0 +1,1 @@
+Análise completa de Meta Ads: carregar dados do cliente em campanhas/. Avaliar ROAS, CPC, CPM, CTR, frequência, audience overlap. Identificar campanhas com queda de performance. Sugerir ajustes de segmentação, criativo e orçamento. Usar expertise em skills/meta-ads-expert.md como referência.

@@ -1,0 +1,1 @@
+Gerar dashboard de KPIs do cliente: consolidar dados de campanhas/ (Meta, Google, Analytics, GMB). Calcular variação período anterior. Identificar pontos de atenção e destaques positivos. Formatar como relatório executivo pronto para apresentar ou enviar ao cliente.
