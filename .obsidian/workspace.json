@@ -1,0 +1,201 @@
+{
+  "main": {
+    "id": "2a7ea0d664c6d474",
+    "type": "split",
+    "children": [
+      {
+        "id": "fbdcec7f7c0e54ea",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "717c03d965864193",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ADS Consultor/Bem-vindo.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Bem-vindo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "17ce73512a69dff2",
+    "type": "split",
+    "children": [
+      {
+        "id": "5408dbe868a06d22",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "42e5abc6525a584a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "38d72eb363e19e52",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "f9a044f73cbdac7a",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "92586ad17d0f012e",
+    "type": "split",
+    "children": [
+      {
+        "id": "22d9aba411291b08",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ac733a3c5d8a3189",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos"
+            }
+          },
+          {
+            "id": "aef2ead4ed0447e8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída"
+            }
+          },
+          {
+            "id": "27f892861adeeacd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "2312e06929cf1fbe",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "bfcd7e2df7230b34",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "717c03d965864193",
+  "lastOpenFiles": [
+    "ADS Consultor/PRODUTOS/Raio X",
+    "ADS Consultor/PRODUTOS/Protocolo Ativação",
+    "ADS Consultor/PRODUTOS/Geo Autoridade",
+    "ADS Consultor/PRODUTOS",
+    "ADS Consultor/SISTEMAS/n8n",
+    "ADS Consultor/SISTEMAS/Meta Ads",
+    "ADS Consultor/SISTEMAS/Kommo CRM",
+    "ADS Consultor/SISTEMAS/Google Ads",
+    "ADS Consultor/SISTEMAS",
+    "ADS Consultor/CLIENTES/Ojas",
+    "ADS Consultor/CLIENTES/MMC Carajás",
+    "ADS Consultor/Bem-vindo.md",
+    "Sem título.canvas",
+    "Sem título.md",
+    "2026-06-03.md"
+  ]
+}
