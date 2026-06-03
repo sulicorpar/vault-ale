@@ -28,3 +28,7 @@
 - Meta Ads RATOS (API test integration)
 - Google Ads Skill
 - n8n Pipeline (5 agentes Claude sequenciais)
+
+## Skills Importados do ChatGPT ✨
+- /analise-instagram — Análise completa de perfil Instagram em PDF
+- /criar-post-seo — Posts Instagram otimizados para SEO + GEO + IA
