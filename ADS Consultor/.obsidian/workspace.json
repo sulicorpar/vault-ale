@@ -70,8 +70,7 @@
               "title": "Explorador de arquivos"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "horizontal",
@@ -180,25 +179,26 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "a44d5af3dbe5bc39",
+  "active": "617302a93fd5deee",
   "lastOpenFiles": [
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/components 2.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/Agente Blog - Principal (1).json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/gestaoMCPEventosAdvocacia.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/gestaoAgendasAdvocacia.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/gestaoCliente.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/Envie uma DM automática para seus novos seguidores do Instagram.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/Dm - ALEJANDRO.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/Disparador Inteligente com HTML v1.4.0 - ANDERSON.json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/Dicas semanais (destino x).json",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/DataContext.tsx",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/Cursos para principiantes.json",
+    "CLIENTES/NOME DO CLIENTE/00-BRIEFING/BRIEFING-NOME DO CLIENTE.md",
     "99-TAREFAS/PENDENTES/2026-06-04-inserir-logomarca-no-site-da-aplike.md",
     "99-TAREFAS/PENDENTES/2026-06-04-cobrar-de--icaro-os-blog--.md",
-    "CLIENTES/APLIKE AUTOCENTRO/04-CONTEUDO-BLOG/logo_APLIKE_vetor.cdr",
     "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
-    "CLIENTES/APLIKE AUTOCENTRO/08-ENTREGAS",
-    "CLIENTES/APLIKE AUTOCENTRO/07-ACESSOS",
-    "CLIENTES/APLIKE AUTOCENTRO/06-RELATORIOS",
-    "CLIENTES/APLIKE AUTOCENTRO/05-GOOGLE-BUSINESS",
-    "CLIENTES/APLIKE AUTOCENTRO/04-CONTEUDO-BLOG",
-    "CLIENTES/APLIKE AUTOCENTRO/03-SEO",
-    "CLIENTES/APLIKE AUTOCENTRO/02-PROPOSTA",
-    "CLIENTES/APLIKE AUTOCENTRO/01-DIAGNOSTICO",
-    "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING",
     "99-TAREFAS/ROTINAS/ROTINA-DIARIA.md",
     "99-TAREFAS/TODO-HOJE.md",
     "99-TAREFAS/TODO-GERAL.md",
-    "CLIENTES/NOME DO CLIENTE/00-BRIEFING/BRIEFING-NOME DO CLIENTE.md",
     "CLIENTES/MARILIA TAUBE/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
     "CLIENTES/BRAZILICIOUS/07-ACESSOS/ACESSOS-NECESSARIOS.md",
     "CLIENTES/BRAZILICIOUS/05-GOOGLE-BUSINESS/OTIMIZACAO-GOOGLE-BUSINESS.md",
