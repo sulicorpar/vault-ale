@@ -10,6 +10,7 @@
 - [ ] Cobrar de Ícaro os Blogs
 - [ ] texto da tarefa
 - [ ] texto da tarefa
+- [ ] texto
 ## Em andamento
 
 
