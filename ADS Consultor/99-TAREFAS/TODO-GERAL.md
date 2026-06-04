@@ -1,5 +1,4 @@
 # To Do Geral - ADS Consultor
-
 ## Pendentes
 
 - [ ] Enviar orçamento para cliente X
