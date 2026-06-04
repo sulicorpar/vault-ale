@@ -6,8 +6,8 @@
 - [ ] Ajustar logomarca de cliente X
 - [ ] Mandar mensagem para cliente X
 
-- [ ] Cobrar de Ícaro os Blogs
-- [ ] Cobrar de Ícaro os Blogs
+- [x] Cobrar de Ícaro os Blogs
+- [x] Cobrar de Ícaro os Blogs
 - [ ] texto da tarefa
 - [ ] texto da tarefa
 - [ ] texto
