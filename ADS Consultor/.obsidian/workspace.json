@@ -11,14 +11,10 @@
             "id": "c8536663da66f224",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "00-INDICE.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "00-INDICE"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Visualização em gráfico"
             }
           }
         ]
@@ -184,19 +180,34 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "c8536663da66f224",
+  "active": "a44d5af3dbe5bc39",
   "lastOpenFiles": [
-    "Bem-vindo.md",
+    "99-TAREFAS/PENDENTES/2026-06-04-inserir-logomarca-no-site-da-aplike.md",
+    "99-TAREFAS/PENDENTES/2026-06-04-cobrar-de--icaro-os-blog--.md",
+    "CLIENTES/APLIKE AUTOCENTRO/04-CONTEUDO-BLOG/logo_APLIKE_vetor.cdr",
+    "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
+    "CLIENTES/APLIKE AUTOCENTRO/08-ENTREGAS",
+    "CLIENTES/APLIKE AUTOCENTRO/07-ACESSOS",
+    "CLIENTES/APLIKE AUTOCENTRO/06-RELATORIOS",
+    "CLIENTES/APLIKE AUTOCENTRO/05-GOOGLE-BUSINESS",
+    "CLIENTES/APLIKE AUTOCENTRO/04-CONTEUDO-BLOG",
+    "CLIENTES/APLIKE AUTOCENTRO/03-SEO",
+    "CLIENTES/APLIKE AUTOCENTRO/02-PROPOSTA",
+    "CLIENTES/APLIKE AUTOCENTRO/01-DIAGNOSTICO",
+    "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING",
+    "99-TAREFAS/ROTINAS/ROTINA-DIARIA.md",
+    "99-TAREFAS/TODO-HOJE.md",
+    "99-TAREFAS/TODO-GERAL.md",
+    "CLIENTES/NOME DO CLIENTE/00-BRIEFING/BRIEFING-NOME DO CLIENTE.md",
+    "CLIENTES/MARILIA TAUBE/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
+    "CLIENTES/BRAZILICIOUS/07-ACESSOS/ACESSOS-NECESSARIOS.md",
+    "CLIENTES/BRAZILICIOUS/05-GOOGLE-BUSINESS/OTIMIZACAO-GOOGLE-BUSINESS.md",
+    "CLIENTES/BRAZILICIOUS/04-CONTEUDO-BLOG/ATUALIZACAO-20-ARTIGOS.md",
+    "CLIENTES/BRAZILICIOUS/03-SEO/PLANO-SEO-30-DIAS.md",
+    "CLIENTES/BRAZILICIOUS/02-PROPOSTA/PROPOSTA-SEO-Estrategico-Juliana.md",
+    "CLIENTES/BRAZILICIOUS/00-BRIEFING/BRIEFING-Brazilicious.md",
     "00-INDICE.md",
-    "PRODUTOS/Raio X",
-    "PRODUTOS/Protocolo Ativação",
-    "PRODUTOS/Geo Autoridade",
-    "PRODUTOS",
-    "SISTEMAS/n8n",
-    "SISTEMAS/Meta Ads",
-    "SISTEMAS/Kommo CRM",
-    "SISTEMAS/Google Ads",
-    "SISTEMAS",
-    "CLIENTES/Ojas"
+    "Bem-vindo.md",
+    "CLIENTES/Ojas.md"
   ]
 }
