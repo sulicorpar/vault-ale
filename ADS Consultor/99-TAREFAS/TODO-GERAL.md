@@ -12,6 +12,7 @@
 - [ ] texto da tarefa
 - [ ] texto
 - [ ] “Cobrar de Ícaro os Blogs”
+- [ ] Inserir Logomarca no site da Aplike
 ## Em andamento
 
 
