@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "dfc41a1805628167",
+        "id": "91d7f64392e18104",
         "type": "tabs",
         "children": [
           {
-            "id": "c8536663da66f224",
+            "id": "54070c81f96339ef",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -179,8 +179,15 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "617302a93fd5deee",
+  "active": "54070c81f96339ef",
   "lastOpenFiles": [
+    "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
+    "Sem título 2.canvas",
+    "99-AUTOMACOES-PRONTAS/workflows-n8n/N8N-WORKFLOWS-INVENTORY.md",
+    "Sem título.base",
+    "2026-06-04.md",
+    "Sem título 1.canvas",
+    "Sem título.canvas",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/components 2.json",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/Agente Blog - Principal (1).json",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/gestaoMCPEventosAdvocacia.json",
@@ -190,12 +197,9 @@
     "99-AUTOMACOES-PRONTAS/workflows-n8n/Dm - ALEJANDRO.json",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/Disparador Inteligente com HTML v1.4.0 - ANDERSON.json",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/Dicas semanais (destino x).json",
-    "99-AUTOMACOES-PRONTAS/workflows-n8n/DataContext.tsx",
-    "99-AUTOMACOES-PRONTAS/workflows-n8n/Cursos para principiantes.json",
     "CLIENTES/NOME DO CLIENTE/00-BRIEFING/BRIEFING-NOME DO CLIENTE.md",
     "99-TAREFAS/PENDENTES/2026-06-04-inserir-logomarca-no-site-da-aplike.md",
     "99-TAREFAS/PENDENTES/2026-06-04-cobrar-de--icaro-os-blog--.md",
-    "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
     "99-TAREFAS/ROTINAS/ROTINA-DIARIA.md",
     "99-TAREFAS/TODO-HOJE.md",
     "99-TAREFAS/TODO-GERAL.md",
