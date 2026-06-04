@@ -6,6 +6,7 @@
 - [ ] Ajustar logomarca de cliente X
 - [ ] Mandar mensagem para cliente X
 
+- [ ] Cobrar de Ícaro os Blogs
 ## Em andamento
 
 
