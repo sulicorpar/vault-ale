@@ -11,6 +11,7 @@
 - [ ] texto da tarefa
 - [ ] texto da tarefa
 - [ ] texto
+- [ ] “Cobrar de Ícaro os Blogs”
 ## Em andamento
 
 
