@@ -8,6 +8,8 @@
 
 - [ ] Cobrar de Ícaro os Blogs
 - [ ] Cobrar de Ícaro os Blogs
+- [ ] texto da tarefa
+- [ ] texto da tarefa
 ## Em andamento
 
 
