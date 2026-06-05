@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM — Painel Geral de Clientes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --lead-color: #f59e0b;
+            --active-color: #10b981;
+            --archive-color: #64748b;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        header {
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+        }
+
+        .header-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            background: linear-gradient(to right, #a78bfa, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .last-update {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-val {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-val.leads { color: var(--lead-color); }
+        .stat-val.active { color: var(--active-color); }
+        .stat-val.archived { color: var(--text-muted); }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            width: 100%;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+        }
+
+        .filter-btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+        
+        .card-title a:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .badge-lead { background-color: rgba(245, 158, 11, 0.15); color: var(--lead-color); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-active { background-color: rgba(16, 185, 129, 0.15); color: var(--active-color); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-archive { background-color: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.3); }
+
+        .tags {
+            margin-bottom: 16px;
+            min-height: 24px;
+        }
+
+        .tag {
+            background-color: rgba(148, 163, 184, 0.1);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .details {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .details b {
+            color: var(--text-main);
+        }
+
+        .step-box {
+            background-color: rgba(139, 92, 246, 0.05);
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .card-footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+        }
+
+        .wa-btn {
+            background-color: #25d366;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .wa-btn:hover {
+            background-color: #20ba5a;
+            transform: scale(1.02);
+        }
+
+        .email-text {
+            color: var(--text-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 180px;
+            font-size: 0.85rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        footer {
+            margin-top: 64px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-title-row">
+                <h1>🗂️ CRM — Quadro de Clientes</h1>
+                <div class="last-update" id="time-stamp">Atualizado via Script</div>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-val leads">1</div>
+                <div class="stat-label">🎯 Leads / Prospecção</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val active">9</div>
+                <div class="stat-label">🟢 Clientes Ativos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val archived">0</div>
+                <div class="stat-label">📦 Arquivados</div>
+            </div>
+        </section>
+
+        <div class="controls">
+            <div class="search-wrapper">
+                <input type="text" id="search-box" class="search-input" placeholder="Buscar por nome, segmento, local..." oninput="searchClients()">
+            </div>
+            <div class="filter-btn-group">
+                <button class="filter-btn active" data-filter="all" onclick="filterClients('all')">Todos</button>
+                <button class="filter-btn" data-filter="lead" onclick="filterClients('lead')">Leads</button>
+                <button class="filter-btn" data-filter="ativo" onclick="filterClients('ativo')">Ativos</button>
+                <button class="filter-btn" data-filter="arquivado" onclick="filterClients('arquivado')">Arquivados</button>
+            </div>
+        </div>
+
+        <main class="grid">
+        <div class="card" data-status="lead">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/Natusa/Natusa" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Natusa
+                        </a>
+                    </h3>
+                    <span class="badge badge-lead">Prospecção (Primeiro Contato)</span>
+                </div>
+                <div class="tags"><span class="tag">#brasilia</span><span class="tag">#ecommerce</span></div>
+                <div class="details">
+                    <b>Segmento:</b> E-commerce de suplementos alimentícios<br>
+                    <b>Localização:</b> Brasília - DF<br>
+                    <b>Contato:</b> Matheus Henrique Hammerschmidt (Sócio - Proprietário)
+                </div>
+                
+        <div class="step-box">
+            <b>Próximo Passo:</b> SEO / GEO (Otimização para busca local/suplementos)
+        </div>
+            </div>
+            <div class="card-footer">
+                <a href="https://wa.me/5561982700154" target="_blank" class="wa-btn">💬 WhatsApp</a>
+                <span class="email-text" title="matheushenrique@natusa.com.br">matheushenrique@natusa.com.br</span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/APLIKE%20AUTOCENTRO/APLIKE" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Aplike Autocentro
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#site</span><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Site<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/BRAZILICIOUS/BRAZILICIOUS" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Brazilicious
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#eua</span><span class="tag">#salãodebeleza</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Salãodebeleza<br>
+                    <b>Localização:</b> EUA<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/CMD/CMD" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 CMD Centro Médico Digital
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#whatsapp</span><span class="tag">#tiktok</span><span class="tag">#argentina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Whatsapp<br>
+                    <b>Localização:</b> Argentina<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/CRN-9/CRN-9" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 CRN-9
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#institucional</span><span class="tag">#high-ticket</span><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Institucional<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/Ellis%20Corretora/Ellis%20Corretora" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Ellis Corretora
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> -<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/Lojas%20Viana/LOJAS-VIANA" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Lojas Viana
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#ecommerce</span><span class="tag">#whatsapp</span><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Ecommerce<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/MMC%20Carajas/MMC-CARAJAS" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 MMC Carajás
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#seo</span><span class="tag">#industrial</span><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Seo<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/MARILIA%20TAUBE/MARILIA-TAUBE" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Marilia Taube
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#seo-geo</span><span class="tag">#referencia</span><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Seo-geo<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        <div class="card" data-status="ativo">
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a href="obsidian://open?vault=VAULT-ALE&file=P-PROJETOS/Ojas/Ojas" style="color: inherit; text-decoration: none;" title="Abrir no Obsidian">
+                            🔗 Ojas Empório Ayurveda
+                        </a>
+                    </h3>
+                    <span class="badge badge-active">Ativo</span>
+                </div>
+                <div class="tags"><span class="tag">#ecommerce</span><span class="tag">#meta-ads</span><span class="tag">#teresina</span></div>
+                <div class="details">
+                    <b>Segmento:</b> Ecommerce<br>
+                    <b>Localização:</b> Teresina - PI<br>
+                    <b>Contato:</b> -
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <span style="color: var(--text-muted); font-size: 0.85rem;">Sem telefone</span>
+                <span class="email-text" title="-"></span>
+            </div>
+        </div>
+        </main>
+
+        <footer>
+            <p>Gerado automaticamente a partir das notas locais de <b>P-PROJETOS</b> no Obsidian.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set update timestamp
+        const now = new Date();
+        document.getElementById('time-stamp').textContent = "Última atualização: " + now.toLocaleString('pt-BR');
+
+        function filterClients(status) {
+            // Update active button state
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            applyFilter();
+        }
+
+        function searchClients() {
+            applyFilter();
+        }
+
+        function applyFilter() {
+            const activeBtn = document.querySelector('.filter-btn.active');
+            const filterValue = activeBtn.getAttribute('data-filter');
+            const searchVal = document.getElementById('search-box').value.toLowerCase();
+            
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardStatus = card.getAttribute('data-status');
+                const cardText = card.textContent.toLowerCase();
+                
+                const matchesStatus = (filterValue === 'all') || (cardStatus === filterValue);
+                const matchesSearch = cardText.includes(searchVal);
+                
+                if (matchesStatus && matchesSearch) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
