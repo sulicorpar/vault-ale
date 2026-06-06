@@ -16,8 +16,19 @@
               "icon": "lucide-git-fork",
               "title": "Visualização em gráfico"
             }
+          },
+          {
+            "id": "401bf7c21cbf676c",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nova aba"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -179,8 +190,15 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "54070c81f96339ef",
+  "active": "401bf7c21cbf676c",
   "lastOpenFiles": [
+    "PRODUTOS/Raio X.md",
+    "00-INDICE.md",
+    "PRODUTOS.md",
+    "raio-x-google-meu-negocio/estrategia-de-vendas.md",
+    "99-TAREFAS/ROTINAS/ROTINA-DIARIA.md",
+    "PRODUTOS",
+    "raio-x-google-meu-negocio",
     "CLIENTES/APLIKE AUTOCENTRO/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
     "Sem título 2.canvas",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/N8N-WORKFLOWS-INVENTORY.md",
@@ -195,12 +213,9 @@
     "99-AUTOMACOES-PRONTAS/workflows-n8n/gestaoCliente.json",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/Envie uma DM automática para seus novos seguidores do Instagram.json",
     "99-AUTOMACOES-PRONTAS/workflows-n8n/Dm - ALEJANDRO.json",
-    "99-AUTOMACOES-PRONTAS/workflows-n8n/Disparador Inteligente com HTML v1.4.0 - ANDERSON.json",
-    "99-AUTOMACOES-PRONTAS/workflows-n8n/Dicas semanais (destino x).json",
     "CLIENTES/NOME DO CLIENTE/00-BRIEFING/BRIEFING-NOME DO CLIENTE.md",
     "99-TAREFAS/PENDENTES/2026-06-04-inserir-logomarca-no-site-da-aplike.md",
     "99-TAREFAS/PENDENTES/2026-06-04-cobrar-de--icaro-os-blog--.md",
-    "99-TAREFAS/ROTINAS/ROTINA-DIARIA.md",
     "99-TAREFAS/TODO-HOJE.md",
     "99-TAREFAS/TODO-GERAL.md",
     "CLIENTES/MARILIA TAUBE/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
@@ -210,7 +225,6 @@
     "CLIENTES/BRAZILICIOUS/03-SEO/PLANO-SEO-30-DIAS.md",
     "CLIENTES/BRAZILICIOUS/02-PROPOSTA/PROPOSTA-SEO-Estrategico-Juliana.md",
     "CLIENTES/BRAZILICIOUS/00-BRIEFING/BRIEFING-Brazilicious.md",
-    "00-INDICE.md",
     "Bem-vindo.md",
     "CLIENTES/Ojas.md"
   ]

@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADS Consultor | 50+ Especialistas + Neil Patel | SEO-GEO-LLM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070a13;
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.2);
+            --secondary: #8b5cf6;
+            --secondary-glow: rgba(139, 92, 246, 0.2);
+            
+            --accent-green: #10b981;
+            --accent-green-glow: rgba(16, 185, 129, 0.2);
+            
+            --accent-gold: #fbbf24;
+            --accent-orange: #f97316;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: sticky;
+            top: 0;
+            background: rgba(7, 10, 19, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 100;
+        }
+
+        header .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 24px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 100px 0 60px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .neil-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(249, 115, 22, 0.1));
+            color: var(--accent-gold);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(251, 191, 36, 0.25);
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.05);
+            letter-spacing: 0.3px;
+        }
+
+        .hero h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 56px;
+            margin-bottom: 24px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -2px;
+        }
+
+        .hero h2 .gradient-text-blue {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h2 .gradient-text-purple {
+            background: linear-gradient(135deg, #8b5cf6, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h2 .gradient-text-green {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 840px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px 16px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.25);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.08);
+        }
+
+        .stat-card .number {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 44px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Call To Action */
+        .main-cta {
+            background: radial-gradient(circle at top left, var(--primary-glow), transparent 60%),
+                        radial-gradient(circle at bottom right, var(--secondary-glow), transparent 60%),
+                        rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 24px;
+            padding: 50px 30px;
+            text-align: center;
+            margin-bottom: 80px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .main-cta::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .main-cta h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .main-cta p {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+
+        /* Neil Patel Section */
+        .neil-section {
+            background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.06), transparent 50%),
+                        rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 20px;
+            padding: 48px 32px;
+            margin: 60px 0;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .neil-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+        }
+
+        .neil-section h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--accent-gold);
+            letter-spacing: -0.5px;
+        }
+
+        .neil-section p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 16px auto;
+            line-height: 1.6;
+        }
+
+        .neil-section p strong {
+            color: var(--text-main);
+        }
+
+        /* Hybrid Info */
+        .hybrid-info {
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 50%),
+                        rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 48px 0;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .hybrid-info h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--accent-green);
+        }
+
+        .hybrid-info p {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .hybrid-info p strong {
+            color: var(--text-main);
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 80px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 48px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 6px;
+            border-radius: 50px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-btn:hover {
+            color: var(--text-main);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+
+        /* Squad Section Layout */
+        .squad-section {
+            margin-bottom: 60px;
+            transition: opacity 0.30s ease, transform 0.30s ease;
+        }
+
+        .squad-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 16px;
+        }
+
+        .squad-icon {
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .squad-header h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .squad-header p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-left: auto;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .experts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        /* Expert Card */
+        .expert-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Distinct top gradient line for Neil Patel */
+        .squad-section[data-squad="seo"] .experts-grid .expert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #fbbf24, #f97316);
+        }
+
+        .expert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
+
+        .expert-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(139, 92, 246, 0.25);
+            box-shadow: 0 16px 36px rgba(139, 92, 246, 0.1);
+        }
+
+        .expert-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            transition: var(--transition-smooth);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Gold avatar glow for Neil Patel */
+        .squad-section[data-squad="seo"] .experts-grid .expert-card .expert-avatar {
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            box-shadow: 0 6px 16px rgba(249, 115, 22, 0.25);
+        }
+
+        .expert-card:hover .expert-avatar {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .expert-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 750;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .expert-role {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            min-height: 38px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .squad-badge {
+            align-self: center;
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Gold badge for SEO maximum authority */
+        .squad-section[data-squad="seo"] .experts-grid .expert-card .squad-badge {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .expert-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: auto;
+        }
+
+        .specialty-tag {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 500;
+        }
+
+        .expert-card:hover .specialty-tag {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.18);
+            color: #c4b5fd;
+        }
+
+        /* Footer Call To Action */
+        .footer-cta {
+            padding: 80px 40px;
+            text-align: center;
+            background: radial-gradient(circle at top right, var(--primary-glow), transparent 60%),
+                        radial-gradient(circle at bottom left, var(--secondary-glow), transparent 60%),
+                        rgba(15, 23, 42, 0.3);
+            border-radius: 24px;
+            margin: 60px 0 100px 0;
+            border: 1px solid var(--card-border);
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-cta::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .footer-cta h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 40px;
+            margin-bottom: 16px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .footer-cta p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        footer {
+            padding: 50px 0 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        footer p {
+            color: #4b5563;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        footer p.footer-sub {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #374151;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 38px;
+            }
+
+            .hero .subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .experts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            }
+
+            .squad-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .squad-header p {
+                margin-left: 0;
+                margin-top: 4px;
+            }
+
+            .main-cta {
+                padding: 40px 20px;
+            }
+
+            .main-cta h3 {
+                font-size: 26px;
+            }
+
+            .footer-cta h2 {
+                font-size: 30px;
+            }
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .expert-card {
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <h1>🚀 ADS CONSULTOR</h1>
+            <p>Especialistas (Neil Patel) + IA | Resultados Imediatos</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Hero -->
+            <section class="hero">
+                <div class="neil-badge">⭐ Especialista Principal: Neil Patel (Autoridade Suprema em SEO)</div>
+                
+                <h2>Os <span class="gradient-text-blue">50+ Melhores Especialistas</span> do Mercado<br>+ <span class="gradient-text-green">IA Squad Integrado</span> ao seu Negócio</h2>
+                <p class="subtitle">Consultoria baseada em Neil Patel + 50+ mentores do mercado. Metodologia ativa para SEO, GEO e LLM SEO. Descubra como ser encontrado no Google E no ChatGPT, Gemini ou Perplexity.</p>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="number">50+</div>
+                        <div class="label">Consultores Reais</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">12</div>
+                        <div class="label">Áreas Integradas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">90 dias</div>
+                        <div class="label">Ciclo de Resultado</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">100%</div>
+                        <div class="label">Método Neil Patel</div>
+                    </div>
+                </div>
+
+                <div class="main-cta">
+                    <h3>🎯 Solicite sua Análise SEO-GEO-LLM</h3>
+                    <p>Estratégia completa de posicionamento multicanal e relatório de autoridade geográfica com plano de execução em 90 dias.</p>
+                    <button class="btn btn-primary" onclick="agendar()">Solicitar Raio X Agora (WhatsApp)</button>
+                </div>
+            </section>
+
+            <!-- Neil Patel Section -->
+            <section class="neil-section">
+                <h3>✨ Metodologia Neil Patel + 50+ Mentores</h3>
+                <p><strong>Neil Patel</strong> é internacionalmente reconhecido como o principal nome em SEO Técnico, GEO (Generative Engine Optimization) e IA Search. Sua tese de otimização integrada embasa nossa atuação consultiva.</p>
+                <p>Nossos times aplicam os ensinamentos práticos de Neil Patel e de mais de <strong>50+ referências reais</strong> do marketing moderno (Pedro Sobral, Paulo Maccedo, Diego Ivo, Rodrigo Noll) para estruturar a presença de marca no Google, Maps, ChatGPT e Gemini.</p>
+            </section>
+
+            <!-- Hybrid Info -->
+            <section class="hybrid-info">
+                <h3>👥 Inteligência Coletiva: Humano & Algoritmo</h3>
+                <p>Unimos a criatividade e maturidade estratégica de <strong>50+ especialistas consultores</strong> ao processamento analítico de **12 Times de Inteligência Artificial**. Menos achismo, mais velocidade operacional e relatórios profundos.</p>
+            </section>
+
+            <!-- Team Section -->
+            <section class="team-section">
+                <h2 class="section-title">Nossos Squads de Especialistas</h2>
+                <p class="section-subtitle">50+ referências aplicando metodologias avançadas de performance e SEO</p>
+
+                <div class="filter-container">
+                    <button class="filter-btn active" onclick="filterTeam('all')">Todos</button>
+                    <button class="filter-btn" onclick="filterTeam('traffic')">Tráfego Pago</button>
+                    <button class="filter-btn" onclick="filterTeam('brand')">Branding</button>
+                    <button class="filter-btn" onclick="filterTeam('copy')">Copywriting</button>
+                    <button class="filter-btn" onclick="filterTeam('design')">Design</button>
+                    <button class="filter-btn" onclick="filterTeam('growth')">Growth</button>
+                    <button class="filter-btn" onclick="filterTeam('seo')">SEO / GEO</button>
+                </div>
+
+                <!-- SEO (NEIL PATEL) -->
+                <div class="squad-section" data-squad="seo">
+                    <div class="squad-header">
+                        <div class="squad-icon">👑</div>
+                        <h3>Especialista Máxima Autoridade</h3>
+                        <p>SEO Técnico, GEO, IA e Search Everywhere</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">SEO-GEO-LLM</div>
+                            <div class="expert-avatar">NP</div>
+                            <div class="expert-name">Neil Patel</div>
+                            <div class="expert-role">Referência global em Marketing de Busca e Otimização para Algoritmos de IA</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">SEO Técnico</span>
+                                <span class="specialty-tag">GEO</span>
+                                <span class="specialty-tag">LLM SEO</span>
+                                <span class="specialty-tag">EEAT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRAFFIC MASTERS -->
+                <div class="squad-section" data-squad="traffic">
+                    <div class="squad-header">
+                        <div class="squad-icon">🚀</div>
+                        <h3>Tráfego Pago & Mídia de Performance</h3>
+                        <p>Google Ads, Meta Ads, Escala e Otimização de ROI</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">Tráfego Pago</div>
+                            <div class="expert-avatar">PS</div>
+                            <div class="expert-name">Pedro Sobral</div>
+                            <div class="expert-role">Referência nacional em gestão de tráfego e mídia de performance</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Google Ads</span>
+                                <span class="specialty-tag">Meta Ads</span>
+                                <span class="specialty-tag">Scaling</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Tráfego Pago</div>
+                            <div class="expert-avatar">JM</div>
+                            <div class="expert-name">Jean Sobrinho</div>
+                            <div class="expert-role">Estrategista de Performance e Mídia Paga</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Performance</span>
+                                <span class="specialty-tag">Strategy</span>
+                                <span class="specialty-tag">Analytics</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Tráfego Pago</div>
+                            <div class="expert-avatar">FS</div>
+                            <div class="expert-name">Flávio Sales</div>
+                            <div class="expert-role">Estrategista de Outbound Marketing & Vendas B2B</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Outbound</span>
+                                <span class="specialty-tag">B2B</span>
+                                <span class="specialty-tag">Lead Gen</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Tráfego Pago</div>
+                            <div class="expert-avatar">HA</div>
+                            <div class="expert-name">Hermes Augusto</div>
+                            <div class="expert-role">Especialista de Growth Marketing de Alta Performance</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Growth</span>
+                                <span class="specialty-tag">Conversion</span>
+                                <span class="specialty-tag">Analytics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COPYWRITING -->
+                <div class="squad-section" data-squad="copy">
+                    <div class="squad-header">
+                        <div class="squad-icon">✍️</div>
+                        <h3>Copywriting & Redação Persuasiva</h3>
+                        <p>Copy de Vendas, Comunicação Estratégica e Funis de Conversão</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">Copywriting</div>
+                            <div class="expert-avatar">PM</div>
+                            <div class="expert-name">Paulo Maccedo</div>
+                            <div class="expert-role">Autor best-seller e autoridade em Copywriting do Brasil</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Copywriting</span>
+                                <span class="specialty-tag">Headlines</span>
+                                <span class="specialty-tag">Direct Response</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Copywriting</div>
+                            <div class="expert-avatar">BA</div>
+                            <div class="expert-name">Beto Altenhofen</div>
+                            <div class="expert-role">Estrategista de Copywriting e CMO na Empiricus</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Sales Copy</span>
+                                <span class="specialty-tag">Direct Response</span>
+                                <span class="specialty-tag">Campaigns</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Copywriting</div>
+                            <div class="expert-avatar">RA</div>
+                            <div class="expert-name">Rafael Albertoni</div>
+                            <div class="expert-role">Copywriter Sênior e Fundador da Sociedade Brasileira de Copy</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Sales Funnels</span>
+                                <span class="specialty-tag">Persuasion</span>
+                                <span class="specialty-tag">Influence</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Copywriting</div>
+                            <div class="expert-avatar">RV</div>
+                            <div class="expert-name">Roberta Vasconcellos</div>
+                            <div class="expert-role">Mentora de Copy na Você Ligado Agency</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Email Copy</span>
+                                <span class="specialty-tag">Sales Funnels</span>
+                                <span class="specialty-tag">Engagement</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO (TEAM) -->
+                <div class="squad-section" data-squad="seo">
+                    <div class="squad-header">
+                        <div class="squad-icon">🔍</div>
+                        <h3>Especialistas em SEO Técnico & Orgânico</h3>
+                        <p>Posicionamento de Sites, SEO de Conteúdo e Link Building</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">SEO</div>
+                            <div class="expert-avatar">JM</div>
+                            <div class="expert-name">John Martin</div>
+                            <div class="expert-role">Consultor sênior em Search Engine Optimization</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">SEO Técnico</span>
+                                <span class="specialty-tag">Estratégia</span>
+                                <span class="specialty-tag">Conteúdo Orgânico</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">SEO</div>
+                            <div class="expert-avatar">DI</div>
+                            <div class="expert-name">Diego Ivo</div>
+                            <div class="expert-role">Fundador e CEO da Conversion, maior agência de SEO</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">SEO Estratégico</span>
+                                <span class="specialty-tag">Data SEO</span>
+                                <span class="specialty-tag">Digital PR</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">SEO</div>
+                            <div class="expert-avatar">EE</div>
+                            <div class="expert-name">Eduardo Esquivel</div>
+                            <div class="expert-role">CEO da Goomarketing com 17+ anos em marketing de busca</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">SEO Off-page</span>
+                                <span class="specialty-tag">Local Search</span>
+                                <span class="specialty-tag">Link Building</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">SEO</div>
+                            <div class="expert-avatar">RR</div>
+                            <div class="expert-name">Rafael Rez</div>
+                            <div class="expert-role">Estrategista de Marketing de Conteúdo na Web Estratégica</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Conteúdo</span>
+                                <span class="specialty-tag">Strategy</span>
+                                <span class="specialty-tag">SEO</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BRANDING -->
+                <div class="squad-section" data-squad="brand">
+                    <div class="squad-header">
+                        <div class="squad-icon">🎨</div>
+                        <h3>Branding, Posicionamento & Autoridade</h3>
+                        <p>Branding Estratégico, Referral Marketing e Identidade de Marca</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">Branding</div>
+                            <div class="expert-avatar">RN</div>
+                            <div class="expert-name">Rodrigo Noll</div>
+                            <div class="expert-role">Maior referência em Marketing de Indicação (Referral) do Brasil</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Brand Strategy</span>
+                                <span class="specialty-tag">Referral</span>
+                                <span class="specialty-tag">Growth</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Branding</div>
+                            <div class="expert-avatar">PZ</div>
+                            <div class="expert-name">Priscila Zillo</div>
+                            <div class="expert-role">Mentora de posicionamento de autoridade e lançamentos</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Branding</span>
+                                <span class="specialty-tag">Positioning</span>
+                                <span class="specialty-tag">Strategy</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Branding</div>
+                            <div class="expert-avatar">JCB</div>
+                            <div class="expert-name">Juliana Campos Branco</div>
+                            <div class="expert-role">Consultora sênior em estratégias de Inbound Marketing</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Inbound</span>
+                                <span class="specialty-tag">Lead Gen</span>
+                                <span class="specialty-tag">Nurturing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESIGN -->
+                <div class="squad-section" data-squad="design">
+                    <div class="squad-header">
+                        <div class="squad-icon">🎨</div>
+                        <h3>Design de Experiência & Identidade</h3>
+                        <p>UI/UX Design, Design de Conversão e Experiência do Usuário</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">Design</div>
+                            <div class="expert-avatar">JM</div>
+                            <div class="expert-name">Jennifer Meyer</div>
+                            <div class="expert-role">UX Writer e Content Designer Sênior</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">UX Writing</span>
+                                <span class="specialty-tag">Content Design</span>
+                                <span class="specialty-tag">UX Research</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Design</div>
+                            <div class="expert-avatar">TU</div>
+                            <div class="expert-name">Tuia Design</div>
+                            <div class="expert-role">Estúdio especialista em Design de Interface e Posicionamento Visual</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">UX/UI</span>
+                                <span class="specialty-tag">Interface</span>
+                                <span class="specialty-tag">Identidade Visual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROWTH -->
+                <div class="squad-section" data-squad="growth">
+                    <div class="squad-header">
+                        <div class="squad-icon">📈</div>
+                        <h3>Growth Marketing & Escala de Negócios</h3>
+                        <p>Growth Hacking, Automação, CRM e Funis de Retenção</p>
+                    </div>
+                    <div class="experts-grid">
+                        <div class="expert-card">
+                            <div class="squad-badge">Growth</div>
+                            <div class="expert-avatar">VP</div>
+                            <div class="expert-name">Vitor Peçanha</div>
+                            <div class="expert-role">Cofundador da Rock Content e estrategista de Marketing de Conteúdo</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Growth Hacking</span>
+                                <span class="specialty-tag">SEO</span>
+                                <span class="specialty-tag">Marketing</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Growth</div>
+                            <div class="expert-avatar">LB</div>
+                            <div class="expert-name">Lucas Brasileiro</div>
+                            <div class="expert-role">Growth Strategist e Cofundador da PUPILA.ag</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Growth</span>
+                                <span class="specialty-tag">CRM</span>
+                                <span class="specialty-tag">Retention</span>
+                            </div>
+                        </div>
+
+                        <div class="expert-card">
+                            <div class="squad-badge">Growth</div>
+                            <div class="expert-avatar">TB</div>
+                            <div class="expert-name">Thais Bittencourt</div>
+                            <div class="expert-role">Consultora de Growth e Especialista em Aquisição e Produto</div>
+                            <div class="expert-specialties">
+                                <span class="specialty-tag">Product Growth</span>
+                                <span class="specialty-tag">Aquisição</span>
+                                <span class="specialty-tag">Retenção</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Info -->
+            <section class="hybrid-info">
+                <h3>🤖 Inteligência Artificial Dedicada por Squad</h3>
+                <p>Nossos **12 Times de IA especializados** operam sob as premissas de Search Everywhere Optimization de Neil Patel. Do criativo de performance à engenharia de prompts para SEO, a tecnologia escala o resultado do seu projeto em tempo recorde.</p>
+            </section>
+
+            <!-- Final CTA -->
+            <section class="footer-cta">
+                <h2>Pronto para Dominar os Motores de Busca e as IAs?</h2>
+                <p>Consiga um diagnóstico detalhado da sua presença digital estruturado sob a metodologia Neil Patel e o conhecimento prático dos nossos 50+ especialistas.</p>
+                <button class="btn btn-primary" onclick="agendar()" style="padding: 18px 56px; font-size: 17px;">Solicitar Raio X Agora</button>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 ADS CONSULTOR | Metodologia Neil Patel | 50+ Especialistas & IA | SEO-GEO-LLM</p>
+            <p class="footer-sub">Desenvolvido para empresas que buscam alta performance integrada baseada nas teses de Neil Patel.</p>
+        </div>
+    </footer>
+
+    <script>
+        function agendar() {
+            const telefone = "5586981404362";
+            const mensagem = "Quero um raio x da minha empresa com metodologia Neil Patel";
+            const urlWhatsApp = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+
+        function filterTeam(squad) {
+            // Update active state on button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Animate filter sections
+            document.querySelectorAll('.squad-section').forEach(section => {
+                if (squad === 'all' || section.dataset.squad === squad) {
+                    section.style.display = 'block';
+                    // Force browser reflow to register display change
+                    section.offsetHeight;
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                } else {
+                    section.style.opacity = '0';
+                    section.style.transform = 'translateY(15px)';
+                    // Complete hiding after transition
+                    setTimeout(() => {
+                        if (section.style.opacity === '0') {
+                            section.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+        }
+
+        // Apply delay offsets for card animations
+        document.querySelectorAll('.expert-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.04}s`;
+        });
+    </script>
+</body>
+</html>

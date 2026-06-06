@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "fbdcec7f7c0e54ea",
+        "id": "8ba4c11ee356eb9a",
         "type": "tabs",
         "children": [
           {
-            "id": "717c03d965864193",
+            "id": "7064ff7938b1187d",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ADS Consultor/Bem-vindo.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Bem-vindo"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Visualização em gráfico"
             }
           }
         ]
@@ -180,22 +176,44 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "717c03d965864193",
+  "active": "7064ff7938b1187d",
   "lastOpenFiles": [
-    "ADS Consultor/PRODUTOS/Raio X",
-    "ADS Consultor/PRODUTOS/Protocolo Ativação",
-    "ADS Consultor/PRODUTOS/Geo Autoridade",
-    "ADS Consultor/PRODUTOS",
-    "ADS Consultor/SISTEMAS/n8n",
-    "ADS Consultor/SISTEMAS/Meta Ads",
-    "ADS Consultor/SISTEMAS/Kommo CRM",
-    "ADS Consultor/SISTEMAS/Google Ads",
-    "ADS Consultor/SISTEMAS",
-    "ADS Consultor/CLIENTES/Ojas",
-    "ADS Consultor/CLIENTES/MMC Carajás",
+    "crm.html",
+    "R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/N8N-WORKFLOWS-INVENTORY.md",
+    "CRM.md",
+    "atualizar_crm.sh",
+    "atualizar_crm.py",
+    "P-PROJETOS/Natusa/00-BRIEFING/LEAD-oHub.md",
+    "P-PROJETOS/Natusa/Natusa.md",
+    "P-PROJETOS/Natusa/08-ENTREGAS",
+    "P-PROJETOS/Natusa/07-ACESSOS",
+    "P-PROJETOS/Natusa/06-RELATORIOS",
+    "P-PROJETOS/Natusa/05-GOOGLE-BUSINESS",
+    "P-PROJETOS/Natusa/04-CONTEUDO-BLOG",
+    "P-PROJETOS/Natusa/03-SEO",
+    "P-PROJETOS/Natusa/02-PROPOSTA",
+    "P-PROJETOS/Natusa/01-DIAGNOSTICO",
+    "P-PROJETOS/Ellis Corretora/Ellis Corretora.md",
+    "P-PROJETOS/BRAZILICIOUS/RESUMO-GERAL-BRAZILICIOUS.md",
+    "P-PROJETOS/BRAZILICIOUS/BRAZILICIOUS.md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/Diagnostico_SEO_Completo_BrazilianBeautyFormula (1).md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/Diagnostico_SEO_Completo_BrazilianBeautyFormula (1).docx.md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/Analise de Saude - Brazilicious  Home of Brazilian Lymphatic in Austin TX.md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/GMBURL_Brazilicious®___Home_of_Brazilian_Lymphatic_in_Austin_TX_2026-04-10.md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/Website_Analysis_&_Insights.Jan_2026_-_Mar_2026.md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/Website Keywords-braziliciousbeautyspa.com-(999)-(2026_01-2026_03).md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/SearchCompetitorsOrganic-braziliciousbeautyspa.com-(999)-(2026_01-2026_03).md",
+    "P-PROJETOS/BRAZILICIOUS/06-RELATORIOS/relatorio_brazilicious.md",
+    "P-PROJETOS/BRAZILICIOUS/07-ACESSOS/ACESSOS-NECESSARIOS.md",
+    "P-PROJETOS/BRAZILICIOUS/04-CONTEUDO-BLOG/ATUALIZACAO-20-ARTIGOS.md",
+    "P-PROJETOS/BRAZILICIOUS/05-GOOGLE-BUSINESS/OTIMIZACAO-GOOGLE-BUSINESS.md",
+    "P-PROJETOS/BRAZILICIOUS/02-PROPOSTA/PROPOSTA-SEO-Estrategico-Juliana.md",
+    "P-PROJETOS/BRAZILICIOUS/00-BRIEFING/BRIEFING-Brazilicious.md",
+    "ADS Consultor/PRODUTOS/Raio X.md",
+    "ADS Consultor/00-INDICE.md",
+    "ADS Consultor/raio-x-google-meu-negocio/estrategia-de-vendas.md",
     "ADS Consultor/Bem-vindo.md",
     "Sem título.canvas",
-    "Sem título.md",
-    "2026-06-03.md"
+    "Sem título.md"
   ]
 }

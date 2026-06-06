@@ -1,39 +1,21 @@
-#!/bin/zsh
+#!/bin/bash
+NOME="$1"
+BASE="$HOME/Documents/VAULT-ALE"
+DESTINO="$BASE/P-PROJETOS/$NOME"
+TEMPLATE="$BASE/R-RECURSOS/templates/TEMPLATE-CLIENTE.md"
 
-CLIENTE="$1"
+mkdir -p "$DESTINO/00-BRIEFING"
+mkdir -p "$DESTINO/01-DIAGNOSTICO"
+mkdir -p "$DESTINO/02-PROPOSTA"
+mkdir -p "$DESTINO/03-SEO"
+mkdir -p "$DESTINO/04-CONTEUDO-BLOG"
+mkdir -p "$DESTINO/05-GOOGLE-BUSINESS"
+mkdir -p "$DESTINO/06-RELATORIOS"
+mkdir -p "$DESTINO/07-ACESSOS"
+mkdir -p "$DESTINO/08-ENTREGAS"
 
-if [ -z "$CLIENTE" ]; then
-  echo "Erro: informe o nome do cliente."
-  echo 'Exemplo: ./novo_cliente.sh "MARILIA TAUBE"'
-  exit 1
-fi
+# Cria nota principal com links
+sed "s/NOME DO CLIENTE/$NOME/g" "$TEMPLATE" > "$DESTINO/$NOME.md"
 
-BASE="ADS Consultor/CLIENTES/$CLIENTE"
-
-mkdir -p "$BASE"/{00-BRIEFING,01-DIAGNOSTICO,02-PROPOSTA,03-SEO,04-CONTEUDO-BLOG,05-GOOGLE-BUSINESS,06-RELATORIOS,07-ACESSOS,08-ENTREGAS}
-
-find "$BASE" -type d -exec touch "{}/.gitkeep" \;
-
-cat > "$BASE/00-BRIEFING/BRIEFING-$CLIENTE.md" <<EOT
-# Briefing - $CLIENTE
-
-## Cliente
-$CLIENTE
-
-## Status
-Pasta criada no Vault.
-
-## Próximos passos
-- Preencher briefing
-- Adicionar diagnóstico
-- Criar proposta
-- Organizar entregas
-EOT
-
-git add "$BASE"
-git commit -m "feat: cliente $CLIENTE - estrutura padrão completa"
-git push origin main
-
-open "$BASE"
-
-echo "Cliente $CLIENTE criado, commitado, enviado para o GitHub e aberto no Finder."
+echo "✅ Cliente '$NOME' criado em P-PROJETOS com template e links!"
+echo "📍 $DESTINO"

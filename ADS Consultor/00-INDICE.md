@@ -8,6 +8,8 @@ Bem-vindo ao segundo cérebro de **ADS Consultor**. Este é o ponto central de n
 
 Gestão completa de clientes ativos e propostas.
 
+- [[CRM|Painel CRM (Leads e Clientes)]]
+
 - [[CLIENTES/Ojas|Ojas Empório Ayurveda]]
 - [[CLIENTES/CRN-9|CRN-9 - Conselho Regional de Nutricionistas]]
 - [[CLIENTES/Lojas Viana|Lojas Viana - E-commerce]]
