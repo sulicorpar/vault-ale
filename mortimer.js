@@ -1,6 +1,12 @@
 const Anthropic = require("@anthropic-ai/sdk");
 
-const apiKey = "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";
+const apiKey = process.env.CLAUDE_API_KEY;
+
+if (!apiKey) {
+  console.error("❌ Erro: CLAUDE_API_KEY não configurada!");
+  console.error("Execute: export CLAUDE_API_KEY=sk-ant-...");
+  process.exit(1);
+}
 
 const client = new Anthropic({
   apiKey: apiKey
