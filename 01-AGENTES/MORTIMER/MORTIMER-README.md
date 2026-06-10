@@ -174,3 +174,10 @@ Novo cliente: briefing no MORTIMER + `./novo_cliente.sh "NOME"` no VAULT (já cr
 - DashboardView: tela dedicada com tarefas pendentes + botão Concluir
 - Próximas ações por cliente e propostas em andamento (clicáveis)
 - Faixa de stats do topo com dados reais do Supabase (refresh 60s)
+
+## v3.3 — 10/06/2026
+- MORTIMER lê links de sites (até 2 por mensagem, 8k chars cada)
+- Respostas em Markdown renderizado (títulos, tabelas, listas)
+- Shift+Enter para nova linha + botão Copiar nas respostas
+- Prompt: formatação limpa + oferta de gerar documento ao final
+- Roadmap: Notion, áudio (Whisper), agentes executores (Fase 2)

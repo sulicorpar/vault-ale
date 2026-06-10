@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01-AGENTES/MORTIMER/MORTIMER-README.md",
+                "file": "03-PROJETOS/INDEX.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "MORTIMER-README"
+              "title": "INDEX"
             }
           }
         ]
@@ -183,6 +183,7 @@
   },
   "active": "ec62d44cf6408305",
   "lastOpenFiles": [
+    "01-AGENTES/MORTIMER/MORTIMER-README.md",
     "P-PROJETOS/Marília Taube/MARILIA-TAUBE.md",
     "P-PROJETOS/Marília Taube/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
     "P-PROJETOS/MMC Carajás/MMC-CARAJAS.md",
@@ -207,7 +208,6 @@
     "P-PROJETOS/MMC Carajás/MMC Carajás.md",
     "P-PROJETOS/Nutrolife/Nutrolife.md",
     "P-PROJETOS/Aplike/Aplike.md",
-    "01-AGENTES/MORTIMER/MORTIMER-README.md",
     "01-AGENTES/MORTIMER/MORTIMER-README.md/MORTIMER-README.md",
     "MORTIMER-README.md",
     "INDEX-CENTRAL.md",
