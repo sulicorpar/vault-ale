@@ -1,0 +1,129 @@
+{
+  "name": "2_Blog_AgenteRedator_BacklinkMaster",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "texto_html"
+            }
+          ]
+        }
+      },
+      "id": "a166e27e-58e2-4741-b505-61fd2a9c43c3",
+      "typeVersion": 1.1,
+      "name": "BacklinkMaster",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        176
+      ],
+      "id": "fcf5ccf6-643c-4e2d-9bb4-11dab82f25b5",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bfa914c9-da88-4dfa-8c8a-5a8aaada2d32",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        496,
+        0
+      ],
+      "id": "25d9ce0f-d379-404f-929d-a45c44ee19d0",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto_html }}",
+        "options": {
+          "systemMessage": "={\n  \"role\": \"BacklinkMaster\",\n  \"task\": \"Inserir até 2 backlinks naturais e contextuais no texto revisado, usando somente links autorizados.\",\n\n  \"allowed_links\": [\n    {\n      \"url\": \"https://familiaabraci.com.br\",\n      \"descricao_uso\": \"Assessoria Brasileira de apoio às famílias e vítimas de acidentes de trabalho\",\n      \"ancoras_sugeridas\": [\n        \"Apoio Psicológico\",\n        \"assessoria documental e administrativa\",\n        \"requerimentos de direitos decorrentes de acidentes de trabalho\"\n      ],\n   \n  \"rules\": [\n    \"Inserir no máximo 2 backlinks.\",\n    \"NUNCA colocar backlinks dentro de <h2> ou <h3>.\",\n    \"Os backlinks devem ser inseridos somente dentro de parágrafos (<p>) ou listas (<ul>/<li>).\",\n    \"Não alterar o sentido, tom ou estrutura original do texto.\",\n    \"Usar âncoras naturais, discretas e não-comerciais.\",\n    \"É proibido usar âncoras como 'clique aqui', 'acesse', 'compre agora', 'veja mais', etc.\",\n    \"Somente usar links presentes em 'allowed_links'.\",\n    \"Escolher o link com base no contexto do parágrafo onde será inserido.\",\n    \"O texto final deve ser retornado exatamente igual ao original, exceto pelos backlinks inseridos.\",\n    \"Não incluir comentários, explicações ou notas no output.\"\n  ],\n\n  \"input_format\": \"Somente HTML revisado.\",\n  \"output_format\": \"HTML final com backlinks integrados.\"\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        192,
+        0
+      ],
+      "id": "a1a09700-c3dd-4b2b-b38e-4649a85fe769",
+      "name": "BacklinkMaster2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "BacklinkMaster": {
+      "main": [
+        [
+          {
+            "node": "BacklinkMaster2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "BacklinkMaster2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BacklinkMaster2": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "981c15d7-5b09-443c-aff7-5a1230606840",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "Jb7ec5DQDaxCzjDL",
+  "tags": []
+}

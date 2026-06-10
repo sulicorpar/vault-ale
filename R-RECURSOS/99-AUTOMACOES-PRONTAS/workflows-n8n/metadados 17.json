@@ -1,0 +1,19 @@
+{
+  "albumData": {
+    "title": "2014/12/14 #2",
+    "description": "",
+    "access": "protected",
+    "location": "",
+    "date": {
+      "timestamp": "1418601576",
+      "formatted": "14 de dez. de 2014 23:59:36 UTC"
+    },
+    "geoData": {
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "altitude": 0.0,
+      "latitudeSpan": 0.0,
+      "longitudeSpan": 0.0
+    }
+  }
+}

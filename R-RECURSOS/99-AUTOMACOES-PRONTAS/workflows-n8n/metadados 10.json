@@ -1,0 +1,19 @@
+{
+  "albumData": {
+    "title": "Casamento Ale\u0026Sheyla",
+    "description": "",
+    "access": "private",
+    "location": "Teresina e Luis Correia",
+    "date": {
+      "timestamp": "1383954458",
+      "formatted": "8 de nov. de 2013 23:47:38 UTC"
+    },
+    "geoData": {
+      "latitude": -2.8831219999999997,
+      "longitude": -41.638338999999995,
+      "altitude": 0.0,
+      "latitudeSpan": 0.007542049999999856,
+      "longitudeSpan": 0.01146255000000096
+    }
+  }
+}

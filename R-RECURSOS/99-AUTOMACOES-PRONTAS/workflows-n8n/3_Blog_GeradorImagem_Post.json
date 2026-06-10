@@ -1,0 +1,1158 @@
+{
+  "name": "3_Blog_GeradorImagem_Post",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://adsconsultor.com.br/wp-json/wp/v2/media/",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "content-disposition",
+              "value": "=attachment; filename={{ $('3_Blog_GeradorImagem').item.json.forms_content['Título-Palavra-Chave'] }}.{{ $binary.data.fileExtension }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "2c5f8426-d376-4e1e-8d53-d628f48f8dad",
+      "name": "Wordpress - Salvar imagem em mídia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        496,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "wordpressApi": {
+          "id": "e0IeZS5nMYtLIMtR",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://adsconsultor.com.br/wp-json/wp/v2/media/{{ $node['Wordpress - Salvar imagem em mídia'].json[\"id\"] }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "alt_text",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.forms_content['Título-Palavra-Chave'] }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.forms_content['Título-Palavra-Chave'] }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.forms_content['Título-Palavra-Chave'] }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.forms_content['Título-Palavra-Chave'] }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "e403303f-b539-4fec-be1c-15e1890b4da3",
+      "name": "Wordpress - Atualizar Atributos da imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        688,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "wordpressApi": {
+          "id": "e0IeZS5nMYtLIMtR",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "width": "=1250",
+        "height": "=600",
+        "resizeOption": "onlyIfLarger",
+        "options": {
+          "format": "webp"
+        }
+      },
+      "id": "6d650e2f-5fef-46b7-85cf-bb9f999dc384",
+      "name": "redimensionar",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        320,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"image_prompt\": \"Example of a cinematic 8k hyper-realistic prompt in English.\",\n  \"alt_text\": \"Exemplo de alt text em português contendo a palavra-chave.\"\n}\n",
+        "autoFix": true,
+        "customizeRetryPrompt": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        32,
+        432
+      ],
+      "id": "08eb3b99-3aff-459c-93f6-9ec05f33e3a4",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Titulo: {{ $json.message.agent_seo.titulo }}\n\nIntrodução: {{ $json.message.agent_seo.introducao }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=\n  \"role\": \"Visual SEO & Prompt Engineer\",\n  \"task\": \"Gerar um prompt de criação de imagem de alto nível e um texto Alt otimizado para SEO com base na palavra-chave fornecida.\",\n  \n  \"design_principles\": \n    \"Estilo: Hiper-realista, iluminação cinematográfica, resolução 8K.\",\n    \"Assunto: Focar em uma pessoa real (elemento humano) transmitindo emoção (sucesso, foco, felicidade) relacionada ao tema, ou usar uma representação abstrata de alta qualidade quando o tema for técnico.\",\n    \"Composição: Proporção 16:9, fundo neutro porém profissional (escritório desfocado, mesa limpa, ambiente tecnológico).\",\n    \"Objetivo: Aumentar o CTR (Click-Through Rate) para redes sociais e Google Discover.\"\n \n\n  \"brand_logo_rule\": \"Se a palavra-chave ou instruções mencionarem o nome de uma empresa ou marca (como WhatsApp, n8n, Kommo, AtendeFácil, HostGator, Meta, etc.), o prompt DEVE incluir instruções para adicionar a LOGO oficial da empresa na imagem, de forma discreta, profissional e coerente com o contexto visual.\",\n\n  \n \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -48,
+        192
+      ],
+      "id": "497cb189-5ef5-4c45-bb97-b47de9ab846e",
+      "name": "3. Agente de Imagem & ALT Text - Video"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d40a3033-fecf-4451-b0c1-2ae69cce62ec",
+              "leftValue": "={{ $json.forms_content['URL-Image-Post'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        16
+      ],
+      "id": "0db25faf-46ec-4ed0-ba28-034dd0483d61",
+      "name": "_url_image"
+    },
+    {
+      "parameters": {
+        "operation": "information"
+      },
+      "id": "0b971734-7f09-4ad1-94d6-ffdec2ac8f44",
+      "name": "data",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        160,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        432
+      ],
+      "id": "595b8583-211b-40d6-aa9d-6810b5fc5420",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4Sfrhdg0GjeRE7VP",
+          "name": "OpenAi -Sulicorpar-ads"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.forms_content[\"URL-Image-Post\"] }}",
+        "options": {}
+      },
+      "id": "bd550514-a56b-45b2-b967-bbbe50f81bfb",
+      "name": "download_image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        0,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $json.output.image_prompt }}",
+        "options": {
+          "size": "1792x1024",
+          "returnImageUrls": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        256,
+        192
+      ],
+      "id": "1d1f6e3c-5cad-4cfa-9454-bf295b26c41c",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "4Sfrhdg0GjeRE7VP",
+          "name": "OpenAi -Sulicorpar-ads"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "width": 1250,
+        "height": 600,
+        "resizeOption": "ignoreAspectRatio",
+        "options": {
+          "format": "webp"
+        }
+      },
+      "id": "96756c9b-d311-4998-934d-29980d64193a",
+      "name": "redimensionar1",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        768,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "information"
+      },
+      "id": "d388ad61-105c-484b-89d9-62d80e604a93",
+      "name": "data1",
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        608,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "id": "c63ce06c-0e36-419f-91c4-ff83bfeb3b7f",
+      "name": "download_image1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        432,
+        192
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://adsconsultor.com.br/wp-json/wp/v2/media/{{ $node['upload_image_wp1'].json[\"id\"] }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "alt_text",
+              "value": "={{ $('3. Agente de Imagem & ALT Text - Video').item.json.output.alt_text }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.titulo }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.titulo }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.titulo }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "e842d728-77c5-4e5c-8396-2a1ec034d8fc",
+      "name": "upload_image_wp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1136,
+        192
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "wordpressApi": {
+          "id": "e0IeZS5nMYtLIMtR",
+          "name": "Wordpress account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://adsconsultor.com.br/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            },
+            {
+              "name": "content-disposition",
+              "value": "=attachment; filename={{ $('RedisTrigger').item.json.message.agent_seo.titulo }}.{{ $binary.data.fileExtension }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "16ca2b00-927b-41b0-b6ce-b9511658fe08",
+      "name": "upload_image_wp1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        960,
+        192
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false,
+      "credentials": {
+        "wordpressApi": {
+          "id": "e0IeZS5nMYtLIMtR",
+          "name": "Wordpress account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://adsconsultor.com.br/wp-json/wp/v2/posts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "date",
+              "value": "={{ $json.date }}"
+            },
+            {
+              "name": "excerpt",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.meta_descricao }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.titulo }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.introducao }}<br/>{{ $('RedisTrigger').item.json.message.conteudo_post }}\n"
+            },
+            {
+              "name": "slug",
+              "value": "={{ $('RedisTrigger').item.json.message.agent_seo.slug }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "6bc22553-f9dd-4b7a-866d-0609cc3a5a12",
+      "name": "post_wp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1312,
+        192
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "wordpressApi": {
+          "id": "e0IeZS5nMYtLIMtR",
+          "name": "Wordpress account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://adsconsultor.com.br/wp-json/wp/v2/posts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "featured_media",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "date",
+              "value": "={{ $json.date }}"
+            },
+            {
+              "name": "excerpt",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.agent_seo.meta_descricao }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.agent_seo.titulo }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.agent_seo.introducao }}<br/>\n{{ $('3_Blog_GeradorImagem').item.json.conteudo_post }}"
+            },
+            {
+              "name": "slug",
+              "value": "={{ $('3_Blog_GeradorImagem').item.json.agent_seo.slug }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "a9cfd12b-3a93-44a4-a2a6-805623173bbd",
+      "name": "post_wp1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        864,
+        0
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "wordpressApi": {
+          "id": "e0IeZS5nMYtLIMtR",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "seo_automatico_blog",
+          "mode": "list",
+          "cachedResultName": "seo_automatico_blog"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "titulo_palavra_chave": "={{ $('3_Blog_GeradorImagem').item.json.forms_content['Título-Palavra-Chave'] }}",
+            "data_publicacao": "={{ $now.plus(1, \"days\").format('yyyy-MM-dd') }}",
+            "agente_seo": "={{ $('3_Blog_GeradorImagem').item.json.agent_seo }}",
+            "agente_conteudo": "={{ $('3_Blog_GeradorImagem').item.json.conteudo_post }}",
+            "post": "={{$json}}",
+            "status": true
+          },
+          "matchingColumns": [
+            "titulo_palavra_chave"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "data_publicacao",
+              "displayName": "data_publicacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "titulo_palavra_chave",
+              "displayName": "titulo_palavra_chave",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "url_image",
+              "displayName": "url_image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "url_video",
+              "displayName": "url_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "transcricao_video",
+              "displayName": "transcricao_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "agente_seo",
+              "displayName": "agente_seo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "agente_conteudo",
+              "displayName": "agente_conteudo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "agente_imagem",
+              "displayName": "agente_imagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "post",
+              "displayName": "post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "3e26d03e-7419-4a2b-ad3f-69124ffc15eb",
+      "name": "update_data",
+      "credentials": {
+        "postgres": {
+          "id": "Ohx6rJRyzB5IJKNX",
+          "name": "Postgres sulicorpar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('RedisTrigger').item.json.message.agent_seo.titulo }}",
+        "tableName": "n8n_chat_histories_images",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        480
+      ],
+      "id": "aedb56e0-360a-4b44-a3d7-0169dd99e71e",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "Ohx6rJRyzB5IJKNX",
+          "name": "Postgres sulicorpar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1WOG-w6K79IBQovHMo5rVWPf8mlP6EUJHGLZ53IP12Bc",
+          "mode": "list",
+          "cachedResultName": "Blog Adsconsultor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WOG-w6K79IBQovHMo5rVWPf8mlP6EUJHGLZ53IP12Bc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1456673624,
+          "mode": "list",
+          "cachedResultName": "Aprovações",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WOG-w6K79IBQovHMo5rVWPf8mlP6EUJHGLZ53IP12Bc/edit#gid=1456673624"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Título do Artigo": "={{ $json.title.raw }}",
+            "Link": "=https://adsconsultor.com.br/wp-admin/post.php?post={{ $json.id }}&action=edit",
+            "Situação": "Aguardando Aprovação"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Título do Artigo",
+              "displayName": "Título do Artigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Situação",
+              "displayName": "Situação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Autor",
+              "displayName": "Autor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Categoría",
+              "displayName": "Categoría",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Data da Publicação",
+              "displayName": "Data da Publicação",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1504,
+        192
+      ],
+      "id": "656b0f00-e46f-482b-8b8f-5fdcd3d087d8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tS60yvQarCGzc1Gw",
+          "name": "Google Sheets Automacoes Prontas Sulicorpar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channels": "AgenteGeradorImagem",
+        "options": {
+          "jsonParseBody": true
+        }
+      },
+      "type": "n8n-nodes-base.redisTrigger",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        16
+      ],
+      "id": "3e5bd591-9fac-4780-a0c8-69a25db05baa",
+      "name": "RedisTrigger",
+      "credentials": {
+        "redis": {
+          "id": "eAhvPmbxbHz08wKG",
+          "name": "Redis sulicorpar"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "RedisTrigger": [
+      {
+        "json": {
+          "channel": "AgenteGeradorImagem",
+          "message": {
+            "forms_content": {
+              "Tipo": [
+                "Palavra-Chave"
+              ],
+              "Título-Palavra-Chave": "KOmmo",
+              "URL-Image-Post": "",
+              "Url-Vídeo-Youtube": "",
+              "Url-Post-Pagina-Web": "",
+              "Quantidade de Artigos por Palavra-Chave": 1,
+              "submittedAt": "2026-02-11T12:14:23.256-03:00",
+              "formMode": "test"
+            },
+            "agent_seo": {
+              "keyword": "KOmmo",
+              "titulo": "KOmmo e sua aplicação em Marketing Digital, Vendas e Automações",
+              "slug": "kommo-marketing-digital-vendas-automacoes",
+              "meta_descricao": "KOmmo potencializa estratégias de Marketing Digital, Vendas e Automações para casos de acidente de trabalho.",
+              "introducao": "<p>KOmmo é uma ferramenta essencial para otimizar processos de Marketing Digital, Vendas e Automações, especialmente em contextos relacionados a acidente de trabalho. Ao integrar tecnologias avançadas, KOmmo permite que empresas do setor de saúde e segurança no trabalho aprimorem suas estratégias, tornando a comunicação e a gestão de vendas mais eficazes e adaptadas às necessidades do mercado acidentado.</p>",
+              "tags": "Marketing Digital",
+              "categorias": "Vendas e Automações",
+              "estrutura_topicos": [
+                {
+                  "texto": "Como KOmmo pode transformar a comunicação em campanhas focadas em acidente de trabalho"
+                },
+                {
+                  "texto": "A importância do CRM KOmmo na gestão de vendas para casos de acidente de trabalho"
+                },
+                {
+                  "texto": "Automatizando o atendimento a vítimas de acidente de trabalho com KOmmo"
+                },
+                {
+                  "texto": "Estratégias de Marketing Digital com KOmmo para prevenção de acidentes de trabalho"
+                },
+                {
+                  "texto": "Integrando KOmmo com outras ferramentas para otimizar vendas em acidente de trabalho"
+                },
+                {
+                  "texto": "Análise de dados em KOmmo para melhorar resultados em vendas de serviços relacionados a acidentes de trabalho"
+                },
+                {
+                  "texto": "Desafios e soluções na implementação de KOmmo em empresas do setor de acidentes de trabalho"
+                },
+                {
+                  "texto": "Tendências futuras em Marketing Digital, Vendas e Automações com KOmmo no contexto de acidentes de trabalho"
+                }
+              ]
+            },
+            "conteudo_post": "<p>KOmmo é uma ferramenta essencial para otimizar processos de Marketing Digital, Vendas e Automações, especialmente em contextos relacionados a <strong>acidente de trabalho</strong>. Ao integrar tecnologias avançadas, KOmmo permite que empresas do setor de saúde e segurança no trabalho aprimorem suas estratégias, tornando a comunicação e a gestão de vendas mais eficazes e adaptadas às necessidades do mercado acidentado.</p>\n\n<h2>Como KOmmo pode transformar a comunicação em campanhas focadas em acidente de trabalho</h2>\n<p>KOmmo pode atuar como um grande diferencial ao fortalecer a comunicação em campanhas direcionadas a <strong>acidente de trabalho</strong>. Com suas funcionalidades, é possível segmentar o público, personalizar mensagens e acompanhar o engajamento dos trabalhadores e gestores. Isso se traduz em abordagens mais humanizadas e eficientes, melhorando a clareza das ações educativas e preventivas em temas de saúde ocupacional.</p>\n\n<h2>A importância do CRM KOmmo na gestão de vendas para casos de acidente de trabalho</h2>\n<p>Quando se trata de <strong>acidente de trabalho</strong>, gerenciar oportunidades torna-se ainda mais sensível. O CRM KOmmo organiza todo o histórico de contatos, interações, propostas e follow-ups, facilitando o controle de cada etapa do processo de vendas de serviços relacionados à segurança do trabalho. Esse acompanhamento detalhado contribui para que empresas identifiquem as necessidades específicas de quem busca suporte em casos de acidente laboral, otimizando o atendimento e potencializando resultados.</p>\n\n<h2>Automatizando o atendimento a vítimas de acidente de trabalho com KOmmo</h2>\n<p>A automação do atendimento via KOmmo permite que empresas do setor respondam rapidamente a dúvidas e solicitações de vítimas de <strong>acidente de trabalho</strong>. Por meio de chatbots, fluxos automatizados de e-mail e integrações com canais de comunicação, é possível agilizar o suporte e o envio de informações relevantes, garantindo acolhimento e direcionamento adequados, sem perder a humanização no serviço.</p>\n\n<h2>Estratégias de Marketing Digital com KOmmo para prevenção de acidentes de trabalho</h2>\n<p>Utilizar o KOmmo em estratégias de Marketing Digital possibilita a criação de campanhas preventivas de <strong>acidente de trabalho</strong>. Com recursos de automação, segmentação e personalização, as mensagens alcançam de forma precisa os diferentes perfis de público: trabalhadores, gestores de RH, e profissionais de saúde ocupacional. Essas estratégias auxiliam na conscientização sobre prevenção e boas práticas, reduzindo riscos no ambiente de trabalho.</p>\n\n<h2>Integrando KOmmo com outras ferramentas para otimizar vendas em acidente de trabalho</h2>\n<p>Integrar o KOmmo com sistemas de gestão, automação de marketing e plataformas de atendimento ao cliente eleva a eficiência das vendas relacionadas a <strong>acidente de trabalho</strong>. Essa integração proporciona uma visão 360° do cliente, centraliza informações e torna as ações mais ágeis. Empresas ganham em produtividade e conseguem responder rapidamente às demandas decorrentes de acidentes, melhorando o relacionamento e o suporte prestado.</p>\n\n<h2>Análise de dados em KOmmo para melhorar resultados em vendas de serviços relacionados a acidentes de trabalho</h2>\n<p>Com o KOmmo, a análise de dados se torna fundamental para aprimorar ações em vendas voltadas para <strong>acidente de trabalho</strong>. Relatórios detalhados ajudam a identificar padrões de comportamento, pontos de melhoria na abordagem e oportunidades de crescimento. Essa leitura inteligente dos dados auxilia as empresas na tomada de decisões estratégicas, sempre com foco nas demandas do setor de acidentes ocupacionais.</p>\n\n<h2>Desafios e soluções na implementação de KOmmo em empresas do setor de acidentes de trabalho</h2>\n<p>A adoção do KOmmo em empresas que lidam diretamente com <strong>acidente de trabalho</strong> pode envolver dificuldades como a adaptação da equipe, integração com sistemas existentes e a definição de estratégias automatizadas. No entanto, a capacitação do time e o suporte técnico fazem toda a diferença. Os benefícios conquistados após a implementação geralmente superam os desafios iniciais, trazendo mais organização e agilidade para o atendimento de demandas no setor de acidentes ocupacionais.</p>\n\n<h2>Tendências futuras em Marketing Digital, Vendas e Automações com KOmmo no contexto de acidentes de trabalho</h2>\n<p>O futuro do uso do KOmmo no <strong>acidente de trabalho</strong> aponta para automações ainda mais inteligentes, integração com inteligência artificial e ampliação do uso de dados para personalizar o atendimento. Tendências como omnichannel, automação preditiva e análise preditiva devem transformar radicalmente a gestão de vendas e suportes relacionados à saúde e segurança do trabalho, criando ambientes laborais cada vez mais seguros e preparados para lidar com incidentes.</p>\n\n<h2>Como o KOmmo pode ajudar sua empresa a apoiar quem sofreu acidente de trabalho</h2>\n<p>Investir em ferramentas como o KOmmo otimiza processos, melhora a comunicação e fortalece o suporte a quem precisa de informação após um <strong>acidente de trabalho</strong>. Se você busca aprimorar a gestão de vendas, atendimento e prevenção no setor, considere integrar soluções avançadas e conte com especialistas para orientar nas melhores práticas. Consulte também órgãos especializados, como o <a href=\"https://www.mpt.mp.br\" target=\"_blank\">Ministério Público do Trabalho</a>, para obter mais informações sobre direitos e procedimentos em caso de acidente laboral.</p>\n\n<h2>Perguntas frequentes sobre KOmmo e acidente de trabalho</h2>\n<h3>O que é KOmmo e como ele é útil em situações de acidente de trabalho?</h3>\n<p>KOmmo é uma plataforma de CRM que auxilia na organização, gestão de vendas e automações de atendimento, sendo muito útil para empresas que prestam serviços relacionados a <strong>acidente de trabalho</strong>, facilitando a comunicação e o suporte aos clientes.</p>\n<h3>Posso usar KOmmo para automatizar alertas e orientações em caso de acidente de trabalho?</h3>\n<p>Sim, é possível configurar fluxos automáticos de e-mails, mensagens e notificações para alerta e orientação em situações de <strong>acidente de trabalho</strong>, personalizando de acordo com cada caso e necessidade da empresa.</p>\n<h3>Como a análise de dados do KOmmo pode ajudar a prevenir acidentes de trabalho?</h3>\n<p>Ao analisar dados de campanhas, atendimentos e histórico de clientes, é possível identificar padrões de risco e oportunidades para ações educativas e preventivas sobre <strong>acidente de trabalho</strong>.</p>\n<h3>O KOmmo pode ser integrado com plataformas já existentes na minha empresa?</h3>\n<p>Geralmente sim; o KOmmo possui integração com diversas ferramentas de automação, atendimento e gestão, facilitando o processo operacional da empresa que atua com <strong>acidente de trabalho</strong>.</p>\n<h3>A implementação do KOmmo exige treinamento específico?</h3>\n<p>O treinamento pode variar conforme a complexidade das operações e dos fluxos relacionados a <strong>acidente de trabalho</strong>. Em geral, o suporte técnico da ferramenta e a capacitação interna auxiliam na adaptação e uso eficaz da solução.</p>",
+            "type": "keyword"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Wordpress - Salvar imagem em mídia": {
+      "main": [
+        [
+          {
+            "node": "Wordpress - Atualizar Atributos da imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wordpress - Atualizar Atributos da imagem": {
+      "main": [
+        [
+          {
+            "node": "post_wp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redimensionar": {
+      "main": [
+        [
+          {
+            "node": "Wordpress - Salvar imagem em mídia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "3. Agente de Imagem & ALT Text - Video",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "_url_image": {
+      "main": [
+        [
+          {
+            "node": "download_image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "3. Agente de Imagem & ALT Text - Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "redimensionar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "3. Agente de Imagem & ALT Text - Video",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_image": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Agente de Imagem & ALT Text - Video": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "download_image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data1": {
+      "main": [
+        [
+          {
+            "node": "redimensionar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_image1": {
+      "main": [
+        [
+          {
+            "node": "data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload_image_wp1": {
+      "main": [
+        [
+          {
+            "node": "upload_image_wp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redimensionar1": {
+      "main": [
+        [
+          {
+            "node": "upload_image_wp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload_image_wp": {
+      "main": [
+        [
+          {
+            "node": "post_wp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "post_wp": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "post_wp1": {
+      "main": [
+        [
+          {
+            "node": "update_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "3. Agente de Imagem & ALT Text - Video",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RedisTrigger": {
+      "main": [
+        [
+          {
+            "node": "_url_image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "77e16254-918f-4cbe-9e21-3b4779b1e8c3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "woDEb4RsHu5IeNVQ",
+  "tags": []
+}

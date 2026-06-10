@@ -1,0 +1,2658 @@
+{
+  "name": "Central de Mídias com IA v1.3.1",
+  "nodes": [
+    {
+      "parameters": {
+        "amount": 40,
+        "unit": "seconds"
+      },
+      "id": "fc1daede-1315-49f2-a4d9-0a39a3c21948",
+      "name": "Aguardar Leonardo.AI",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        288,
+        2608
+      ],
+      "webhookId": "9db98759-e910-4c7c-b0a2-0d9d71b77c75"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cloud.leonardo.ai/api/rest/v1/generations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.leonardo_ai_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "height",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? 864 :\n$node['variaveis'].json.config.orientation == 'portrait' ? 1536 :\n$node['variaveis'].json.config.orientation == 'square' ? 1080 :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? 1352 :\n\"Orietation not found\" }}"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "width",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? 1536 :\n$node['variaveis'].json.config.orientation == 'portrait' ? 864 :\n$node['variaveis'].json.config.orientation == 'square' ? 1080 :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? 1080 :\n\"Orietation not found\" }}"
+            },
+            {
+              "name": "num_images",
+              "value": "={{1}}"
+            },
+            {
+              "name": "modelId",
+              "value": "aa77f04e-3eec-4034-9c07-d0f619684628"
+            },
+            {
+              "name": "alchemy",
+              "value": "={{ true }}"
+            },
+            {
+              "name": "presetStyle",
+              "value": "CINEMATIC"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "68fe8a57-f417-400a-a741-22bf9a384866",
+      "name": "Leonard - Solicitar imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        64,
+        2608
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.generations_by_pk.generated_images[0].url }}",
+        "options": {}
+      },
+      "id": "327c388c-7f02-451b-9bb4-b1b6bcae618e",
+      "name": "Leonardo.AI - Baixar imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        928,
+        2640
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://cloud.leonardo.ai/api/rest/v1/generations/{{ $json.sdGenerationJob.generationId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.leonardo_ai_api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a7dff4e7-4a94-491d-a7a6-17ed146dc043",
+      "name": "Leonardo.AI - Resultados",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        496,
+        2608
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].base64",
+        "options": {
+          "fileName": "image.jpg",
+          "mimeType": "image/jpg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        1968
+      ],
+      "id": "233e0fd3-82d7-4ba2-b573-23e133db444a",
+      "name": "Base64 para Jpeg"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.freepik.com/v1/ai/text-to-image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-freepik-api-key",
+              "value": "={{ $node[\"variaveis\"].json[\"freepik_api_key\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "num_images",
+              "value": "={{ 1 }}"
+            },
+            {
+              "name": "image.size",
+              "value": "={{ $node['initial'].json['orientation'] == 'landscape' ? \"widescreen_16_9\" :\n$node['initial'].json['orientation'] == 'portrait' ? \"social_story_9_16\" :\n$node['initial'].json['orientation'] == 'square' ? \"square_1_1\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? 'social_post_4_5' : \n\"Orietation not found\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        1968
+      ],
+      "id": "6b69edc8-d4fb-4a06-a29c-77bc8e087fce",
+      "name": "Freepik"
+    },
+    {
+      "parameters": {
+        "url": "https://api.imagekit.io/v1/files/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "path",
+              "value": "={{ $node['initial'].json['prompt'].toLowerCase().normalize('NFD').replace(/\\p{Mn}/gu, \"\") }}"
+            },
+            {
+              "name": "limit",
+              "value": "1000"
+            },
+            {
+              "name": "fileType",
+              "value": "image"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "=Basic {{ $node['variaveis'].json[\"imagekit_api\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        2288
+      ],
+      "id": "577ead02-38a9-4fb6-91ed-6d8512b9a060",
+      "name": "imagekit",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "type": "random"
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        240,
+        2288
+      ],
+      "id": "2db56bb1-211e-48f2-b2d9-c8fa2d7aa24e",
+      "name": "Aleatório"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        416,
+        2288
+      ],
+      "id": "f5d97463-ad88-47b4-9d1c-10bcf5bba6ff",
+      "name": "Limitar à 1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        2288
+      ],
+      "id": "28b951c3-00df-44ed-9c96-8c345562722a",
+      "name": "Download imagekit"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $node['variaveis'].json.config.prompt }}",
+        "options": {
+          "quality": "medium",
+          "size": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"1536x1024\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"1024x1536\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"1024x1024\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? '1024x1024' :\n\"Orietation not found\" }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        96,
+        352
+      ],
+      "id": "e21202a6-9f73-48cb-9544-2aa18c443490",
+      "name": "GPT Image"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "type"
+            },
+            {
+              "name": "prompt"
+            },
+            {
+              "name": "orientation"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -720,
+        1840
+      ],
+      "id": "9830be71-9a7a-402c-8258-88800a101f7f",
+      "name": "initial"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d86f876-5e89-4758-a718-96685572a2a5",
+              "name": "leonardo_ai_api_key",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49e82a46-1511-4e80-9b75-8259786406e9",
+              "name": "freepik_api_key",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "17a0326d-7801-4b11-9c72-d200d5d7cd90",
+              "name": "imagekit_api",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ec4da11c-0e23-442b-b2e1-93eac08d8ac9",
+              "name": "hugging_face_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f33aeab6-26a1-48d1-8099-296a957af212",
+              "name": "kie_ai",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "06806f5e-dcfd-4085-b148-595beba66cbb",
+              "name": "pollinations_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9fde58f3-0504-43d5-ae99-186859f235ee",
+              "name": "fal_ai_api_key",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "45b76fde-1fe7-4fd6-ad32-0aa756b974d0",
+              "name": "config",
+              "value": "={{\n(() => {\n  const legacyMap = {\n    \"landscape\": { width: 1920, height: 1080 },\n    \"portrait\": { width: 1080, height: 1920 },\n    \"square\": { width: 1080, height: 1080 },\n    \"instagram_feed\": { width: 1080, height: 1352 },\n    \"youtube_thumbnail\": { width: 1280, height: 720 }\n  };\n\n  const orientation = $json.orientation;\n  const dims = legacyMap[orientation] || legacyMap.landscape;\n\n  return {\n    ...Object.assign({}, $json),\n    width: dims.width,\n    height: dims.height\n  };\n})()\n}}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -512,
+        1840
+      ],
+      "id": "622d4c8e-977c-40d6-b641-ad15ff97ae3b",
+      "name": "variaveis"
+    },
+    {
+      "parameters": {
+        "content": "## ALTERE AQUI\n",
+        "height": 243,
+        "width": 239,
+        "color": 4
+      },
+      "id": "a6756727-94ae-4b7b-9145-e4674c1b856d",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        1760
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "2b36b7eb-900f-4a40-bc59-e1b59a00077d",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Google Drive",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Google Drive"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "1ff43eb2-0f29-4939-8362-17a64f06b032",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "GPT image-1-mini",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "GPT image-1-mini"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e22ceb13-bb84-432c-9982-2c1165d3f9c0",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "GPT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "GPT image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "0b302740-8d86-4c99-a7e3-cda692a6fb81",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "URL-video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "URL Video"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "4ac0f5c9-8c75-4f06-b407-7a57725b9ad2",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "URL-image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "URL Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "c87efb30-bb2a-4ca9-a5c6-856ec7b3b199",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Pollinations",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Pollinations"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "911e3314-a3f1-45eb-b1ec-c960e6dd88da",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Flux",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Flux"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8f969717-b032-45fe-9a62-03fbc7a38ce7",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Freepik",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Freepik"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "1138c7ad-21cd-4a1d-9fd3-bc9e35cbc7c1",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "ImageKit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ImageKit"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "9c0816e2-d237-411d-aa4f-8143fa2756aa",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Leonardo.Ai",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Leonardo.Ai"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "33245498-baca-4031-b550-6f5293397b96",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Fal",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Fal.ai"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "c0d9dda8-f17f-40f6-959e-9ba9bf9cec18",
+                    "leftValue": "={{ $node['variaveis'].json.config.type }}",
+                    "rightValue": "Kie",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Kie.ai"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8a072e90-a763-4a73-bcd6-7ce375a7b718",
+      "name": "Qual serviço?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -304,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## URL",
+        "height": 380,
+        "width": 620
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        528
+      ],
+      "typeVersion": 1,
+      "id": "a4d86a36-538a-40d3-8a47-11701a30fd7b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Imagem não encontrada, servidor fora do ar ou bloqueada para fazer download"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        384,
+        672
+      ],
+      "id": "63003373-ff5d-437c-9e04-14bfa6fdbe01",
+      "name": "URL Error"
+    },
+    {
+      "parameters": {
+        "content": "## Google Drive",
+        "height": 240,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "b602e511-5233-4b6f-994b-317cca3906f9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## GPT Image\nSelecione a credencial da OpenAI",
+        "height": 256,
+        "width": 620
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "ee9b51b8-3850-41d8-b2bb-9691d0026163",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Pollinations\nNão necessita de nenhuma configuração, para aumentar os limites use o [token](https://auth.pollinations.ai/) em variváveis",
+        "height": 256,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "caa7d010-9f03-4b3a-ae7c-9a9aa7d8f97a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Flux\nGere o seu token no [Hugging Face](https://huggingface.co/settings/tokens)",
+        "height": 652,
+        "width": 580
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1200
+      ],
+      "typeVersion": 1,
+      "id": "e659cc53-a4fd-49e7-aea5-27b349d2a177",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Contingência\n\nCaso ocorra erro no Flux.1-dev Hugging Face ele vai acionar o Flux.1-dev Together, depois o Flux.1-schnell Hugging Face, depois Pollinations",
+        "height": 332,
+        "width": 548,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "9d812d03-f7ce-4371-9357-61cc45e6dbc4",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Freepik\nGere o seu token do [Freepik API](https://www.freepik.com/developers/dashboard/api-key)",
+        "height": 276,
+        "width": 640
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1872
+      ],
+      "typeVersion": 1,
+      "id": "47985fa9-30cc-42b7-a2cf-96ac2e2f975a",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Leonardo AI\nGere a sua API key do [Leonardo.AI](https://app.leonardo.ai/api-access)",
+        "height": 340,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        2512
+      ],
+      "typeVersion": 1,
+      "id": "a5d0e734-abdc-4af8-a3f7-ed5aa305c2a4",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "2178f488-60a5-4aed-9d8a-454227fa2cc7",
+              "leftValue": "={{ $node['Leonardo.AI - Resultados'].json[\"generations_by_pk\"][\"status\"] }}",
+              "rightValue": "COMPLETE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a6a6ebdc-8047-46bb-93ad-07f73de6d271",
+      "name": "Leonardo.AI finalizou?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        2608
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ImageKit\nCrie seu próprio banco no [ImageKit](https://imagekit.io/)",
+        "height": 340,
+        "width": 780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        2160
+      ],
+      "typeVersion": 1,
+      "id": "b26c69c5-8568-4ea4-b1e3-7b74e3641be9",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Servidor fora do ar, tente novamente mais tarde"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        544,
+        1040
+      ],
+      "id": "860b35e7-6298-4cb6-81cf-b4a115301b85",
+      "name": "Pollinations Error"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        1040
+      ],
+      "id": "575e5244-346b-4a07-a4bc-e752b4c0f996",
+      "name": "Wait 60s",
+      "webhookId": "903491d5-58d1-4d33-87b3-6be5843605a4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $node['variaveis'].json.config.prompt }}",
+        "options": {}
+      },
+      "id": "b5e05e72-61f7-40af-85b9-13c49a0045eb",
+      "name": "URL Vídeo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        80,
+        752
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $node['variaveis'].json.config.prompt }}",
+        "options": {}
+      },
+      "id": "75d033f8-5242-47c6-9e92-eb7ea621fede",
+      "name": "URL image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        80,
+        592
+      ],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=bearer {{ $node[\"variaveis\"].json[\"hugging_face_token\"] }}"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "inputs",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "parameters.width",
+              "value": "={{ $node['variaveis'].json.config.width }}"
+            },
+            {
+              "name": "=parameters.height",
+              "value": "={{ $node['variaveis'].json.config.height }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "da3a40c4-6b84-451c-a2ae-af3b87cd5480",
+      "name": "Flux.1-schnell Hungging Face",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        320,
+        1632
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-dev",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node[\"variaveis\"].json[\"hugging_face_token\"] }}"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "inputs",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "parameters.width",
+              "value": "={{ $node['variaveis'].json.config.width }}"
+            },
+            {
+              "name": "parameters.height",
+              "value": "={{ $node['variaveis'].json.config.height }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "a7a0adbb-cd87-4099-96e2-fc38f3e3fce1",
+      "name": "Flux.1-dev Hungging Face",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        48,
+        1296
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://router.huggingface.co/together/v1/images/generations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=bearer {{ $node[\"variaveis\"].json[\"hugging_face_token\"] }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "model",
+              "value": "black-forest-labs/FLUX.1-dev"
+            },
+            {
+              "name": "width",
+              "value": "={{ $node['variaveis'].json.config.width }}"
+            },
+            {
+              "name": "height",
+              "value": "={{ $node['variaveis'].json.config.height }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "a4cb6d77-8b17-431e-992f-da4e00932227",
+      "name": "Flux.1-dev Together",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        64,
+        1632
+      ],
+      "notesInFlow": true,
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "notes": " "
+    },
+    {
+      "parameters": {
+        "url": "={{ JSON.parse($node[\"Flux.1-dev Together\"].json[\"data\"]).data[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1376
+      ],
+      "id": "ca2e1406-4e12-41ab-93d0-9ecd9d70aeda",
+      "name": "Download Flux",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $node['variaveis'].json.config.prompt }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        96,
+        80
+      ],
+      "id": "1d2da511-77e6-4755-9f0a-56bbd1a2794f",
+      "name": "Download file"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file",
+          "mimeType": "image/jpg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        1280
+      ],
+      "id": "e0e1d4cb-de07-47fb-818c-61a667d5c645",
+      "name": "Base64 to binário"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        3008
+      ],
+      "id": "942f9806-e054-424a-b76a-6ca925665f83",
+      "name": "Wait2",
+      "webhookId": "9ca81d47-1806-40d1-bf2d-6546e1ca9dad"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "COMPLETED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2b2ebd6b-8c1b-4a1b-97df-f83d9a4d5674"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "COMPLETED"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "df3e1ff4-0872-47c9-be57-65e2857a956f",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "IN_QUEUE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IN_QUEUE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1dd5ce2a-2ea6-41bb-8202-87ad116620cd",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "IN_PROGRESS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IN_PROGRESS"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        640,
+        2992
+      ],
+      "id": "ce971c44-84ee-470f-9a70-a4e3f48c08c8",
+      "name": "status fal.ai"
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/hunyuan-image/requests/{{ $('Fal.ai - Hunyuan image').item.json.request_id }}/status ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Key {{ $node['variaveis'].json.fal_ai_api_key}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        464,
+        3008
+      ],
+      "id": "2d7cfaa7-12e8-4e51-a82d-3c3c4181bf18",
+      "name": "Fal.ai - verificar status"
+    },
+    {
+      "parameters": {
+        "url": "=https://queue.fal.run/fal-ai/flux-1/requests/{{ $('Fal.ai - verificar status').item.json.request_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Key {{ $('variaveis').item.json.fal_ai_api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        848,
+        2992
+      ],
+      "id": "48104a36-4c32-443c-89b0-3ddb67670930",
+      "name": "Fal.ai - Request URL"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.images[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1072,
+        2992
+      ],
+      "id": "a9e1440a-2765-4635-a454-2e06ed41a61f",
+      "name": "Download image"
+    },
+    {
+      "parameters": {
+        "content": "## Fal ai\nAdicione créditos e gere sua [API KEY](https://fal.ai/dashboard/keys)",
+        "height": 400,
+        "width": 1328
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        2864
+      ],
+      "typeVersion": 1,
+      "id": "5333ee5a-8b3b-4edd-b3b3-93956971c7c6",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        3664
+      ],
+      "id": "c5ac8900-2d26-44ea-8311-16fc304b721b",
+      "name": "Wait",
+      "webhookId": "f5f6f79f-6171-4402-a32b-85ff60de067f"
+    },
+    {
+      "parameters": {
+        "content": "## Kie AI\n[Nano Banana](https://kie.ai/nano-banana)\n[Seedream](https://kie.ai/seedream-api)\n[Google Imagen 4 Ultra](https://kie.ai/google/imagen4)\n[Flux1 Kontext](https://kie.ai/features/flux1-kontext)\n[Qwen image](https://kie.ai/qwen-image)",
+        "height": 912,
+        "width": 1328
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        3280
+      ],
+      "typeVersion": 1,
+      "id": "9268b21c-807d-44a9-9c3a-2ea69fc32079",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a96f17f2-5967-4b13-acc9-4d41f226453b",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "=success",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "success"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "52ad92ea-901f-4af8-a462-84b045dd2803",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "ing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "in progress"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        896,
+        3648
+      ],
+      "id": "b753b828-a562-488a-8e6f-edb9b2644eea",
+      "name": "Kie.ai Status"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('initial').item.json.type }}",
+                    "rightValue": "Nano Banana",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "7d49b2c3-cf3c-4ba6-8a66-339d8579844a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Nano Banana"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e12676a5-2908-461c-afad-44bc54cae1a7",
+                    "leftValue": "={{ $('initial').item.json.type }}",
+                    "rightValue": "Seedream",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Seedream"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "42ff78ec-b8da-41af-b707-a4fdc1db46ea",
+                    "leftValue": "={{ $('initial').item.json.type }}",
+                    "rightValue": "Google Imagen 4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Google Imagen 4"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a002f1d8-0d86-4137-abe3-dcf1d22b49e4",
+                    "leftValue": "={{ $('initial').item.json.type }}",
+                    "rightValue": "Flux",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "FLUX.1 Kontext"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "00b12a85-25d5-4519-a6a8-d2485a763bb3",
+                    "leftValue": "={{ $('initial').item.json.type }}",
+                    "rightValue": "Qwen Image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Qwen Image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        48,
+        3616
+      ],
+      "id": "98d85782-58b0-4263-9ffb-0a6f5dd660d9",
+      "name": "Kie.ai - Model?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.kie_ai }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "google/nano-banana"
+            },
+            {
+              "name": "input.prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "input.output_format",
+              "value": "png"
+            },
+            {
+              "name": "input.image_size",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"16:9\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"9:16\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"1:1\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? '4:5' :\n\"Orietation not found\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        3328
+      ],
+      "id": "b4ec2953-c45f-4458-ba7a-bbd0f4c14ff2",
+      "name": "Nano Banana",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "={{ $node['initial'].json.type.includes('Flux') ? 'https://api.kie.ai/api/v1/flux/kontext/record-info' : 'https://api.kie.ai/api/v1/jobs/recordInfo' }}?taskId={{ $json.data.taskId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.kie_ai }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        3664
+      ],
+      "id": "88b1b6ba-0e07-4765-afd2-43aa254d3199",
+      "name": "Kie.ai Progress",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "waitBetweenTries": 5000,
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        3648
+      ],
+      "id": "b97199c9-6b6f-4770-9ae0-0220ba934ad8",
+      "name": "Kie.ai Download image"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.msg }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        896,
+        3968
+      ],
+      "id": "012d58ff-113a-4a61-a750-d0637c68b8ad",
+      "name": "Error Kie.ai"
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ $node['variaveis'].json.config.prompt.urlEncode() }}?{{ $node['variaveis'].json.config.orientation == 'landscape' ? \"width=1920&height=1080\" : $node['variaveis'].json.config.orientation == 'portrait' ? \"width=1080&height=1920\" : $node['variaveis'].json.config.orientation == 'square' ? \"width=1080&height=1080\" : \n$node['variaveis'].json.config.orientation == 'instagram_feed' ? \"width=1080&height=1350\" : \n\"Orietation not found\" }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "nologo",
+              "value": "=true"
+            },
+            {
+              "name": "model",
+              "value": "={{ $node['variaveis'].json.config.type.replaceAll('Pollinations - ','').toLowerCase().replaceAll('-','') }}"
+            },
+            {
+              "name": "enhance",
+              "value": "true"
+            },
+            {
+              "name": "token",
+              "value": "={{ $node['variaveis'].json.pollinations_token}}"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "quality",
+              "value": "high"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        32,
+        1040
+      ],
+      "id": "fc16581f-e2b9-4247-a352-f1c660c95f80",
+      "name": "Pollinations.ai",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{ $node['variaveis'].json.config.prompt.urlEncode() }}?{{ $node['variaveis'].json.config.orientation == 'landscape' ? \"width=1920&height=1080\" : $node['variaveis'].json.config.orientation == 'portrait' ? \"width=1080&height=1920\" : $node['variaveis'].json.config.orientation == 'square' ? \"width=1080&height=1080\" : \n$node['variaveis'].json.config.orientation == 'instagram_feed' ? \"width=1080&height=1352\" : \n\"Orietation not found\" }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "nologo",
+              "value": "=true"
+            },
+            {
+              "name": "model",
+              "value": "={{ $('initial').item.json.type.replaceAll('Pollinations - ','').toLowerCase() }}"
+            },
+            {
+              "name": "enhance",
+              "value": "true"
+            },
+            {
+              "name": "token",
+              "value": "={{ $node['variaveis'].json.pollinations_token}}"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "quality",
+              "value": "high"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        368,
+        1040
+      ],
+      "id": "32dc27d1-149c-4494-85b4-d802ca0798f1",
+      "name": "Pollinations",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Alterações v1.3\n🆕 Novo **Nano Banana** via kie.ai\n🆕 Novo **Seedream** via kie.ai\n🆕 Novo **Google Imagen 4** via kie.ai\n🆕 Novo **Flux Kontext** via kie.ai\n🆕 Novo **Qwen image** via kie.ai\n🆕 Novo **Hunyuan Image 3.0** via fal.ai\n🆕 Novo **GPT image-1-mini** via Node HTTP\n🛠️ Alteração **Pollination** - Suporte aos modelos (flux, turbo, kontext, gpt-image)\n🛠️ Alteração **Pollination** - Suporte token para aumentar rate limits\n❌ Remoção do **Midjourney** (PiAPI removeu o modelo)\n\n## Alterações v1.3.1\n🆕 Novo formato para Feed Instagram 4:5\n🛠️ Correções JSON Kie AI\n",
+        "height": 400,
+        "width": 544,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -736,
+        2192
+      ],
+      "typeVersion": 1,
+      "id": "f0fcf8b2-31f8-4f8f-bb5e-4da11022cb01",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-image-1-mini"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "n",
+              "value": "={{1}}"
+            },
+            {
+              "name": "size",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"1536x1024\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"1024x1536\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"1024x1024\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? '1024x1024' :\n\"Orietation not found\" }}"
+            },
+            {
+              "name": "quality",
+              "value": "low"
+            },
+            {
+              "name": "output_format",
+              "value": "png"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        352
+      ],
+      "id": "0a408cd7-a853-4502-b830-f2d7e02c040f",
+      "name": "GPT image-1-mini"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        464,
+        352
+      ],
+      "id": "0946bd1c-ea21-4b5b-a33b-e0bb945c4fe6",
+      "name": "Base64 to file"
+    },
+    {
+      "parameters": {
+        "content": "## Opções\nGPT image\nGPT image-1-mini\nFlux\nFreepik\nImageKit\nLeonardo.Ai\nPollinations - Flux\nPollinations - Turbo\nPollinations - Kontext\nPollinations - GPT-image\nURL-image\nURL-video\nGoogle Drive\nKie AI - Nano Banana\nKie AI - Seedream\nKie AI - Flux Kontext\nKie AI - Google Imagen 4\nKie AI - Qwen Image\nFal AI - Hunyuan image",
+        "height": 416,
+        "width": 544,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -736,
+        2608
+      ],
+      "typeVersion": 1,
+      "id": "2cb925d0-3d19-402a-88e1-0768e2b495d0",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/hunyuan-image/v3/text-to-image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Key {{ $node['variaveis'].json.fal_ai_api_key}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "num_images",
+              "value": "={{1}}"
+            },
+            {
+              "name": "image_size.width",
+              "value": "={{ $node['variaveis'].json.config.width }}"
+            },
+            {
+              "name": "image_size.height",
+              "value": "={{ $node['variaveis'].json.config.height }}"
+            },
+            {
+              "name": "enable_prompt_expansion",
+              "value": "={{ true }}"
+            },
+            {
+              "name": "negative_prompt",
+              "value": "blurry, low quality, watermark, signature"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        3008
+      ],
+      "id": "a961f29b-a59b-49fd-8211-b5b1f4723b60",
+      "name": "Fal.ai - Hunyuan image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.kie_ai }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "bytedance/seedream-v4-text-to-image"
+            },
+            {
+              "name": "input.prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "input.output_format",
+              "value": "png"
+            },
+            {
+              "name": "input.image_size",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"landscape_16_9\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"portrait_16_9\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"square_hd\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? 'portrait_4_3' :\n\"Orietation not found\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        3504
+      ],
+      "id": "1c5d29a9-0494-4588-a55f-d81f27adba36",
+      "name": "Seedream",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.kie_ai }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "google/imagen4"
+            },
+            {
+              "name": "input.prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "input.num_images",
+              "value": "1"
+            },
+            {
+              "name": "input.aspect_ratio",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"16:9\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"9:16\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"1:1\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? '3:4' :\n\"Orietation not found\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        3680
+      ],
+      "id": "e7faa9ab-6c0d-4b73-8664-224b0b410b15",
+      "name": "Google Imagen 4",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/flux/kontext/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.kie_ai }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "flux-kontext-pro"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "aspect_ratio",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"16:9\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"9:16\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"1:1\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? '3:4' :\n\"Orietation not found\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        3840
+      ],
+      "id": "134ef7bc-2708-4789-8c88-ee76bec10091",
+      "name": "FLUX.1 Kontext",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $node['variaveis'].json.kie_ai }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "qwen/text-to-image"
+            },
+            {
+              "name": "input.prompt",
+              "value": "={{ $node['variaveis'].json.config.prompt }}"
+            },
+            {
+              "name": "input.image_size",
+              "value": "={{ $node['variaveis'].json.config.orientation == 'landscape' ? \"landscape_16_9\" :\n$node['variaveis'].json.config.orientation == 'portrait' ? \"portrait_16_9\" :\n$node['variaveis'].json.config.orientation == 'square' ? \"square_hd\" :\n$node['variaveis'].json.config.orientation == 'instagram_feed' ? 'portrait_4_3' :\n\"Orietation not found\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        4016
+      ],
+      "id": "db563097-c562-4e00-aeaa-f6e08ff590b2",
+      "name": "Qwen Image",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Aguardar Leonardo.AI": {
+      "main": [
+        [
+          {
+            "node": "Leonardo.AI - Resultados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leonard - Solicitar imagem": {
+      "main": [
+        [
+          {
+            "node": "Aguardar Leonardo.AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leonardo.AI - Resultados": {
+      "main": [
+        [
+          {
+            "node": "Leonardo.AI finalizou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Freepik": {
+      "main": [
+        [
+          {
+            "node": "Base64 para Jpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imagekit": {
+      "main": [
+        [
+          {
+            "node": "Aleatório",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aleatório": {
+      "main": [
+        [
+          {
+            "node": "Limitar à 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limitar à 1": {
+      "main": [
+        [
+          {
+            "node": "Download imagekit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "initial": {
+      "main": [
+        [
+          {
+            "node": "variaveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variaveis": {
+      "main": [
+        [
+          {
+            "node": "Qual serviço?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qual serviço?": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GPT image-1-mini",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GPT Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "URL image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "URL Vídeo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pollinations.ai",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flux.1-dev Hungging Face",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Freepik",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "imagekit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Leonard - Solicitar imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fal.ai - Hunyuan image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kie.ai - Model?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leonardo.AI finalizou?": {
+      "main": [
+        [
+          {
+            "node": "Leonardo.AI - Baixar imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Aguardar Leonardo.AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60s": {
+      "main": [
+        [
+          {
+            "node": "Pollinations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL Vídeo": {
+      "main": [
+        [],
+        [
+          {
+            "node": "URL Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL image": {
+      "main": [
+        [],
+        [
+          {
+            "node": "URL Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux.1-schnell Hungging Face": {
+      "main": [
+        [
+          {
+            "node": "Base64 to binário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux.1-dev Hungging Face": {
+      "main": [
+        [
+          {
+            "node": "Base64 to binário",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flux.1-dev Together",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux.1-dev Together": {
+      "main": [
+        [
+          {
+            "node": "Download Flux",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flux.1-schnell Hungging Face",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Fal.ai - verificar status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "status fal.ai": {
+      "main": [
+        [
+          {
+            "node": "Fal.ai - Request URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fal.ai - verificar status": {
+      "main": [
+        [
+          {
+            "node": "status fal.ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fal.ai - Request URL": {
+      "main": [
+        [
+          {
+            "node": "Download image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Kie.ai Progress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kie.ai Status": {
+      "main": [
+        [
+          {
+            "node": "Kie.ai Download image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Kie.ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nano Banana": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kie.ai - Model?": {
+      "main": [
+        [
+          {
+            "node": "Nano Banana",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Seedream",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Imagen 4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FLUX.1 Kontext",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Qwen Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kie.ai Progress": {
+      "main": [
+        [
+          {
+            "node": "Kie.ai Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pollinations.ai": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait 60s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pollinations": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Pollinations Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT image-1-mini": {
+      "main": [
+        [
+          {
+            "node": "Base64 to file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fal.ai - Hunyuan image": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seedream": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Imagen 4": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FLUX.1 Kontext": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qwen Image": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cf25f22f-807c-4ded-8cb5-994d6c0d9688",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "IIFC6WW8yaGGizzV",
+  "tags": []
+}

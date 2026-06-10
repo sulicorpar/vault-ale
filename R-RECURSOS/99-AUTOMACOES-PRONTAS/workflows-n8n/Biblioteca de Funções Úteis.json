@@ -1,0 +1,246 @@
+{
+  "name": "Biblioteca de Funções Úteis",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// dia atual\nconst date = $json[\"hoje\"];\n\n// Verifica dias restantes com base na data de vencimento\nvar venc = $json[\"Vencimento\"]; // Ex: 2022-11-20\nvar day1 = new Date(venc);\nvar day2 = new Date(date);\n\n// Calcula a diferença entre as datas em milissegundos\nvar difference = day1 - day2;\n\n// Calcula os dias restantes e determina o sinal\nvar days = difference / (1000 * 3600 * 24);\nif (days < 0) {\n$input.item.json.dias_restantes = Math.round(days);\n} else {\n$input.item.json.dias_restantes = Math.round(days);\n}\n\n// Retorna dias restantes\nreturn $input.item;"
+      },
+      "id": "764c2d82-94c7-4af6-84c4-2e0eb56eb927",
+      "name": "Calcula número de dias entre datas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "var myString =  $json[\"String\"];\n\nvar number = (parseFloat(myString));\n\n$input.item.json.number = number.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});\n\nreturn $input.item;"
+      },
+      "id": "d634f955-981b-4f41-a0fb-3de15e785807",
+      "name": "Converte string em formato de moeda",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "//DATA E HORA: toLocaleString\n//DATA: toLocaleDateString\n//HORA: toLocaleTimeString\n\nlet h = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', hour12: false });\n\n$input.item.json.PeriodoAtual = h;\n\nreturn $input.item;"
+      },
+      "id": "4fbaae96-64c8-4fbf-992e-ffdb00851b75",
+      "name": "Data e Hora atual em diferentes formatos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Retorna um número randomico entre Min e Max\n// Substituir os Campos Max e Min de acordo com sua necessidade\n$input.item.json.numero_randomico = Math.floor(Math.random()*(max-min)+min).toString();\n\nreturn $input.item;"
+      },
+      "id": "e14d22a6-fdb2-4e4a-b67e-204c92d90a1f",
+      "name": "Retorna um Número Randômico",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node code\n// Entrada por item: item.json.cnpj (ou item.json.cnpjRaw)\n// Saídas: item.json.cnpj_formatted, item.json.cnpj_masked\n\nreturn items.map(item => {\n  const raw = (item.json.cnpj ?? item.json.cnpjRaw ?? '').toString();\n  const digits = raw.replace(/\\D/g, ''); // só números\n\n  // defaults\n  item.json.cnpj_formatted = null;\n  item.json.cnpj_masked = null;\n\n  // CNPJ deve ter 14 dígitos\n  if (digits.length !== 14) {\n    item.json.cnpj_original = raw; // opcional: preservar original\n    return item;\n  }\n\n  // Formatar: 00.000.000/0000-00\n  const formatted = digits.replace(\n    /(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})/,\n    '$1.$2.$3/$4-$5'\n  );\n  item.json.cnpj_formatted = formatted;\n\n  // Mascara: ***.***.***/****-XX (mostra só os 2 últimos)\n  const lastTwo = digits.slice(12);\n  item.json.cnpj_masked = `***.***.***/****-${lastTwo}`;\n\n  return item;\n});"
+      },
+      "id": "c5145a7e-bf55-4890-9568-80e4cb6e1044",
+      "name": "Máscara para CNPJ",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n{\njson:{lista:items[0].json.clientes.join('\\n')},\n}\n]"
+      },
+      "id": "653a756f-85d8-4cad-8fd8-c0cb5c4b3f5d",
+      "name": "Lista de registros com quebra de linha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (/\\S+@\\S+\\.\\S+/.test($json[\"Email\"])) {\n$input.item.json.email =('Email válido!');\n} else {\n$input.item.json.email =('Email inválido!');\n}\n\n//Retorna resultado do item\nreturn $input.item;"
+      },
+      "id": "0624eff3-eccc-4c1d-ac6b-e5d511605e55",
+      "name": "Valida endereço de email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "var name = $json[\"Name\"];\n\nif (name != null){\nvar fname = name.split(' ');\n$input.item.json.fname = fname[0];\n}\n\nreturn $input.item;"
+      },
+      "id": "0cd76e42-2b75-4c16-bfb9-d9ae1e82d505",
+      "name": "Obter o primeiro nome",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Converte o valor da chave \"numero\" do objeto JSON \"$json\" em uma string\nvar wpp = $json[\"numero\"].toString();\n\n// Remove todos os caracteres que não sejam dígitos (0-9) da string \"wpp\" e armazena o resultado em \"fwpp\"\nvar fwpp = wpp.replace(/[^0-9]+/g, '');\n\n// Se o comprimento de \"fwpp\" for maior que 11, remove os dois primeiros caracteres\nif (fwpp.length > 11) {\nfwpp = fwpp.substring(2, fwpp.length);\n}\n\n// Obtém os dois primeiros dígitos de \"fwpp\" e armazena em \"ddd\"\nvar ddd = fwpp.substring(0, 2);\n\n// Se o comprimento de \"fwpp\" for igual a 11, verifica se o valor de \"ddd\" é maior ou igual a 31\nif (fwpp.length == 11) {\nif (parseInt(ddd) >= 31) {\n\n// Remove o terceiro caractere de \"fwpp\" (índice 3) e concatena com o restante\nfwpp = fwpp.substring(0, 3) + fwpp.substring(4, fwpp.length);\n}\n}\n\n// Se o comprimento de \"fwpp\" for igual a 10 e o valor de \"ddd\" for menor que 30\nif (fwpp.length == 10) {\nif (parseInt(ddd) < 30) {\n\n// Remove os dois primeiros caracteres de \"fwpp\", acrescenta '9' e concatena com o restante\nvar num = fwpp.substring(2);\nfwpp = ddd + '9' + num;\n}\n}\n\n// Adiciona '55' no início de \"fwpp\" se seu comprimento for menor ou igual a 11\nif (fwpp.length <= 11) {\nfwpp = '55' + fwpp;\n}\n\n// Atribui o valor de \"fwpp\" à chave \"fwpp\" no objeto JSON \"$input.item\"\n$input.item.json.fwpp = fwpp;\n\n// Retorna o objeto JSON modificado \"$input.item\"\nreturn $input.item;"
+      },
+      "id": "c550775a-0eb5-4ff0-8460-21d6b87625a4",
+      "name": "Tratamento de número de celular",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let h = new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: 'numeric', hour12: false });\nif (h < 12){\nitem.json.periodo = 'Bom dia';\n}\nelse if (h < 18){\nitem.json.periodo = 'Boa tarde';\n}\nelse{\nitem.json.periodo = 'Boa noite';\n}\nreturn $input.item;"
+      },
+      "id": "14f58400-2add-436d-96cb-304dfd1d57ea",
+      "name": "Mensagens de boas vindas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Funções Importantes",
+        "height": 752,
+        "width": 1408,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e44974a0-0d06-4212-9a07-1994683f5bf8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node code\n// Entrada esperada por item: item.json.cpf (ou item.json.cpfRaw)\n// Saídas por item: item.json.cpf_formatted, item.json.cpf_masked\n\nreturn items.map(item => {\n  const raw = (item.json.cpf ?? item.json.cpfRaw ?? '').toString();\n  const digits = raw.replace(/\\D/g, ''); // remove tudo que não é dígito\n\n  // default values\n  item.json.cpf_formatted = null;\n  item.json.cpf_masked = null;\n\n  // validação simples: CPF deve ter 11 dígitos\n  if (digits.length !== 11) {\n    // mantém o original em caso de inválido (opcional)\n    item.json.cpf_original = raw;\n    return item;\n  }\n\n  // formata: 000.000.000-00\n  const formatted = digits.replace(/(\\d{3})(\\d{3})(\\d{3})(\\d{2})/, '$1.$2.$3-$4');\n  item.json.cpf_formatted = formatted;\n\n  // máscara: ***.***.***-XX (apenas os 2 últimos dígitos visíveis)\n  const lastTwo = digits.slice(9);\n  item.json.cpf_masked = `***.***.***-${lastTwo}`;\n\n  return item;\n});"
+      },
+      "id": "286c1068-15b5-4cde-8ada-2150c7f9dfd5",
+      "name": "Máscara para CPF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        352
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        496
+      ],
+      "id": "06e558c4-a3bb-4b4d-b20b-fbc40dcca854",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "//Cria o array de saudações\nvar saudacao = ['Olá', 'Oi,', 'Tudo bem?', 'Como está?', 'Que legal te ver aqui'];\n\n//Retorna dados do item\nreturn[\n{json:{\"saudacao\":saudacao[Math.floor(Math.random()*saudacao.length)]}}\n]"
+      },
+      "id": "c61038bb-d2c5-471b-88ef-be33ff90ab71",
+      "name": "Saudações Randômica",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "77fa4d6d-8f0e-4f4c-8a04-bad98cd64f9f",
+              "name": "cnpj",
+              "value": "59613459000122",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -208,
+        496
+      ],
+      "id": "d3fac681-addd-49ad-92d8-4654f4e5ca31",
+      "name": "Seta Campos"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Seta Campos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seta Campos": {
+      "main": [
+        [
+          {
+            "node": "Máscara para CNPJ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cb1b7b49-fed1-40f2-b932-ccc061386b0d",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "bJJIMwu6YavgLI3q",
+  "tags": []
+}

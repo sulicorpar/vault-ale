@@ -1,0 +1,791 @@
+{
+  "name": "Disparador Inteligente com HTML v1.4.0 - ANDERSON",
+  "nodes": [
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"pt-br\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Disparador Inteligente</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js\"></script>\n  <style>\n    :root { --bg:#0d1117; --card-bg:#161b22; --border:#2ea043; --text:#e6edf3; --accent:#00ffae; }\n    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',sans-serif; }\n    .card { background:var(--card-bg); border:1px solid var(--accent); border-radius:1rem; }\n    .form-label, .form-check-label { color:#fff; }\n    .form-control, .form-select { background:var(--bg); color:var(--text); border:1px solid var(--border); }\n    .form-control::placeholder, textarea::placeholder { color:rgba(255,255,255,0.6); opacity:1; }\n    .btn-primary { background:var(--accent); border:1px solid var(--accent); color:#000; font-weight:bold; transition:0.3s; }\n    .btn-primary:hover { filter:brightness(1.1); }\n    .var-badge { margin:2px; padding:4px 6px; border-radius:4px; cursor:pointer; user-select:none; }\n    .var-full { background:var(--accent); color:#000; }\n    .var-first { background:#FFD54F; color:#000; }\n    .instruction { font-size:0.875rem; color:#fff; margin-top:4px; }\n  </style>\n</head>\n<body>\n  <div class=\"container py-5\">\n    <div class=\"card p-4 mx-auto\" style=\"max-width:800px;\">\n      <div class=\"text-center mb-4\">\n        <img src=\"https://i.imgur.com/ShEemN5.png\" alt=\"Logo\" style=\"max-height:80px;\">\n      </div>\n      <div class=\"mb-3\">\n        <label class=\"form-label\">Instâncias (aleatório)</label>\n        <select id=\"instancias\" class=\"form-select\" multiple size=\"5\"></select>\n      </div>\n      <div class=\"row mb-3\">\n        <div class=\"col-md-6\">\n          <label class=\"form-label\">Números (1 por linha ou separados por vírgula)</label>\n          <textarea id=\"numeros\" class=\"form-control\" rows=\"5\" placeholder=\"Ex: 55849992053434,5584988887777\"></textarea>\n          <label class=\"form-label mt-3\">Upload CSV/XLSX (telefone;nome;...)</label>\n          <input id=\"arquivoCsv\" type=\"file\" class=\"form-control\" accept=\".csv,.xlsx\">\n        </div>\n        <div class=\"col-md-6\">\n          <label class=\"form-label\">Variáveis disponíveis</label>\n          <div id=\"variaveisContainer\" class=\"d-flex flex-wrap\" style=\"min-height:80px;border:1px solid var(--border);padding:8px;border-radius:4px;\"></div>\n          <div class=\"instruction\">Dê duplo clique em uma variável para usar apenas a primeira palavra</div>\n        </div>\n      </div>\n      <div class=\"row mb-3\">\n        <div class=\"col\"><label class=\"form-label\">Tempo mínimo (s)</label><input id=\"tempoMin\" type=\"number\" class=\"form-control\" placeholder=\"2\"></div>\n        <div class=\"col\"><label class=\"form-label\">Tempo máximo (s)</label><input id=\"tempoMax\" type=\"number\" class=\"form-control\" placeholder=\"5\"></div>\n      </div>\n      <div class=\"mb-3\">\n        <label class=\"form-label\">Quantidade de mensagens por número</label>\n        <input id=\"qtdMensagens\" type=\"number\" class=\"form-control\" value=\"1\" min=\"1\">\n      </div>\n      <div id=\"mensagensContainer\"></div>\n      <div class=\"form-check form-switch mb-3\">\n        <input id=\"usarIA\" type=\"checkbox\" class=\"form-check-input\"><label class=\"form-check-label\" for=\"usarIA\">Usar IA</label>\n      </div>\n      <div class=\"d-grid mb-3\">\n        <button id=\"dispararBtn\" class=\"btn btn-primary\">🚀 Disparar</button>\n        <button id=\"pararBtn\" class=\"btn btn-danger mt-2\" style=\"display:none;\">⏹️ Parar</button>\n      </div>\n      <div id=\"progressBarContainer\" class=\"progress mb-2\" style=\"display:none;height:1.5rem;\"><div id=\"progressBar\" class=\"progress-bar\" role=\"progressbar\" style=\"width:0%\">0%</div></div>\n      <div id=\"status\" class=\"text-center\"></div>\n    </div>\n    <div class=\"text-center mt-4\">\n      <small style=\"color: rgba(255,255,255,0.6);\">Template desenvolvido por Anderson Adelino</small>\n    </div>\n  </div>\n  <script>\n    window.addEventListener('DOMContentLoaded',()=>{\n      let contatos=[];\n      const variaveis=[];\n      let interromper = false; // Variável de controle para parar o disparo\n      const normalizePhone=raw=>String(raw||'').replace(/\\D/g,'');\n      const extractPhones=raw=>String(raw||'').split(',').map(p=>normalizePhone(p)).filter(n=>n.length>=10).map(n=>n.length<=11?'55'+n:(n.length===12&&!n.startsWith('55')?'55'+n:n));\n      fetch(\"{{ $json.URL_EVOLUTION }}/instance/fetchInstances\",{headers:{apikey:\"{{ $json.APIKEY_GLOBAL }}\"}})\n        .then(r=>r.json()).then(data=>{const sel=document.getElementById('instancias');data.filter(i=>i.connectionStatus==='open').forEach(i=>{const o=document.createElement('option');o.value=o.text=i.name;sel.append(o);});});\n      const numerosArea=document.getElementById('numeros');\n      const fileInput=document.getElementById('arquivoCsv');\n      const varsContainer=document.getElementById('variaveisContainer');\n      fileInput.addEventListener('change',async e=>{\n        const file=e.target.files[0];if(!file)return;\n        let header,rows;\n        const name=file.name.toLowerCase();\n        if(name.endsWith('.xlsx')||name.endsWith('.xls')){\n          const buf=await file.arrayBuffer();const wb=XLSX.read(buf,{type:'array'});const ws=wb.Sheets[wb.SheetNames[0]];\n          const arr=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});header=arr.shift().map(h=>String(h).trim());rows=arr;\n        } else {\n          const txt=await file.text();const lines=txt.split(/\\r?\\n/).filter(l=>l.trim());header=lines.shift().split(/[,;\\t]/).map(h=>h.trim());rows=lines.map(l=>l.split(/[,;\\t]/).map(c=>c.trim()));\n        }\n        const phoneField=header.find(h=>h.toLowerCase().includes('telefone'))||header[0];\n        const flat=[];\n        rows.forEach(r=>{const obj={};header.forEach((h,i)=>obj[h]=r[i]||'');extractPhones(obj[phoneField]).forEach(num=>flat.push({...obj,telefone:num}));});\n        contatos=flat;\n        numerosArea.value=contatos.map(c=>c.telefone).join('\\n');\n        varsContainer.innerHTML='';\n        header.filter(h=>h!==phoneField).forEach(key=>{\n          const badge=document.createElement('span');badge.dataset.key=key;badge.dataset.firstOnly='false';badge.className='var-badge var-full';badge.textContent=`{${key}}`;\n          badge.onclick=()=>{const inp=document.activeElement;if(inp.classList.contains('conteudo-mensagem')){const [s,e]=[inp.selectionStart,inp.selectionEnd];inp.value=inp.value.slice(0,s)+`{${key}}`+inp.value.slice(e);inp.dispatchEvent(new Event('input'));inp.setSelectionRange(s+key.length+2,s+key.length+2);}};\n          badge.ondblclick=()=>{const isFirst=badge.dataset.firstOnly==='true';badge.dataset.firstOnly=(!isFirst).toString();badge.classList.toggle('var-full',isFirst);badge.classList.toggle('var-first',!isFirst);};\n          varsContainer.append(badge);\n        });\n      });\n      const msgsCont=document.getElementById('mensagensContainer');\n      document.getElementById('qtdMensagens').addEventListener('input',e=>createMsgs(+e.target.value));\n      function createMsgs(q){msgsCont.innerHTML='';for(let i=0;i<q;i++){const d=document.createElement('div');d.className='mb-3';d.innerHTML=`<label class=\"form-label\">Mensagem ${i+1}</label><select class=\"form-select tipo-mensagem mb-2\"><option value=\"texto\">Texto</option><option value=\"imagem\">Imagem</option><option value=\"audio\">Áudio</option><option value=\"video\">Vídeo</option></select><input class=\"form-control conteudo-mensagem\" placeholder=\"Digite texto ou link\"><div class=\"preview\"></div>`;msgsCont.append(d);} }\n      createMsgs(+document.getElementById('qtdMensagens').value);\n      msgsCont.addEventListener('input',()=>{const ins=msgsCont.querySelectorAll('.conteudo-mensagem'),tps=msgsCont.querySelectorAll('.tipo-mensagem');ins.forEach((inp,i)=>{const val=inp.value.trim(),prv=msgsCont.querySelectorAll('.preview')[i];prv.innerHTML='';if(!val)return;const tp=tps[i].value;if(tp==='texto'){let txt=val.replace(/\\{(\\w+)\\}/g,(_,k)=>{const badge=Array.from(varsContainer.children).find(b=>b.dataset.key===k);const f=(contatos[0]&&contatos[0][k])||'';return badge.dataset.firstOnly==='true'?f.split(' ')[0]:f});prv.innerHTML=`<div class=\"mt-2 p-2 bg-dark rounded text-white\" style=\"font-size:14px\">${txt}</div>`;}else if(tp==='imagem'){prv.innerHTML=/(jpe?g|png|gif|webp)$/i.test(val)?`<img src=\"${val}\" style=\"max-width:100%;max-height:250px;object-fit:contain\">`:'<span class=\"text-warning\">⚠️ Link inválido</span>';}else if(tp==='audio'){prv.innerHTML=/(mp3|ogg|wav)$/i.test(val)?`<audio controls src=\"${val}\"></audio>`:'<span class=\"text-warning\">⚠️ Link inválido</span>';}else if(tp==='video'){prv.innerHTML=/(mp4|webm|mov)$/i.test(val)?`<video controls style=\"max-width:100%;max-height:250px;object-fit:contain\" src=\"${val}\"></video>`:'<span class=\"text-warning\">⚠️ Link inválido</span>';} });});\n      document.getElementById('dispararBtn').onclick=async()=>{\n        interromper = false;\n        document.getElementById('pararBtn').style.display = 'block';\n        document.getElementById('dispararBtn').disabled = true;\n        let list=contatos.length?contatos:Array.from(numerosArea.value.split(/\\r?\\n/).filter(n=>n)).map(t=>({telefone:t}));\n        const tm=+document.getElementById('tempoMin').value,TM=+document.getElementById('tempoMax').value,ia=document.getElementById('usarIA').checked;\n        const inst=[...document.getElementById('instancias').selectedOptions].map(o=>o.value);\n        const tps=[...document.querySelectorAll('.tipo-mensagem')];const cts=[...document.querySelectorAll('.conteudo-mensagem')];\n        if(!list.length||!tm||!TM||!inst.length) { alert('Preencha todos os campos.'); document.getElementById('pararBtn').style.display = 'none'; document.getElementById('dispararBtn').disabled = false; return; }\n        const templates=tps.map((t,i)=>({type:t.value,text:cts[i].value.trim()}));\n        const used=new Set();templates.forEach(tt=>(tt.text.match(/\\{(\\w+)\\}/g)||[]).forEach(m=>used.add(m.replace(/[{}]/g,''))));\n        const invalid=[...used].filter(k=>!Array.from(varsContainer.children).some(b=>b.dataset.key===k));\n        if(invalid.length) { alert('Variáveis inválidas: '+invalid.join(',')); document.getElementById('pararBtn').style.display = 'none'; document.getElementById('dispararBtn').disabled = false; return; }\n        const bar=document.getElementById('progressBar'),pc=document.getElementById('progressBarContainer'),st=document.getElementById('status');pc.style.display='block';\n        let sucessos = [], erros = [], log = '';\n        for(let i=0;i<list.length;i++){\n          if(interromper) { log+='⏹️ Interrompido pelo usuário\\n'; break; }\n          const item=list[i];\n          const messages=templates.map(tt=>({type:tt.type,text:tt.text.replace(/\\{(\\w+)\\}/g,(_,k)=>{const b=Array.from(varsContainer.children).find(x=>x.dataset.key===k);const full=item[k]||'';return b&&b.dataset.firstOnly==='true'?full.split(' ')[0]:full})}));\n          const choice=inst[Math.floor(Math.random()*inst.length)];\n          try{\n            const res=await fetch('{{ $json.WEBHOOK }}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({numero:normalizePhone(item.telefone),mensagens:messages,tempoMin:tm,tempoMax:TM,usarIA:ia,instancia:choice})});\n            const txt = await res.text();\n            if (!res.ok) {\n              erros.push(`${item.telefone} via ${choice} – Erro HTTP ${res.status}: ${txt}`);\n              continue;\n            }\n            let msg = '';\n            try { msg = JSON.parse(txt).mensagem || txt; } catch { msg = txt; }\n            sucessos.push(`${item.telefone} via ${choice} – ${msg}`);\n          } catch(e){\n            erros.push(`${item.telefone} via ${choice} – Erro: ${e.message}`);\n          }\n          const pct=Math.round(((i+1)/list.length)*100);bar.style.width=`${pct}%`;bar.textContent=`${pct}%`;st.textContent=`Enviando ${i+1}/${list.length}`;\n          await new Promise(r=>setTimeout(r,((Math.random()*(TM-tm)+tm)*1000)));\n        }\n        // Montar relatório final\n        log = `RELATÓRIO DE ENVIO\\n\\nTotal enviados: ${sucessos.length}\\nTotal com erro: ${erros.length}\\n\\n--- ENVIADOS COM SUCESSO ---\\n`;\n        log += sucessos.length ? sucessos.join('\\n') : 'Nenhum.';\n        log += `\\n\\n--- ERROS ---\\n`;\n        log += erros.length ? erros.join('\\n') : 'Nenhum.';\n        if(interromper) log += '\\n\\n⏹️ Envio interrompido pelo usuário.';\n        st.textContent=interromper ? '⏹️ Envio interrompido!' : '✅ Envio concluído!';\n        const blob=new Blob([log],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='log.txt';a.click();\n        document.getElementById('pararBtn').style.display = 'none';\n        document.getElementById('dispararBtn').disabled = false;\n      };\n      document.getElementById('pararBtn').onclick = () => {\n        interromper = true;\n      };\n    });\n  </script>\n</body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        224
+      ],
+      "id": "be16a59b-00f2-4d33-826d-2f888baf9792",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "path": "pagina",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        224
+      ],
+      "id": "172e04ca-fcec-4f6c-9990-3c7283ae5bc5",
+      "name": "Webhook",
+      "webhookId": "233ecd6d-20ba-4fe2-bb2f-64f784b0a3f3"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        224
+      ],
+      "id": "ad79fbb8-077d-4122-a269-2e250e6b0e37",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.delay }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        640
+      ],
+      "id": "63804fdb-8adf-4aa1-94fe-cb6658ffe29f",
+      "name": "Wait",
+      "webhookId": "6ad33347-722c-4056-a85b-d1082d3368a8",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const tempoMin = parseInt($input.first().json.body.tempoMin);\nconst tempoMax = parseInt($input.first().json.body.tempoMax);\n\nif (isNaN(tempoMin) || isNaN(tempoMax) || tempoMin > tempoMax) {\n  throw new Error('Preencha os campos de tempo corretamente!');\n}\n\nconst delay = Math.floor(Math.random() * (tempoMax - tempoMin + 1)) + tempoMin;\n\n// Retorne o resultado como um array de objetos\nreturn [\n  {\n    json: {\n      delay\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        640
+      ],
+      "id": "2e2db53f-6d7b-4ecc-869c-b60696920368",
+      "name": "Code",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "texto",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8f17d2f9-67c6-49d0-8e4f-986002e4edc4"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7d71361b-034e-4ea1-affd-ffecf7ce6117",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Áudio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c4c1e5c2-8b6e-4147-909a-11fa64af68fa",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "imagem",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "77bb0cbe-071d-4003-8f23-a0da8712fd3c",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Vídeo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1184,
+        960
+      ],
+      "id": "3599de93-59c7-4574-ae82-ba6b6de4a1b5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2c615c42-d14b-4d44-bb74-10207088f614",
+              "leftValue": "={{ $('Webhook do Disparo').item.json.body.usarIA }}",
+              "rightValue": "={{ $('Webhook do Disparo').item.json.body.usarIA }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        768
+      ],
+      "id": "930bf06e-f3b3-421d-912d-d3436a0606d6",
+      "name": "Usar IA?"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Loop Over Items').item.json.text }}",
+        "options": {
+          "systemMessage": "Você é responsável por criar uma variação sutil da mensagem recebida.\nVocê deve enviar no output apenas a mensagem modificada e nada mais."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1600,
+        368
+      ],
+      "id": "b8f5dce3-a88b-4006-953d-be98f5e4aea2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3066d936-35d6-4374-a734-46e79ba3495a",
+              "name": "output",
+              "value": "={{ $('Loop Over Items').item.json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1584,
+        832
+      ],
+      "id": "38ad9ac1-5d2d-40a1-8f39-3264a3fe3bfd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1712,
+        592
+      ],
+      "id": "8b569f9c-de1e-4d3b-9c3a-c83e9c05375a",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        688,
+        832
+      ],
+      "id": "8c74f38c-1249-4ae2-b69b-585bce52796f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.mensagens",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        192,
+        992
+      ],
+      "id": "5bb8d30e-c7cb-4195-aa43-5db576acb67a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        912,
+        960
+      ],
+      "id": "97a23cc2-d7fe-40f7-a799-9e891bf450b6",
+      "name": "Wait1",
+      "webhookId": "6d676365-b167-4bd0-914f-f932a9674c37"
+    },
+    {
+      "parameters": {
+        "content": "## DELAY DINÂMICO",
+        "height": 260,
+        "width": 460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "cc429655-c99b-410f-aef5-bfad34fb8c68",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## PÁGINA HTML",
+        "height": 280,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -224,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "dfb82958-7fd7-4166-87aa-3c1f1aa4f72b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"mensagem\": \"Mensagem enviada com sucesso\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        640
+      ],
+      "id": "877898bd-bc06-4b79-80af-53f83de0ae01",
+      "name": "Finalizar",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "content": "## MODOFICAÇÃO DE TEXTO COM IA",
+        "height": 420,
+        "width": 580,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "2c6412aa-b01d-42bc-a645-aba4fa9dcafc",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options_Create_instance": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        800
+      ],
+      "id": "2abd9208-2f73-42a2-96bd-ea211c5b5b52",
+      "name": "Enviar Texto",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "options_Create_instance": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        960
+      ],
+      "id": "2d26cd86-b752-49cc-8869-0c7ddd8e6d59",
+      "name": "Enviar Audio"
+    },
+    {
+      "parameters": {
+        "options_Create_instance": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        1120
+      ],
+      "id": "611af0c1-0dd3-4f31-98a0-3955d0036832",
+      "name": "Enviar Imagem"
+    },
+    {
+      "parameters": {
+        "options_Create_instance": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        1280
+      ],
+      "id": "c15d0d56-61e2-4a66-b816-1aa0dc993f97",
+      "name": "Enviar Video"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce230095-452d-4769-a1fa-5714dc07a544",
+              "name": "URL_EVOLUTION",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ab5b3bbc-d759-42f7-9673-53f93572919c",
+              "name": "WEBHOOK",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "741e8d4f-ecc0-47b2-807d-e10e98abb564",
+              "name": "APIKEY_GLOBAL",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        224
+      ],
+      "id": "935d9fdb-e770-4f94-a578-22d5f7d684c1",
+      "name": "DADOS"
+    },
+    {
+      "parameters": {
+        "content": "## Você deve alterar este nó. Não precisa mais alterar o HTML. ",
+        "height": 460,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "79dd210f-e01a-4a88-a1c8-8767180e39ca",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "disparar",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -304,
+        832
+      ],
+      "id": "ff712f27-2c36-401b-ad9d-465229ba61d6",
+      "name": "Webhook do Disparo",
+      "webhookId": "7b91b4e9-c455-4f42-8eca-13eee0b26f9b"
+    },
+    {
+      "parameters": {
+        "content": "# ERROS COMUNS\n\n## 1. data.filter is not a function\n\n### Isso acontece quando você passou em DADOS a \"URL_EVOLUTION\" de maneira incorreta. Ela não pode ter o \"/manager\" e nem \"/\" no final.\n\n### Exemplo: https://evolution.seudominio.com\n\n## 2. Não está chegando o webhook no n8n\n\n### Isso pode acontecer por 2 motivos.\n\n### a) Colocou o webhook em 'DADOS' de maneira incorreta. Deve ser o webhook buscado no nó 'Webhook Do Disparo' e não pode ter o '-test' na url.\n\n### b) Workflow desligado. Seu workflow tem que está ligado.\n\n## 3. Só está enviando mensagem através de uma única instância.\n\n### Bom... isso é porque o token colocado no nó do Evolution foi da instancia que funcionou. Você deve colocar o token global. (É possível pegar no Portainer na Stack do evolution caso você tenha perdido)",
+        "height": 860,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -896,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "d7afb6c4-e2cc-4747-ad58-832bf1e13616",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Última atualização (12/07/2025)\n\n- Agora você pode importar contatos direto de um arquivo .XLSX.\n- Variáveis dinâmicas adicionadas para personalizar cada mensagem com dados únicos.\n- Incluímos um botão de parar o fluxo em tempo real.\n- Possibilidade de adicionar mais de um número para o mesmo lead.\n-  Suporte a múltiplos números por lead – Se o mesmo lead tiver 2 ou 3 números de WhatsApp, agora você pode disparar para todos eles automaticamente.",
+        "height": 300,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -896,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "6e3b6118-b68a-48dd-b00a-9bfb6870ec64",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "DADOS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Usar IA?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Usar IA?": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Enviar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Enviar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Finalizar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Texto": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Audio": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Video": {
+      "main": [
+        [
+          {
+            "node": "Finalizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DADOS": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook do Disparo": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fd027a2c-5ca9-48f8-b5e0-37c9c7a3ea37",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "iMFtieJzDVagAU6o",
+  "tags": [
+    {
+      "updatedAt": "2025-12-07T14:13:47.727Z",
+      "createdAt": "2025-12-07T14:13:47.727Z",
+      "id": "HG2IK2OAR28BteQC",
+      "name": "Anderson Adelino"
+    }
+  ]
+}

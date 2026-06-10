@@ -1,0 +1,403 @@
+{
+    "name": "3.0 - Responder avaliações no GMN + Groq - Modelo",
+    "flow": [
+        {
+            "id": 1,
+            "module": "google-my-business:watchReviews",
+            "version": 1,
+            "parameters": {
+                "limit": 1,
+                "select": "create",
+                "account": "accounts/101092180872878923411",
+                "location": "accounts/101092180872878923411/locations/17897459261184599711",
+                "__IMTCONN__": 3428004
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 150
+                },
+                "restore": {
+                    "parameters": {
+                        "select": {
+                            "label": "By creation time"
+                        },
+                        "account": {
+                            "label": "Rafael Feitosa"
+                        },
+                        "location": {
+                            "label": "Garcia & Guimarães | Loja de Móveis Usados (Rua Barão de Mota Paes, 401, SP, Espírito Santo do Pinhal,...)"
+                        },
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-custom"
+                            },
+                            "label": "Google GMN (Rafael Feitosa) (pro.rfeitosa@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-custom",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Watch reviews",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "create",
+                                "update"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "account",
+                        "type": "select",
+                        "label": "Account name",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "type": "uinteger",
+                        "label": "Limit",
+                        "required": true
+                    },
+                    {
+                        "name": "location",
+                        "type": "select",
+                        "label": "Location name",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 150
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 13,
+                            "module": "groq:chatCompletion",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 4030582
+                            },
+                            "filter": {
+                                "name": "avaliação positiva",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{1.starRating}}",
+                                            "b": "FIVE",
+                                            "o": "text:contain"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{1.starRating}}",
+                                            "b": "FOUR",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "model": "llama3-70b-8192",
+                                "messages": [
+                                    {
+                                        "role": "assistant",
+                                        "content": "Objetivo:\nResponder exclusivamente avaliações positivas do perfil da empresa no Google, mantendo o tom informal, sem gírias, com respostas humanizadas e simples.\n\nDiretrizes de Resposta:\n\nTom e Estilo:\nRespostas devem ser informais, amigáveis, e acolhedoras, mas sem uso de gírias.\nAs respostas devem refletir a gratidão e o apreço da empresa pelo feedback positivo do cliente.\n\nEstrutura da Resposta:\nSempre incluir a frase: \"Muito obrigado pelo seu feedback.\"\nAs respostas devem ser simples, diretas, e objetivas.\nAdaptar a resposta ao conteúdo da avaliação, quando possível.\nLimitações:\n\nRespostas devem ter no máximo 160 caracteres.\nNão incluir links, informações promocionais ou solicitações de ação.\n\nExemplos:\n- Muito obrigado pelo seu feedback! Ficamos felizes em saber que gostou do nosso trabalho. 😊\n- Agradecemos muito por compartilhar sua opinião. Isso nos motiva a continuar evoluindo!\n- Seu feedback é muito importante para nós. Muito obrigado por confiar na feitosa.digital!\n\nRequisitos Técnicos:\nO assistente deve devolver apenas a resposta no output, sem explicações ou informações adicionais.\n\nREGRAS: as respostas não devem vir entre aspas.\n\nIMPORTANTE: SE O USUÁRIO NÃO PASSAR NENHUM TEXTO, É PORQUE P CLIENTE APENAS AVALIOU COM ESTRELAS E SEM TEXTO. ENTÃO SUA RESPOSTA PADRÃO, PARA ESSES CASOS,  DEVE SER: Muito obrigado pelo seu feedback!\n\nCaso contrário se o usuário passar a avaliação do cliente, criei uma resposta."
+                                    },
+                                    {
+                                        "role": "user",
+                                        "content": "Me dovolva comente a resposta para a avaliação abaixo:\n\nAvaliação:\n{{1.reviewReply.comment}}"
+                                    }
+                                ],
+                                "response_format": "text"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 0
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "model": {
+                                            "mode": "chose",
+                                            "label": "llama3-70b-8192"
+                                        },
+                                        "messages": {
+                                            "mode": "chose",
+                                            "items": [
+                                                {
+                                                    "role": {
+                                                        "mode": "chose",
+                                                        "label": "Assistant"
+                                                    }
+                                                },
+                                                {
+                                                    "role": {
+                                                        "mode": "chose",
+                                                        "label": "User"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "response_format": {
+                                            "mode": "chose",
+                                            "label": "Text"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "groq"
+                                            },
+                                            "label": "Groq (feitosa.digital)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:groq",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "model",
+                                        "type": "select",
+                                        "label": "Model",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "messages",
+                                        "spec": [
+                                            {
+                                                "name": "role",
+                                                "type": "select",
+                                                "label": "Role",
+                                                "options": [
+                                                    {
+                                                        "label": "System",
+                                                        "value": "system"
+                                                    },
+                                                    {
+                                                        "label": "User",
+                                                        "value": "user"
+                                                    },
+                                                    {
+                                                        "label": "Assistant",
+                                                        "value": "assistant"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "name": "content",
+                                                "type": "text",
+                                                "label": "Content"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Messages",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "max_tokens",
+                                        "type": "number",
+                                        "label": "Max tokens returned"
+                                    },
+                                    {
+                                        "name": "temperature",
+                                        "type": "number",
+                                        "label": "Temperature"
+                                    },
+                                    {
+                                        "name": "response_format",
+                                        "type": "select",
+                                        "label": "Response Format",
+                                        "validate": {
+                                            "enum": [
+                                                "text",
+                                                "json_object"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "top_p",
+                                        "type": "number",
+                                        "label": "Top P"
+                                    },
+                                    {
+                                        "name": "frequency_penalty",
+                                        "type": "number",
+                                        "label": "Frequency Penalty"
+                                    },
+                                    {
+                                        "name": "seed",
+                                        "type": "number",
+                                        "label": "Seed"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 2,
+                            "module": "google-my-business:createUpdateAReply",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 3428004
+                            },
+                            "mapper": {
+                                "review": "{{1.name}}",
+                                "select": "map",
+                                "comment": "Obrigado!"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 900,
+                                    "y": 0
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "select": {
+                                            "label": "Enter manually"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-custom"
+                                            },
+                                            "label": "Google GMN (Rafael Feitosa) (pro.rfeitosa@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-custom",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "select",
+                                        "type": "select",
+                                        "label": "Enter a review name",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "map",
+                                                "select"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "comment",
+                                        "type": "text",
+                                        "label": "Reply comment",
+                                        "validate": {
+                                            "max": 4096,
+                                            "min": 0
+                                        }
+                                    },
+                                    {
+                                        "name": "review",
+                                        "type": "text",
+                                        "label": "Review name",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 12,
+                            "module": "microsoft-email:createAndSendAMessage",
+                            "version": 2,
+                            "filter": {
+                                "name": "avaliação negativa",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{1.starRating}}",
+                                            "b": "ONE",
+                                            "o": "text:contain"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{1.starRating}}",
+                                            "b": "TWO",
+                                            "o": "text:contain"
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "a": "{{1.starRating}}",
+                                            "b": "THREE",
+                                            "o": "text:contain"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 300
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "us1.make.com",
+        "notes": []
+    }
+}

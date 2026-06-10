@@ -1,0 +1,90 @@
+{
+  "name": "AirBnB - Teste",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1e504c14-c408-49d5-8d6a-b33cd9484f43",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f7d1f08d-d319-4229-b18e-e271fb994392",
+      "name": "MCP Client",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "0zZtm62wez0AJqba",
+          "name": "MCP Client (STDIO) account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeTool",
+        "toolName": "={{ $json.tools[1].name }}",
+        "toolParameters": "={\n  \"id\":\"1557247503644563565\",\n  \"checkin\":\"2025-02-16\",\n  \"checkout\":\"2025-02-19\"\n}"
+      },
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "f5eada28-9581-44b5-a909-e02cf81bfb1c",
+      "name": "MCP Client1",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "0zZtm62wez0AJqba",
+          "name": "MCP Client (STDIO) account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "MCP Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "main": [
+        [
+          {
+            "node": "MCP Client1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2a1e1eb3-6540-4612-a74b-c5cfa04f2866",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "HiayhU9utqQtmkFB",
+  "tags": []
+}

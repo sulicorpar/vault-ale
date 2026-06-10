@@ -1,0 +1,3310 @@
+{
+  "name": "Dm - ALEJANDRO",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "fluxo-alejandro",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2576,
+        1504
+      ],
+      "id": "023fc35d-2c7a-4d4c-b449-6ccdb5f1a199",
+      "name": "Webhook",
+      "webhookId": "d2db532a-db07-4865-be61-4cd332639577"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f5b7656-3161-4730-8ee2-6b75025f1b8a",
+              "name": "code",
+              "value": "={{ $json.query['hub.challenge'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2352,
+        1504
+      ],
+      "id": "fa4a306b-e3b9-43c1-9fe8-5f874d2e0ae5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.code }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -2128,
+        1504
+      ],
+      "id": "20184d6b-0ba0-4175-bed8-53efc37cea02",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fluxo-alejandro",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2576,
+        1840
+      ],
+      "id": "56b98d0d-4698-44bf-90ed-cb7eed1ac029",
+      "name": "Webhook1",
+      "webhookId": "03157ea5-0420-42c8-a543-e4e54b5af673"
+    },
+    {
+      "parameters": {
+        "content": "## Ativação",
+        "height": 240,
+        "width": 760,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2656,
+        1424
+      ],
+      "id": "81a65ff8-afd7-487f-85b4-2e485eb569a9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3a1be705-ce35-4f59-b391-685e49000bb5",
+              "name": "meu_id",
+              "value": "={{ $json.body.entry[0].id }}",
+              "type": "string"
+            },
+            {
+              "id": "f6ca6723-390c-476c-a0b5-26377b1fdbc3",
+              "name": "from_id",
+              "value": "={{ $json.body.entry[0].changes[0].value.from.id }}",
+              "type": "string"
+            },
+            {
+              "id": "bd389f94-bebd-4cec-a101-f3a60bd70edc",
+              "name": "from_username",
+              "value": "={{ $json.body.entry[0].changes[0].value.from.username }}",
+              "type": "string"
+            },
+            {
+              "id": "158d4902-a8e6-4a24-861b-77de4c67c9ca",
+              "name": "media_id",
+              "value": "={{ $json.body.entry[0].changes[0].value.media.id }}",
+              "type": "string"
+            },
+            {
+              "id": "7753f5f9-b624-4caa-ba7c-282067b30831",
+              "name": "comment_id",
+              "value": "={{ $json.body.entry[0].changes[0].value.id }}",
+              "type": "string"
+            },
+            {
+              "id": "4b8fdf3a-6e5a-4f81-8f6e-829818f73486",
+              "name": "comment",
+              "value": "={{ $json.body.entry[0].changes[0].value.text }}",
+              "type": "string"
+            },
+            {
+              "id": "b0d36b26-faa8-48e6-a07c-28f6627c60a8",
+              "name": "field",
+              "value": "={{ $json.body.entry[0].changes[0].field }}",
+              "type": "string"
+            },
+            {
+              "id": "974cdabe-7dfc-426c-a797-5fef1af5e8fe",
+              "name": "id_usuario",
+              "value": "={{ $json.body.entry[0].messaging[0].sender.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f1135b75-5af1-4016-abac-6b2bb5c2b545",
+              "name": "mensagem_direct",
+              "value": "={{ $json.body.entry[0].messaging[0].message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "0f69bee2-5a16-476a-88e1-c1d4023bd04f",
+              "name": "token",
+              "value": "IGAAK1uiiUzZClBZAE1OX3p6WU44S1VDemRJQmZA6TUtyNWVVbUtXOG9PWE14ZA3cwZAVpiem5QaWFvbUphRE12WUcxZAjYyYjZALSXZAmMmNqdTJvSENZASnYwMXNGZA2dhd2Qta0lKQzJJWkFfVE0zblBydjd2X25LelRlSVNrMkJoUkNPdwZDZD",
+              "type": "string"
+            },
+            {
+              "id": "1e57ef48-f9e1-4f48-9951-7b86fc9cf0e3",
+              "name": "audio-direct",
+              "value": "={{ $json.body.entry[0].messaging[0].message.attachments[0].payload.url }}",
+              "type": "string"
+            },
+            {
+              "id": "ddf08586-daba-4a1b-81e7-f14c8dc787a8",
+              "name": "type-audio",
+              "value": "={{ $json.body.entry[0].messaging[0].message.attachments[0].type }}",
+              "type": "string"
+            },
+            {
+              "id": "2cb08a31-6281-4382-8859-82c52fdbc97f",
+              "name": "type-text",
+              "value": "={{ $json.body.entry[0].messaging[0].message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2352,
+        1840
+      ],
+      "id": "865790a6-a21e-4af8-9564-068ac8a5390b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.field }}",
+                    "rightValue": "comments",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7955fc91-bbc7-48f8-a01c-001aa3363a3c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "comments"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "211a3035-7a38-454f-adea-f0e1ea8f80f2",
+                    "leftValue": "={{ $json.id_usuario }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "direct"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2128,
+        1840
+      ],
+      "id": "a21f8627-0909-40c5-bb51-d7b3dec26163",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2621d1b8-d27f-4e55-9faa-7556ec422c59",
+              "leftValue": "={{ $json.from_id }}",
+              "rightValue": "={{ $json.meu_id }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1744,
+        1824
+      ],
+      "id": "146c7aad-3c80-4276-9c63-b239b8fefe3c",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "621fb93d-9447-44f5-8f6c-2d457ba29e40",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "^(?!.*\\b(prompt|Prompt|olhos|Olhos|foto|Foto|antigo|Antigo|ritmo|Ritmo|fotografia|Fotografia|moto|Moto|voar|Voar|f1|F1|template|Template|imagem|Imagem|instagram|Instagram|facebook|Facebook|flow|Flow)\\b).*",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Não tem palavra chave"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "122f9017-1029-4f0b-a9f8-e54e33427925",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "^[Tt]emplate$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Template"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9988e051-745f-4ea8-977a-f9786d50f8da",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "^[Ii]magem$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "983a5126-78ab-42ac-b8b7-866add30b58c",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "^[Ii]nstagram$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Instagram"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0b28bc05-0535-45d2-8e08-6ae3addf9671",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "^[Ff]acebook$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "facebook"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "eb24f942-645b-4886-bea1-29a066c9e4a7",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "^[Ff]low$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Flow"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -544,
+        336
+      ],
+      "id": "fdbeba2b-c9e7-48bd-835a-7b1e53c56ed1",
+      "name": "cometario"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer IGAAK1uiiUzZClBZAE1OX3p6WU44S1VDemRJQmZA6TUtyNWVVbUtXOG9PWE14ZA3cwZAVpiem5QaWFvbUphRE12WUcxZAjYyYjZALSXZAmMmNqdTJvSENZASnYwMXNGZA2dhd2Qta0lKQzJJWkFfVE0zblBydjd2X25LelRlSVNrMkJoUkNPdwZDZD"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\":{\n    \"id\": \"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  },\n  \"message\": {\n    \"attachment\": {\n      \"type\": \"template\",\n      \"payload\": {\n        \"template_type\": \"button\",\n        \"text\": \"Primeiro precisa me seguir para receber o material 👀. Depois que seguir, digite novamente a palavra que enviou acima 👇\",\n        \"buttons\": [\n          {\n            \"type\": \"web_url\",\n            \"url\": \"https://instagram.com/euleonardovianna\",\n            \"title\": \"Seguir no Instagram\"\n          }\n        ]\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -816,
+        2528
+      ],
+      "id": "efcddaaa-8f2a-49b2-a5eb-1b0f4a29a548",
+      "name": "Envia mensagens direct10"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.instagram.com/{{ $json.id_usuario }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer IGAASNSZCUPfvdBZAE9Qa2RUM2FtWFZAETzNuSDIzVG5ObGRGbXd6UlhzZAjltOENpMkRXRE94YkZA1SGhER19uNm9KVFFlbHJ3Y0s3NDdsaUJ1LVlZATXdjdDBGTXJZAc3JWQnpKV1lfX3V2SFJZAeXlib3NFMURDeDU1VWpsaFFibjlvWQZDZD"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1360,
+        2480
+      ],
+      "id": "5c731caf-7c9a-4df1-8b6d-a0aef49a7b63",
+      "name": "Buscar se é seguidor"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7e4bed71-64df-4f20-ba6b-10049a7db678",
+              "leftValue": "={{ $json.is_user_follow_business }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1136,
+        2480
+      ],
+      "id": "e44be5cc-ee79-4e59-bef5-fa4142d212d9",
+      "name": "Me segue?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9e438892-42b4-4793-b5f5-b4aec1cfe9fe",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^(?!.*\\b(prompt|Prompt|olhos|Olhos|foto|Foto|antigo|Antigo|ritmo|Ritmo|fotografia|Fotografia|moto|Moto|voar|Voar|f1|F1|template|Template|imagem|Imagem|instagram|Instagram|facebook|Facebook|flow|Flow)\\b).*",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Não tem palavra chave"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "=^[Pp]rompt$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    },
+                    "id": "c6079428-80db-44c7-9465-a15bc35f50d5"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels prompt"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "aa5e7a15-a554-4799-b740-0fcee1ccfc74",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Oo]lhos$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels olhos"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f660b3db-644d-4be1-aefd-3ae8245ac5d7",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ff]oto$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels foto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7d7f0ec2-8122-4398-8c55-35f32dc809d6",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Aa]ntigo$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels antigo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b720b466-c39d-47c1-bfc0-dfc22b926433",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Rr]itmo$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels ritmo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5a679235-481a-4cfb-9d73-1e79b58c015d",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ff]otografia$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels fotografia"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8fb1b257-21d8-46d7-b3d3-f63c63b7bd53",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Mm]oto$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels moto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5be9309f-905b-48d2-a1be-1782b187bf41",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Vv]oar$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels voar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f12ff927-7db8-4239-a183-ec352f3a810a",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ff]1$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reels F1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9c42408d-0a75-403d-a1ad-fd523e0ed646",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Tt]emplate$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Template"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f3f5d753-15b1-484d-b25f-9cfd2d84e3a6",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ii]magem$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f6a926eb-2bcc-4149-ac0e-c56fffebd8b8",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ii]nstagram$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Instagram"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b320926a-fbda-459d-a8fe-8c10192739be",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ff]acebook$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Facebook"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b01174cd-d6a8-4aa1-a166-19773762eafe",
+                    "leftValue": "={{ $json.mensagem_direct }}",
+                    "rightValue": "^[Ff]low$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Flow"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1744,
+        2288
+      ],
+      "id": "89512d3d-73e1-40ee-8234-340b23cd8d59",
+      "name": "cometario1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c6ead903-228a-4ad5-9b2a-5a0f11c205d9",
+                    "leftValue": "={{ $('Edit Fields1').item.json.mensagem_direct }}",
+                    "rightValue": "^[Tt]emplate$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Template"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "212dedcf-ffff-44e9-a94d-98ac5904b1bc",
+                    "leftValue": "={{ $('Edit Fields1').item.json.mensagem_direct }}",
+                    "rightValue": "^[Ii]magem$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8891eecd-90d3-492f-90c0-0c1dea5d4744",
+                    "leftValue": "={{ $('Edit Fields1').item.json.mensagem_direct }}",
+                    "rightValue": "^[Ii]nstagram$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Instagram"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5790ebf8-0967-4ded-9c89-8b58a9534c60",
+                    "leftValue": "={{ $('Edit Fields1').item.json.mensagem_direct }}",
+                    "rightValue": "^[Ff]acebook$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Facebook"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9e350f3c-332e-489d-ac20-91cd2fe7fc2f",
+                    "leftValue": "={{ $('Edit Fields1').item.json.mensagem_direct }}",
+                    "rightValue": "^[Ff]low$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Flow"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -496,
+        3616
+      ],
+      "id": "7ff42562-d191-48e0-bca1-847e07d3aec0",
+      "name": "cometario2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $json.comment_id }}/replies",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Instruções enviadas no seu direct 👀🥂"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        160
+      ],
+      "id": "41463cae-cbe3-49f4-a533-4ecfe27c3ddf",
+      "name": "responde comentario9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"recipient\": {\n        \"comment_id\": \"{{ $('Edit Fields1').item.json.comment_id }}\"\n    },\n    \"message\": {\n        \"text\": \"Digite 'Template' aqui em baixo para liberar sobre O Fluxo ✅👇\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        160
+      ],
+      "id": "d8b212ea-23d1-498d-a24c-fdd4ec00ed3f",
+      "name": "Envia mensagens direct20"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\":{\n    \"attachment\":{\n      \"type\":\"template\",\n      \"payload\":{\n        \"text\":\"Clique para saber tudo sobre O Fluxo com API Oficial do instagram 👇\",\n        \"buttons\":[\n          {\n            \"url\":\"https://leonardovianna.com.br?utm_source=instagram&utm_medium=post-comentario-template\",\n            \"type\":\"web_url\",\n            \"title\":\"CLIQUE PARA ACESSAR\"\n          }\n        ],\n        \"template_type\":\"button\"\n      }\n    }\n  },\n  \"recipient\":{\n    \"id\":\"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        3344
+      ],
+      "id": "06bc11e4-9607-4bda-a9eb-357c6fdac501",
+      "name": "Envia mensagens direct21"
+    },
+    {
+      "parameters": {
+        "content": "## Adicionar palavra chave",
+        "height": 140,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2352,
+        2304
+      ],
+      "id": "3f5f196a-0853-424b-a6b5-24248d8fec35",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "tableId": "followup_clientes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.name }}"
+            },
+            {
+              "fieldId": "remoteid",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.username }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        3344
+      ],
+      "id": "8eb9b68b-255a-4c52-b64e-dcbab9aab923",
+      "name": "Supabase"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $json.comment_id }}/replies",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Acesso ao Template enviado no seu direct 🥂"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        336
+      ],
+      "id": "0d2abf76-6315-43f4-b61b-9ad62e568daa",
+      "name": "responde comentario10"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"recipient\": {\n        \"comment_id\": \"{{ $('Edit Fields1').item.json.comment_id }}\"\n    },\n    \"message\": {\n        \"text\": \"Digite 'Imagem' aqui em baixo para liberar o acesso ao Template completo 👇\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        336
+      ],
+      "id": "4b8c91d3-2a3a-4269-959b-abad543513a5",
+      "name": "Envia mensagens direct22"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\":{\n    \"attachment\":{\n      \"type\":\"template\",\n      \"payload\":{\n        \"text\":\"Acesso liberado! ✅. Você irá encontrar o template na descrição do grupo. Clique no botão abaixo para entrar 👇\",\n        \"buttons\":[\n          {\n            \"url\":\"https://chat.whatsapp.com/FsWWAmaPOFaLpH4CBYGvWd?mode=r_c\",\n            \"type\":\"web_url\",\n            \"title\":\"CLIQUE PARA ACESSAR\"\n          }\n        ],\n        \"template_type\":\"button\"\n      }\n    }\n  },\n  \"recipient\":{\n    \"id\":\"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        3520
+      ],
+      "id": "5920018c-34bc-4398-ae98-c3097eaeb571",
+      "name": "Envia mensagens direct23"
+    },
+    {
+      "parameters": {
+        "tableId": "followup_clientes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.name }}"
+            },
+            {
+              "fieldId": "remoteid",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.username }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        3520
+      ],
+      "id": "83baf1cf-36be-4265-9881-3c2e5ffceefc",
+      "name": "Supabase2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\":{\n    \"attachment\":{\n      \"type\":\"template\",\n      \"payload\":{\n        \"text\":\"Acesso liberado! ✅. Vídeo completo. Clique no botão abaixo para entrar 👇\",\n        \"buttons\":[\n          {\n            \"url\":\"https://youtu.be/3vM9O4S4PLU?si=83yeocrtK5NaHh1v\",\n            \"type\":\"web_url\",\n            \"title\":\"CLIQUE PARA ASSISTIR\"\n          }\n        ],\n        \"template_type\":\"button\"\n      }\n    }\n  },\n  \"recipient\":{\n    \"id\":\"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        3712
+      ],
+      "id": "f272e6bb-ad49-45d7-8ecf-2ca1f4e56c4d",
+      "name": "Envia mensagens direct24"
+    },
+    {
+      "parameters": {
+        "tableId": "followup_clientes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.name }}"
+            },
+            {
+              "fieldId": "remoteid",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.username }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        3712
+      ],
+      "id": "255e3d40-ff6c-47d7-b564-15714c418e05",
+      "name": "Supabase3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $json.comment_id }}/replies",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Acesso ao vídeo enviado no seu direct 🥂"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        544
+      ],
+      "id": "ee70c4bb-b95a-443a-942a-9699e2eb9d3b",
+      "name": "responde comentario11"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"recipient\": {\n        \"comment_id\": \"{{ $('Edit Fields1').item.json.comment_id }}\"\n    },\n    \"message\": {\n        \"text\": \"Digite 'Instagram' aqui em baixo para liberar o acesso ao Vídeo completo 👇\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        544
+      ],
+      "id": "3777d7cf-d307-415c-a78b-3a66a7d5f6ab",
+      "name": "Envia mensagens direct25"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\":{\n    \"attachment\":{\n      \"type\":\"template\",\n      \"payload\":{\n        \"text\":\"Acesso liberado! ✅. Template que puxa métricas automaticamente do Facebook ads. Clique no botão abaixo para acessar 👇\",\n        \"buttons\":[\n          {\n            \"url\":\"https://pay.kiwify.com.br/6HapUjD?utm_source=instagram&utm_medium=post-comenta-facebook-01-direct\",\n            \"type\":\"web_url\",\n            \"title\":\"CLIQUE PARA ACESSAR\"\n          }\n        ],\n        \"template_type\":\"button\"\n      }\n    }\n  },\n  \"recipient\":{\n    \"id\":\"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        3920
+      ],
+      "id": "bfcf8582-2e7f-4d6d-bdaa-f7c8149e6512",
+      "name": "Envia mensagens direct26"
+    },
+    {
+      "parameters": {
+        "tableId": "followup_clientes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.name }}"
+            },
+            {
+              "fieldId": "remoteid",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.username }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        3920
+      ],
+      "id": "ee229889-362d-46dc-8e9b-0ad9dcfd01fa",
+      "name": "Supabase4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $json.comment_id }}/replies",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Acesso ao Template enviado no seu direct 🥂"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        720
+      ],
+      "id": "cdeea463-a63f-43dc-9416-5c33e5b0d763",
+      "name": "responde comentario12"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"recipient\": {\n        \"comment_id\": \"{{ $('Edit Fields1').item.json.comment_id }}\"\n    },\n    \"message\": {\n        \"text\": \"Digite 'Facebook' aqui em baixo para liberar o acesso ao Link do Template 👇\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        720
+      ],
+      "id": "f0517aac-a364-4832-bc52-9ae302753348",
+      "name": "Envia mensagens direct27"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\":{\n    \"attachment\":{\n      \"type\":\"template\",\n      \"payload\":{\n        \"text\":\"Acesso liberado! ✅. Clique no botão abaixo para acessar 👇\",\n        \"buttons\":[\n          {\n            \"url\":\"https://flowith.io/blank\",\n            \"type\":\"web_url\",\n            \"title\":\"CLIQUE PARA ACESSAR\"\n          }\n        ],\n        \"template_type\":\"button\"\n      }\n    }\n  },\n  \"recipient\":{\n    \"id\":\"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        4128
+      ],
+      "id": "e03e974d-00d4-4293-8cc6-d70d2e5e2289",
+      "name": "Envia mensagens direct28"
+    },
+    {
+      "parameters": {
+        "tableId": "followup_clientes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.name }}"
+            },
+            {
+              "fieldId": "remoteid",
+              "fieldValue": "={{ $('Buscar se é seguidor').item.json.username }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        4128
+      ],
+      "id": "87f0e19b-d1cf-4a39-ada5-a88320ad6e3a",
+      "name": "Supabase5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $json.comment_id }}/replies",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Chegou ai no direct? 👀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        896
+      ],
+      "id": "cc2045f7-9a59-4a92-99c9-442127e856df",
+      "name": "responde comentario13"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"recipient\": {\n        \"comment_id\": \"{{ $('Edit Fields1').item.json.comment_id }}\"\n    },\n    \"message\": {\n        \"text\": \"Digite 'Flow' aqui em baixo para liberar o acesso ao Link 👇\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        896
+      ],
+      "id": "4794704b-4b49-4b25-ad92-a62b2692d581",
+      "name": "Envia mensagens direct29"
+    },
+    {
+      "parameters": {
+        "content": "## Adicionar palavra chave\nAqui você adiciona as palavras chaves que pretendo usar.\n\nIMPORTANTE: DEVE SEGUIR MESMO PADRÃO EM TODOS OS OUTROS SWITCH.",
+        "height": 812,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1856,
+        2064
+      ],
+      "id": "69bb00d1-fe2f-440d-add6-31c71c0f71a5",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Recebe requisições + Tratamento de dados + Entende se é comentário ou direct\n",
+        "height": 332,
+        "width": 712,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2656,
+        1712
+      ],
+      "id": "f8997382-baf5-4d56-b23a-8409afef0254",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Adicionar palavra chave\nAqui você adiciona as palavras chaves que pretendo usar.\n\nIMPORTANTE: DEVE SEGUIR MESMO PADRÃO EM TODOS OS OUTROS SWITCH.",
+        "height": 604,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        3392
+      ],
+      "id": "4187bba5-5604-43a6-a72b-939a6cd87a27",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem: {{ $json.listaMensagens }}\nID DO USUÁRIO: {{ $('Edit Fields1').item.json.id_usuario }}",
+        "options": {
+          "systemMessage": "=HOJE É: {{ $now.format('FFFF') }}\nID DO USUÁRIO: {{ $('Edit Fields1').item.json.id_usuario }}\n\n=================\n\n<PAPEL>\nVocê é **NOME AGENTE**, atendente especializada do Instagram da **NOME DA EMPRESA**. Missão: atendimento ágil, empático e consultivo – focado em avaliações gratuitas, suporte técnico e informações de produtos.\n</PAPEL>\n\n<TOM>\n  – Empática, genuína, acolhedora  \n  – Linguagem simples e direta, como uma amiga que entende muito do assunto  \n  – Foco em ajudar as pessoas a ouvir melhor\n</TOM>\n\n<OBJETIVOS>\n  1. Atendimento diferenciado e cuidadoso\n  2. Responder dúvidas sobre empresa, produtos/serviços, localização, horários, etc.\n  3. Oferecer suporte técnico básico\n  4. Agir passo a passo, garantindo rapidez e precisão\n</OBJETIVOS>\n\n<REGRAS_GERAIS>\n  • Sempre peça uma informação por vez do cliente, jamais todas juntas.\n  • Uma pergunta por vez; aguarde resposta.\n  • Sem emojis, sem repetição de informações.\n</REGRAS_GERAIS>\n\n================================================\n\n\n<instrucoes_agente>\n • Sempre pergunte primeiro\n   Perguntar: “Oi! Qual é o seu nome e de onde você é?”\n • Verificar a data do pedido:\n   “O pedido é para hoje ou para outro dia?”\n • Se for à pronta entrega:\n   Enviar o link: https://valdoces.4rvendamais.com.br/valdoces/pedidos\n • Informar o WhatsApp de pronta entrega: (86) 99414-9084\n   Se for bolos personalizados (temáticos), docinhos tradicionais ou personalizados:\n  Orientar o cliente a entrar em contato pelo WhatsApp: (86) 99958-2443\n</instrucoes_agente>\n\n\n### 1. **Informações da empresa**\n  • Nome da empresa: VAL DOCES\n  • O que fazem: Vendemos bolos e doces prontos e por encomenda \n  • Horário de funcionamento: segunda a sábado de 8 às 18h \n  • Endereço: rua desembargador Sales 511 bairro nova Parnaíba \n  • Valores: tem o site se for produtos. Pronta entrega \n  • Diferenciais: Temos bolos e doces prontos para aquele aniversário de última hora!\n\n..."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        3088,
+        2016
+      ],
+      "id": "8dae071d-97fb-40dd-8ee5-809f5d8ee413",
+      "name": "Agente Principal"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3040,
+        2320
+      ],
+      "id": "c229da2d-00a7-4495-a043-ac8feb697467",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields1').item.json.id_usuario }}{{ $('Edit Fields1').item.json.from_id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3232,
+        2304
+      ],
+      "id": "d0c1d94e-1b2b-4800-bb8d-8901e688bb56",
+      "name": "Postgres Chat Memory"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Edit Fields1').item.json.field }}",
+                    "rightValue": "comments",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7955fc91-bbc7-48f8-a01c-001aa3363a3c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "comments"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "211a3035-7a38-454f-adea-f0e1ea8f80f2",
+                    "leftValue": "={{ $('Edit Fields1').item.json.id_usuario }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "direct"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        3504,
+        2016
+      ],
+      "id": "6164b78d-bbf8-4779-acab-9ec24f8bec24",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "content": "## HTTP\nAqui você altera os links e textos que serão enviados no direct",
+        "height": 1324,
+        "width": 744,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        32,
+        3104
+      ],
+      "id": "784da9f0-6339-4498-9055-c56677c5c195",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Responde comentário e Mensagem direct\nAqui você altera altera como preferir como cada comentário vai ser respondido e qual mensagem vai chegar no direct quando usuário comentar uma palavra específica.",
+        "height": 1084,
+        "width": 968,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2aa939f1-cbec-4bcd-86c3-b0ac7bb9b3bf",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Adicionar palavra chave\nAqui você adiciona as palavras chaves que pretendo usar.\n\nIMPORTANTE: DEVE SEGUIR MESMO PADRÃO EM TODOS OS OUTROS SWITCH.",
+        "height": 588,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        112
+      ],
+      "id": "69b62d7b-5a2c-4760-bf44-7703304c3578",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Agente de IA",
+        "height": 1008,
+        "width": 1968,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2832,
+        1888
+      ],
+      "typeVersion": 1,
+      "id": "a9a0557f-63bc-4959-ab4b-dd194824128e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4bdf1a36-c8b7-484e-a789-08c245e3482a",
+              "name": "listaMensagens",
+              "value": "={{ $json.listaMensagens }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2896,
+        2016
+      ],
+      "id": "ed953a8c-ce59-46eb-a158-80f8719d390c",
+      "name": "listaMensagens"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields1').item.json.id_usuario }}{{ $('Edit Fields1').item.json.from_id }}",
+        "messageData": "={{ $json.textMessage }}",
+        "tail": true
+      },
+      "id": "550f52a7-b19d-4cc2-9eea-6bcfd4b76b21",
+      "name": "Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        2032
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Edit Fields1').item.json.id_usuario }}{{ $('Edit Fields1').item.json.from_id }}",
+        "options": {}
+      },
+      "id": "93a07bfc-9a03-4164-99ec-c930a02a41f7",
+      "name": "Redis1",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1856,
+        2032
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields1').item.json.id_usuario }}{{ $('Edit Fields1').item.json.from_id }}"
+      },
+      "id": "8247d4f6-8372-4afa-b68d-d3933a1c3c2b",
+      "name": "Redis2",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2544,
+        2016
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "id": "283e2397-06f7-495a-893b-d07c569820b4",
+      "name": "Wait2",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1648,
+        2032
+      ],
+      "webhookId": "45e98c91-6421-4006-a079-aaf8d751a828"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21fd20d7-f940-4a66-91d5-5ea4c031bb50",
+              "leftValue": "={{ $json.propertyName.last() }}",
+              "rightValue": "={{ $('Merge1').item.json.textMessage }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "af85f7ea-6bbc-4bb2-bae1-8d148442ec59",
+      "name": "If6",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        2032
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "37f63b88-4a52-4421-aa95-db9114e521bc",
+              "name": "listaMensagens",
+              "value": "={{ $json.propertyName.join(', ') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7849bf38-ccb1-46fb-a510-5b68648b4584",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2320,
+        2016
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "54f4c228-649d-43bf-a312-e9e6491105e8",
+      "name": "No Operation, do nothing3",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2096,
+        2192
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Buffer de mensagens",
+        "height": 516,
+        "width": 1416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1872
+      ],
+      "id": "926bec91-66e3-4cd7-be86-63cd66a99c6a",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "46951293-ac9a-47c2-8470-8f12fd6f4df2",
+      "name": "OpenAI4",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        592,
+        2112
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1072,
+        2080
+      ],
+      "id": "cfc5d7c4-90bd-47d3-8f4b-2007cb3a7e21",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e588faa1-978e-497f-8e40-39d70a808bb1",
+              "name": "textMessage",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        2112
+      ],
+      "id": "244a6144-fa61-4d8c-bbb9-a07c3cc6246f",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "50cebc66-2dbc-4c7a-a09e-83ffb0f52991",
+              "name": "textMessage",
+              "value": "={{ $json['type-text'] }}{{ $json.comment }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2958fd94-12c3-4390-9baf-825931fadbbd",
+      "name": "Edit Fields4",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        1920
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Entende entrada de mensagns e converte em texto",
+        "height": 612,
+        "width": 1320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        16,
+        1776
+      ],
+      "id": "0def77c2-002e-4215-a7fe-d554eac2f5de",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e514e613-fd6a-48bd-b0ae-bae2448c810e",
+                    "leftValue": "={{ $json[\"type-text\"] }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json[\"type-audio\"] }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "c9a7b9fa-752e-487a-8ac2-ffb904d21521"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "8b45100c-c47f-49bd-8bf3-a7b8ecc23833",
+                    "leftValue": "={{ $json.comment }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "comentario"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "647ce262-0893-414f-9f99-150b5e17e095",
+      "name": "Switch2",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        96,
+        2080
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json[\"audio-direct\"] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        2112
+      ],
+      "id": "d3a4bc79-57ff-4776-b0ff-1770a26d0507",
+      "name": "Busca audio"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "50cebc66-2dbc-4c7a-a09e-83ffb0f52991",
+              "name": "text",
+              "value": "={{ $json.output.split('\\n\\n') }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e1e17fb7-d412-437a-94b1-82b8bc0e7156",
+      "name": "Edit Fields6",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2944,
+        2544
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {}
+      },
+      "id": "a2dc4268-9f62-4a52-b389-a6593a2e7af2",
+      "name": "Loop Over Items3",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4000,
+        2544
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields6').item.json.text }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Seu trabalho é dividir a resposta abaixo em mensagens curtas para WhatsApp.\n\n⚠️ Retorne diretamente o objeto JSON — sem blocos de código, sem aspas externas e sem texto adicional.\n\nRetorne **exatamente este formato**:\n\n{\n  \"messages\": [\n    \"mensagem 1\",\n    \"mensagem 2\"\n  ]\n}\n\n---\n\n### REGRAS DE DIVISÃO:\n\n✅ Divida quando:\n- Houver `\\n\\n` ou `\\n` ou mudança de assunto\n- Tiver perguntas separadas ou links\n- O texto for longo demais (+300 caracteres)"
+            }
+          ]
+        }
+      },
+      "id": "d95a62b3-5832-437a-9b55-2f1e73a1380f",
+      "name": "Parser  Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        3152,
+        2544
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "54f1facd-ea70-4fe9-b3a3-48fcd0e64e58",
+      "name": "Split de Mensagem",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3760,
+        2544
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "id": "2578279a-7dc5-4f5e-8ff5-ac7269acf118",
+      "name": "3 segundo",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4496,
+        2560
+      ],
+      "webhookId": "a0d29eea-f6dc-47b7-9e19-e39f2b9813f8"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        4272,
+        2336
+      ],
+      "id": "bcd64c07-6832-46d0-ae39-5634875f942c",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e4200e3b-923b-4777-9bf2-33745b8d3b17",
+              "name": "messages",
+              "value": "={{ Array.isArray($json.output.messages) ? $json.output.messages : (Array.isArray($json.output) ? $json.output : [$json.output]) }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3568,
+        2544
+      ],
+      "id": "ede5268c-de34-4d9f-b51a-09a7e4ea6a4c",
+      "name": "Normaliza mensagens"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $('Edit Fields1').item.json.comment_id }}/replies",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Agente Principal').item.json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3808,
+        2000
+      ],
+      "id": "b881a24c-df14-4550-bb3e-aeef93475736",
+      "name": "Responde comentarios"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/me/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Edit Fields1').item.json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": {\n    \"text\": \"{{ $json.output }}\"\n  },\n  \"recipient\": {\n    \"id\": \"{{ $('Edit Fields1').item.json.id_usuario }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4256,
+        2560
+      ],
+      "id": "5e9d8f85-dc09-4727-bf29-2e8c22729825",
+      "name": "Responde no Direct"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"messages\"]\n}\n"
+      },
+      "id": "48080ff2-bef4-4a54-9f2f-e50c8ef01fbb",
+      "name": "OutputParser1",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3344,
+        2704
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "54b34c49-29b3-45c4-a1de-72d758942ab8",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        3104,
+        2736
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- ================================================================\n-- 🚀 CRIAÇÃO SIMPLES - TABELA: followup_clientes\n-- ================================================================\n\n-- Criar tabela com estrutura exata do CSV\nCREATE TABLE followup_clientes (\n    id BIGSERIAL PRIMARY KEY,\n    created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,\n    nome VARCHAR(255) NOT NULL,\n    remoteid VARCHAR(50) NOT NULL UNIQUE,\n    ultimaatividade TIMESTAMPTZ DEFAULT NOW(),\n    ultimamensagem TEXT,\n    \"Follow-up 1\" BOOLEAN DEFAULT FALSE NOT NULL,\n    \"Follow-up 2\" BOOLEAN DEFAULT FALSE NOT NULL,\n    \"Follow-up 3\" BOOLEAN DEFAULT FALSE NOT NULL,\n    \"Follow-up 4\" BOOLEAN DEFAULT FALSE NOT NULL,\n    encerrado BOOLEAN DEFAULT FALSE NOT NULL,\n    enviou_ticket BOOLEAN DEFAULT FALSE NOT NULL,\n    humano_na_conversa BOOLEAN DEFAULT FALSE NOT NULL,\n    expirar_bloqueado TIMESTAMPTZ,\n    bloqueado BOOLEAN DEFAULT FALSE NOT NULL\n);\n\n-- Índices essenciais para performance\nCREATE INDEX idx_followup_remoteid ON followup_clientes (remoteid);\nCREATE INDEX idx_followup_atividade ON followup_clientes (ultimaatividade DESC);\nCREATE INDEX idx_followup_ativos ON followup_clientes (encerrado, bloqueado) WHERE NOT encerrado AND NOT bloqueado;\n\n-- RLS (Row Level Security)\nALTER TABLE followup_clientes ENABLE ROW LEVEL SECURITY;\n\n-- Políticas básicas\nCREATE POLICY \"Permitir tudo followup_clientes\" ON followup_clientes FOR ALL USING (true) WITH CHECK (true);\n\n-- Constraints básicas\nALTER TABLE followup_clientes ADD CONSTRAINT check_nome_not_empty CHECK (LENGTH(TRIM(nome)) > 0);\nALTER TABLE followup_clientes ADD CONSTRAINT check_remoteid_not_empty CHECK (LENGTH(TRIM(remoteid)) > 0);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2592,
+        1168
+      ],
+      "id": "6a04b0cf-99b7-4659-a032-6dc980351b80",
+      "name": "Execute a SQL query"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "08d4b97e-738a-49a1-9de5-3bc646342ea2",
+              "leftValue": "={{ $('Edit Fields1').item.json.from_id }}{{ $('Edit Fields1').item.json.id_usuario }}",
+              "rightValue": "={{ $('Edit Fields1').item.json.meu_id }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -688,
+        2144
+      ],
+      "id": "404d52a6-868d-4809-9c06-f49aa3f99bd9",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        2256
+      ],
+      "id": "bcb40202-6a79-4df5-a5b5-766cb8f47f0a",
+      "name": "No Operation, do nothing1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.linqapps.com",
+            "user-agent": "facebookplatform/1.0 (+http://developers.facebook.com)",
+            "accept": "*/*",
+            "accept-encoding": "deflate, gzip",
+            "x-forwarded-for": "173.252.87.5",
+            "x-forwarded-host": "webhook.linqapps.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "c8ede2e811c1",
+            "x-real-ip": "173.252.87.5"
+          },
+          "params": {},
+          "query": {
+            "hub.mode": "subscribe",
+            "hub.challenge": "1705305681",
+            "hub.verify_token": "teste"
+          },
+          "body": {},
+          "webhookUrl": "https://webhook.linqapps.com/webhook/fluxo-alejandro",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "cometario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "cometario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cometario": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "responde comentario9",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "responde comentario10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "responde comentario11",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "responde comentario12",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "responde comentario13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar se é seguidor": {
+      "main": [
+        [
+          {
+            "node": "Me segue?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Me segue?": {
+      "main": [
+        [
+          {
+            "node": "cometario2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia mensagens direct10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cometario1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar se é seguidor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cometario2": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagens direct21",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia mensagens direct23",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia mensagens direct24",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia mensagens direct26",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia mensagens direct28",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "responde comentario9": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagens direct20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagens direct21": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "responde comentario10": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagens direct22",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagens direct23": {
+      "main": [
+        [
+          {
+            "node": "Supabase2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagens direct24": {
+      "main": [
+        [
+          {
+            "node": "Supabase3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "responde comentario11": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagens direct25",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagens direct26": {
+      "main": [
+        [
+          {
+            "node": "Supabase4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "responde comentario12": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagens direct27",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagens direct28": {
+      "main": [
+        [
+          {
+            "node": "Supabase5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "responde comentario13": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagens direct29",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Principal",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Principal",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Principal": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Responde comentarios",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "listaMensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "listaMensagens": {
+      "main": [
+        [
+          {
+            "node": "Agente Principal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields10": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Busca audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca audio": {
+      "main": [
+        [
+          {
+            "node": "OpenAI4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responde no Direct",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser  Chain": {
+      "main": [
+        [
+          {
+            "node": "Normaliza mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 segundo": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normaliza mensagens": {
+      "main": [
+        [
+          {
+            "node": "Split de Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responde no Direct": {
+      "main": [
+        [
+          {
+            "node": "3 segundo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OutputParser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b4c92da7-15f4-4300-a2f0-439471eb781d",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "RHQpT33EhpyHKRYx",
+  "tags": []
+}

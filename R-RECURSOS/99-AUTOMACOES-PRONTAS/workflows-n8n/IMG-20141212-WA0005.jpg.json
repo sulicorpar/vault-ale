@@ -1,0 +1,31 @@
+{
+  "title": "IMG-20141212-WA0005.jpg",
+  "description": "",
+  "imageViews": "0",
+  "creationTime": {
+    "timestamp": "1418390138",
+    "formatted": "12 de dez. de 2014 13:15:38 UTC"
+  },
+  "modificationTime": {
+    "timestamp": "1578521656",
+    "formatted": "8 de jan. de 2020 22:14:16 UTC"
+  },
+  "geoData": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "geoDataExif": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "photoTakenTime": {
+    "timestamp": "1418389502",
+    "formatted": "12 de dez. de 2014 13:05:02 UTC"
+  }
+}

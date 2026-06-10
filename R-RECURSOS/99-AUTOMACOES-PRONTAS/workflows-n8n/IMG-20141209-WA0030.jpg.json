@@ -1,0 +1,31 @@
+{
+  "title": "IMG-20141209-WA0030.jpg",
+  "description": "",
+  "imageViews": "0",
+  "creationTime": {
+    "timestamp": "1418175659",
+    "formatted": "10 de dez. de 2014 01:40:59 UTC"
+  },
+  "modificationTime": {
+    "timestamp": "1578521656",
+    "formatted": "8 de jan. de 2020 22:14:16 UTC"
+  },
+  "geoData": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "geoDataExif": {
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "altitude": 0.0,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "photoTakenTime": {
+    "timestamp": "1418172049",
+    "formatted": "10 de dez. de 2014 00:40:49 UTC"
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "name": "Criação de LP Lovable para GMN",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e651e717-eaf7-4493-a8d8-4a4b236ec507",
+      "name": "Rodar 1x ao dia",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -1456,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "category",
+              "value": "dentist"
+            },
+            {
+              "name": "location",
+              "value": "Teresina, Piauí, Brasil"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7b20f889-03f6-4301-8c93-842561e5965f",
+      "name": "Configuração da busca",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/place/textsearch/json",
+        "options": {}
+      },
+      "id": "cf2bbefc-8b1c-40a9-9c16-a87109a18da7",
+      "name": "Google Maps - Text Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -1008,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3bd31bae-a79b-4f21-aec4-0b8c842f2c56",
+      "name": "Split Results",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -752,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/place/details/json",
+        "options": {}
+      },
+      "id": "f45147ff-1685-400b-98a4-aaa363bf8e5d",
+      "name": "Google Maps - Place Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -496,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {},
+          "conditions": []
+        },
+        "options": {}
+      },
+      "id": "bb9a79a1-6d7d-44a8-b692-39801ca591b3",
+      "name": "Tem site?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  const r = item.json.result || {};\n  item.json.companyName = r.name || '';\n  item.json.companyInfo = `Nome: ${r.name || ''}\\nEndereço: ${r.formatted_address || \"Não informado\"}\\nTelefone: ${r.formatted_phone_number || \"Não informado\"}`;\n  return item;\n});"
+      },
+      "id": "fe56898f-8a9b-4b11-b5e4-6850f8ed6691",
+      "name": "Preparar infos da empresa",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "options": {}
+      },
+      "id": "f919c377-a7eb-4772-97a7-070614e9327a",
+      "name": "Gerar prompt GPT",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  const choices = item.json.choices || [];\n  item.json.gptPrompt = choices[0]?.message?.content || '';\n  return item;\n});"
+      },
+      "id": "f1e36c79-0099-4cda-8937-8a81f44c2da6",
+      "name": "Extrair Prompt GPT",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        512,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  const base = 'https://lovable.dev/?autosubmit=true#prompt=';\n  item.json.lovableUrl = base + encodeURIComponent(item.json.gptPrompt || '');\n  return item;\n});"
+      },
+      "id": "167b38c7-3e1a-4d8a-bd1a-01b166ce4091",
+      "name": "Criar Link Lovable",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        752,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return items.map(item => {\n  const companyName = item.json.companyName || 'Sua Empresa';\n  item.json.companyMessage = `Olá, tudo bem?\\n\\nGerei um protótipo GRATUITO de site para sua empresa ${companyName}, usando inteligência artificial.\\n\\nVocê pode visualizar aqui:\\n${item.json.lovableUrl}\\n\\nSe quiser, posso personalizar com suas cores, fotos e domínio próprio. Se fizer sentido, me avise :)`;\n  item.json.leadName = `Lead - ${companyName} - Site IA`;\n  return item;\n});"
+      },
+      "id": "0d23d28f-b33f-485e-889f-f57156d3f8de",
+      "name": "Mensagem + LeadName",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://YOUR_KOMMO_DOMAIN.kommo.com/api/v4/leads",
+        "options": {}
+      },
+      "id": "45509307-6a45-4a09-a5eb-801505f6b18e",
+      "name": "Criar Lead no Kommo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1264,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b468e332-9314-4f79-b4ea-54ae8d8a8f9e",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "v7DZ6OXum2VE7W60",
+  "tags": []
+}

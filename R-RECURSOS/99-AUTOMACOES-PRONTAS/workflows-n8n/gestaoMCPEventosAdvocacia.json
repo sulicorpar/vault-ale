@@ -1,0 +1,2236 @@
+{
+  "name": "gestaoMCPEventosAdvocacia",
+  "nodes": [
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1952,
+        672
+      ],
+      "id": "7afc6fa4-285d-4909-8af6-dcc56e0596ce",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "=https://viacep.com.br/ws/{{ $('Seta Dados').item.json.cep }}/json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        1040
+      ],
+      "id": "83075f03-7231-4e0a-b652-c05780489218",
+      "name": "ConsultaCep",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "function"
+            },
+            {
+              "name": "telefone"
+            },
+            {
+              "name": "nome"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "numero"
+            },
+            {
+              "name": "endereco"
+            },
+            {
+              "name": "cep"
+            },
+            {
+              "name": "cpf"
+            },
+            {
+              "name": "lat"
+            },
+            {
+              "name": "long"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1456,
+        752
+      ],
+      "id": "159ecb9a-2c33-4243-b6e0-e6b2ddd3fd37",
+      "name": "Inicio"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "customers",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "keyValue": "={{ $('Seta Dados').item.json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        752
+      ],
+      "id": "aa8518fd-52c8-4602-92ac-8215adbb8695",
+      "name": "Busca Cliente",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "oLU8ldbYN6ruvw56",
+          "name": "Supabase account - Sulicorpar"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1dbcca50-6942-4456-92b2-9175d0416950",
+              "leftValue": "={{ $('Busca Cliente').last().json.isEmpty() }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -128,
+        768
+      ],
+      "id": "434a1749-abad-4366-977f-e39cfe4465fe",
+      "name": "Verifica se Encontrou Cliente"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop through input items\nconst output = $input.all().map(item => {\n  // Objeto 1 e Objeto 2\n\n  const object1 = $(\"Busca Cliente\").first().json; // Primeiro objeto \n  const object2 = $(\"Seta Dados\").first().json // Segundo objeto\n  // Validar que os objetos existem\n  if (!object1 || !object2) {\n    throw new Error('Os campos \"object1\" e \"object2\" são obrigatórios nos dados de entrada.');\n  }\n\n  // Misturar os objetos, sobrepondo os valores do segundo objeto, caso não estejam em branco\n  const mergedObject = { ...object1 }; // Começa com os valores do objeto 1\n\n  for (const [key, value] of Object.entries(object2)) {\n    // Sobrescreve o valor apenas se não estiver vazio\n    if (value !== null && value !== undefined && value !== '') {\n      mergedObject[key] = value;\n    }\n  }\n\n  // Retornar o novo objeto combinado\n  return { json: { mergedObject } };\n});\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        528,
+        784
+      ],
+      "id": "150f1572-b228-48d7-8f31-61b1575a6a8f",
+      "name": "Junta Dados"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d85ea53c-6018-4697-afc9-57f0c87f2750",
+              "leftValue": "={{ $json.cep }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        1040
+      ],
+      "id": "dc6d2fb0-88b6-4424-b86b-b7afb6cf396f",
+      "name": "Valida se Encontrou"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop through input items\nconst output = $input.all().map(item => {\n  // Objeto 1 e Objeto 2\n\n  const object1 = $(\"Busca Cliente\").first().json; // Primeiro objeto \n  const object2 = $(\"ConsultaCep\").first().json // Segundo objeto\n  // Validar que os objetos existem\n  if (!object1 || !object2) {\n    throw new Error('Os campos \"object1\" e \"object2\" são obrigatórios nos dados de entrada.');\n  }\n\n  // Misturar os objetos, sobrepondo os valores do segundo objeto, caso não estejam em branco\n  const mergedObject = { ...object1 }; // Começa com os valores do objeto 1\n\n  for (const [key, value] of Object.entries(object2)) {\n    // Sobrescreve o valor apenas se não estiver vazio\n    if (value !== null && value !== undefined && value !== '') {\n      mergedObject[key] = value;\n    }\n  }\n\n  // Retornar o novo objeto combinado\n  return { json: { mergedObject } };\n});\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        1040
+      ],
+      "id": "c043c6db-8034-4b54-b670-864f8e675ae9",
+      "name": "Junta Dados1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4373703-63d9-433c-baff-3911c4ee98ba",
+              "name": "message",
+              "value": "CEP não localizado",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        704,
+        1280
+      ],
+      "id": "57850cad-3753-4beb-8dcd-f2d60dc9ab49",
+      "name": "Avisa que o Cep não foi localizado"
+    },
+    {
+      "parameters": {
+        "jsCode": "return { \n'response': $input.last().json\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1024,
+        1280
+      ],
+      "id": "fe917c87-9e57-49c9-bf3c-ce0d2129fb9f",
+      "name": "Seta Retorno do Fluxo"
+    },
+    {
+      "parameters": {
+        "content": "## Tatamento de Entrada do Cliente no Fluxo",
+        "height": 300,
+        "width": 1060
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        640
+      ],
+      "id": "0f451f89-fb04-491e-842f-7f186ebccbc1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Valida a operação que será feira na gestão do cliente",
+        "height": 1320,
+        "width": 2260,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        176
+      ],
+      "id": "a0a80bad-6db0-45ec-b0c2-ed999ae4341a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        160,
+        480
+      ],
+      "id": "c249040d-2583-48f4-9615-93893b862355",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8a011e5f-4fa4-4788-a027-4e8a5e3ec3ef",
+              "leftValue": "={{ $('Busca Cliente')?.last()?.json?.id}}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        336
+      ],
+      "id": "82147758-5f31-476f-9ea2-787f91153290",
+      "name": "Verifica se existe"
+    },
+    {
+      "parameters": {
+        "tableId": "clientes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Seta Dados para gravar').item.json.telefone }}"
+            },
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $('Seta Dados para gravar').item.json.nome }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('Seta Dados para gravar').item.json.email }}"
+            },
+            {
+              "fieldId": "app_name",
+              "fieldValue": "=sdr-advocacia"
+            },
+            {
+              "fieldId": "ativo",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        560
+      ],
+      "id": "004faa41-3bc7-4f19-9f05-cfe9999149b2",
+      "name": "Criar Cliente",
+      "credentials": {
+        "supabaseApi": {
+          "id": "oLU8ldbYN6ruvw56",
+          "name": "Supabase account - Sulicorpar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "clientes",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $json.mergedObject.telefone }}"
+            },
+            {
+              "keyName": "app_name",
+              "condition": "eq",
+              "keyValue": "sdr-advocacia"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $json.mergedObject.cliente_name }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $json.mergedObject.email }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        784
+      ],
+      "id": "59d52fbd-e68c-48da-8170-4a5530ca4dde",
+      "name": "Atualiza Cliente",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "oLU8ldbYN6ruvw56",
+          "name": "Supabase account - Sulicorpar"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "clientes",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $json.mergedObject.telefone }}"
+            },
+            {
+              "keyName": "app_name"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "cep",
+              "fieldValue": "={{ $json.mergedObject.cep }}"
+            },
+            {
+              "fieldId": "uf",
+              "fieldValue": "={{ $json.mergedObject.uf }}"
+            },
+            {
+              "fieldId": "cidade",
+              "fieldValue": "={{ $json.mergedObject.cidade }}"
+            },
+            {
+              "fieldId": "bairro",
+              "fieldValue": "={{ $json.mergedObject.bairro }}"
+            },
+            {
+              "fieldId": "endereco",
+              "fieldValue": "={{ $json.mergedObject.endereco }}"
+            },
+            {
+              "fieldId": "complemento",
+              "fieldValue": "={{ $json.mergedObject.complemento }}"
+            },
+            {
+              "fieldId": "numero",
+              "fieldValue": "={{ $json.mergedObject.numero }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $json.mergedObject.email }}"
+            },
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $json.mergedObject.nome }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1040
+      ],
+      "id": "a3b5636e-bcd8-4120-a67e-61eb790a2558",
+      "name": "Atualiza o Cliente",
+      "credentials": {
+        "supabaseApi": {
+          "id": "oLU8ldbYN6ruvw56",
+          "name": "Supabase account - Sulicorpar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return { \n'response': $input.last().json\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        688
+      ],
+      "id": "af463f99-17c5-4835-bfd0-998f07fe1bfd",
+      "name": "Retorna o Cliente"
+    },
+    {
+      "parameters": {
+        "content": "## Retorna o Json com cliente ou com mensagem",
+        "height": 340,
+        "width": 600,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        560
+      ],
+      "id": "a0e2cfb3-116c-4199-babf-99cb2c00bb1b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1560,
+        "width": 4360,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        80
+      ],
+      "id": "6b92498a-fcae-4094-9ab2-f161db66d4e9",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Gestão do banco de dados",
+        "height": 360,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1616,
+        192
+      ],
+      "id": "6ec7be08-1515-496f-9420-40539eaa2e3a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "▕▇▇▇▕▇▇▇▇▕▕▇▇▇▕▇▇▇▇▇▕▕▇▇▕▕▕▇▇▕▕▕▇▇▇▕▕▇▇▇▇▕▕▕▇▇▇▕▇▕▕▕▕▇▕▇▇▇▇▕▇▕▕▇▕▇▇▇▇▇▕▇▇▇▇▕▕▇▇▇\n▇▕▕▕▕▇▕▕▕▕▇▕▕▕▕▕▕▇▕▕▕▇▕▕▇▕▇▕▕▇▕▕▇▕▕▇▕▇▕▕▕▕▕▇▕▕▕▕▇▕▕▕▕▇▕▇▕▕▕▕▇▇▕▇▕▕▕▇▕▕▕▇▕▕▕▕▇▕▕▕\n▇▕▇▇▕▇▇▇▕▕▕▇▇▕▕▕▕▇▕▕▕▇▇▇▇▕▇▕▕▇▕▕▇▕▕▇▕▇▇▇▕▕▕▇▕▕▕▕▇▕▕▕▕▇▕▇▇▇▕▕▇▕▇▇▕▕▕▇▕▕▕▇▇▇▕▕▕▇▇▕\n▇▕▕▇▕▇▕▕▕▕▕▕▕▇▕▕▕▇▕▕▕▇▕▕▇▕▇▕▕▇▕▕▇▕▕▇▕▇▕▕▕▕▕▇▕▕▕▕▇▕▕▕▕▇▕▇▕▕▕▕▇▕▕▇▕▕▕▇▕▕▕▇▕▕▕▕▕▕▕▇\n▕▇▇▕▕▇▇▇▇▕▇▇▇▕▕▕▕▇▕▕▕▇▕▕▇▕▕▇▇▕▕▕▇▇▇▕▕▇▇▇▇▕▕▕▇▇▇▕▇▇▇▇▕▇▕▇▇▇▇▕▇▕▕▇▕▕▕▇▕▕▕▇▇▇▇▕▇▇▇▕\n▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕",
+        "height": 140,
+        "width": 1168,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "19a52957-9ffd-4a49-b8a5-699711c324c3",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "332b1821-9580-4cfd-a520-1f8189e9d764",
+              "name": "function",
+              "value": "={{ $json.function || 'buscar_ou_Criar' }}",
+              "type": "string"
+            },
+            {
+              "id": "2e31c66f-31b8-4800-9154-e5365bcbfdec",
+              "name": "telefone",
+              "value": "={{ $json.telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "a7de30b6-1398-4812-a589-68eb0aa9d604",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "bed1554c-d83b-4a11-b9aa-e59e2a63cbb9",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "7437d6f3-54ea-4a89-ab95-8a12c3510870",
+              "name": "cpf",
+              "value": "={{ $json.cpf || \"\"}}",
+              "type": "string"
+            },
+            {
+              "id": "495064cf-b146-48e3-9bc0-0d31601aa392",
+              "name": "lat",
+              "value": "={{ $json.lat }}",
+              "type": "string"
+            },
+            {
+              "id": "aa962888-9af0-4e93-a2bf-1e496200d62f",
+              "name": "long",
+              "value": "={{ $json.long }}",
+              "type": "string"
+            },
+            {
+              "id": "56f3c2e2-b3b2-439c-b421-a0b668e5ae2e",
+              "name": "distancia",
+              "value": "={{ $json.distance  || \"\"}}",
+              "type": "string"
+            },
+            {
+              "id": "7ff00a13-53cc-42d7-9ab4-2970d9a38463",
+              "name": "nomeApp",
+              "value": "sdr-advocacia",
+              "type": "string"
+            },
+            {
+              "id": "96f589b9-9d9f-4b8a-9e46-aed3a771f728",
+              "name": "cep",
+              "value": "={{ $json.cep.replaceAll('-','').replaceAll(' ','') }}",
+              "type": "string"
+            },
+            {
+              "id": "a3af05ec-7cd2-4541-aad9-fa35685911e5",
+              "name": "numero",
+              "value": "={{ $json.numero }}",
+              "type": "string"
+            },
+            {
+              "id": "ee446d4a-5bb8-463f-be75-63a6bca22fcc",
+              "name": "endereco",
+              "value": "={{ $json.complemento }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1136,
+        752
+      ],
+      "id": "1cdfffb0-3152-437a-a20a-e2f5792534a7",
+      "name": "Seta Dados",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Seta Dados').item.json.function }}",
+                    "rightValue": "buscar_ou_criar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2ba71c7e-932a-48d6-9e98-fe922c9122af"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Busca ou Cria"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "61ad9fb3-58ca-48f7-9cf0-d52c39400446",
+                    "leftValue": "={{ $('Seta Dados').item.json.function }}",
+                    "rightValue": "atualizar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Atualiza"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "40cbf966-b03f-4376-9af5-60733c67af73",
+                    "leftValue": "={{ $('Seta Dados').item.json.function }}",
+                    "rightValue": "buscar_cep",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "BuscaCep"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -480,
+        752
+      ],
+      "id": "d23856fc-8de7-4266-b709-8f444655194a",
+      "name": "Roteador"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3b472184-de47-4205-bccd-3c3710f98bb8",
+              "name": "telefone",
+              "value": "={{ $('Seta Dados').item.json.telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "3c5d0b81-d4c7-4069-b14f-77842890c2d2",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "8fb1b4bf-f239-4408-9987-cdd3c1e0eb31",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "056bebdd-ceca-4204-b3da-a117bfabc25b",
+              "name": "lat",
+              "value": "={{ $json.lat }}",
+              "type": "string"
+            },
+            {
+              "id": "8cdb1beb-fe86-4a43-a5e2-a6d36436df40",
+              "name": "long",
+              "value": "={{ $json.long }}",
+              "type": "string"
+            },
+            {
+              "id": "3623929e-b762-40ff-80a1-ed6264c060cf",
+              "name": "cpf",
+              "value": "={{ $json.cpf }}",
+              "type": "string"
+            },
+            {
+              "id": "5301be13-a7c3-449a-8c85-979053abba79",
+              "name": "cep",
+              "value": "={{ $json.cep }}",
+              "type": "string"
+            },
+            {
+              "id": "ea553a16-c8f8-4072-8ee1-957e92b8d214",
+              "name": "endereco",
+              "value": "={{ $json.endereco }}",
+              "type": "string"
+            },
+            {
+              "id": "76c85c25-b8ef-46e4-b95a-17c00e92ff5e",
+              "name": "numero",
+              "value": "={{ $json.numero }}",
+              "type": "string"
+            },
+            {
+              "id": "70fb0c6e-52c7-432b-bdcc-635530835210",
+              "name": "  cidade",
+              "value": "={{ $json.cidade }}",
+              "type": "string"
+            },
+            {
+              "id": "f2be0ca7-9a4e-41d4-8db5-d48e0d40f742",
+              "name": "uf",
+              "value": "={{ $json.uf }}",
+              "type": "string"
+            },
+            {
+              "id": "a4b46205-b619-4b7b-a0ad-54b77b4d2f93",
+              "name": "bairro",
+              "value": "={{ $json.bairro }}",
+              "type": "string"
+            },
+            {
+              "id": "e3b1096f-2af3-46d6-92fe-578fa4f74340",
+              "name": "complemento",
+              "value": "={{ $json.complemento }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        464
+      ],
+      "id": "3f0fc5a5-721f-4145-90c2-ee2c9ed80479",
+      "name": "Seta Dados para gravar"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table public.clientes (\n  id bigint generated by default as identity not null,\n  created_at timestamp with time zone not null default now(),\n  telefone text null,\n  nome text null,\n  email text null,\n  cpf text null,\n  cep text null,\n  uf text null,\n  cidade text null,\n  bairro text null,\n  numero text null,\n  endereco text null,\n  complemento text null,\n  lat text null,\n  long text null,\n  ativo boolean null default false,\n  app_name text null default 'delivery'::text,\n  updated_at timestamp with time zone null default (now() AT TIME ZONE 'utc'::text),\n  constraint clientes_pkey primary key (id)\n) TABLESPACE pg_default;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1568,
+        336
+      ],
+      "id": "a66ff127-327b-4e29-990a-ee18c154eff6",
+      "name": "Criar Tabela Cliente",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "agenda_nova_reuniao",
+        "description": "Função que cria um novo evento (reunião) para o advogado com o ID iCalUID e dados do cliente",
+        "workflowId": {
+          "__rl": true,
+          "value": "UPdmUGQK8RgFx4XC",
+          "mode": "list",
+          "cachedResultName": "gestaoAgendasAdvocacia"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `Email do cliente`, 'string') }}",
+            "startDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('startDate', `Data e hora inicial do evento(reunião)`, 'string') }}",
+            "duration": "1",
+            "function": "new",
+            "phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone', `Telefone do cliente`, 'string') }}",
+            "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('name', `Nome do cliente`, 'string') }}",
+            "event_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('event_id', `Não se aplica a esta função`, 'string') }}",
+            "local": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('local', `Local onde será o evento`, 'string') }}",
+            "observacao": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('observacao', `Observação sobre o cliente`, 'string') }}",
+            "iCalUID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('iCalUID', `iCalUID da agenda do profissional que devemos criar o agendamento`, 'string') }}",
+            "date_slots": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date_slots', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date_slots",
+              "displayName": "date_slots",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "startDate",
+              "displayName": "startDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "duration",
+              "displayName": "duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "local",
+              "displayName": "local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2176,
+        2432
+      ],
+      "id": "54e1fd5c-2193-4b2d-b624-8cee9466ae85",
+      "name": "agenda_nova_reuniao"
+    },
+    {
+      "parameters": {
+        "name": "lista_reunioes_do_cliente",
+        "description": "Função que lista um ou vários eventos (reuniões) de um cliente com um determinado telefone (phone) com qualquer advogado disponível",
+        "workflowId": {
+          "__rl": true,
+          "value": "UPdmUGQK8RgFx4XC",
+          "mode": "list",
+          "cachedResultName": "gestaoAgendasAdvocacia"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `Email do cliente`, 'string') }}",
+            "function": "lista_reunioes_do_cliente",
+            "telefone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('telefone', `Telefone do Cliente`, 'string') }}",
+            "nome": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nome', `Nome do Cliente`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dateSlots",
+              "displayName": "dateSlots",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "dataInicio",
+              "displayName": "dataInicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "duracao",
+              "displayName": "duracao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "local",
+              "displayName": "local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "id_do_evento",
+              "displayName": "id_do_evento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2400,
+        2432
+      ],
+      "id": "37252a5e-4f8d-480c-b409-c3f331e85a95",
+      "name": "lista_reunioes_do_cliente"
+    },
+    {
+      "parameters": {
+        "name": "exclui_reuniao_com_cliente",
+        "description": "Função que deleta todos os eventos (reunião) para o advogado com o iCalUID e com um determinado telefone (phone) ou email de um cliente",
+        "workflowId": {
+          "__rl": true,
+          "value": "bktGOu4TyGrHvSJ3",
+          "mode": "list",
+          "cachedResultName": "ToolsEventGoogleCalendar-Adv"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "date_slots": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date_slots', `Dara para verificação dos slots disponíveis com formato YYYY-MM-DD`, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `Email do cliente`, 'string') }}",
+            "startDate": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('startDate', `Data e hora inicial do evento(reunião)`, 'string') }}",
+            "function": "exclui_reuniao_com_cliente",
+            "phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone', `Telefone do cliente`, 'string') }}",
+            "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('name', `Nome do cliente`, 'string') }}",
+            "event_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('event_id', `Não se aplica a esta função`, 'string') }}",
+            "local": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('local', `Local onde será o evento`, 'string') }}",
+            "observacao": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('observacao', `Observação sobre o cliente`, 'string') }}",
+            "iCalUID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('iCalUID', `iCalUID da agenda do profissional que devemos apagar/cancelar o agendamento`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date_slots",
+              "displayName": "date_slots",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "startDate",
+              "displayName": "startDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "duration",
+              "displayName": "duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "local",
+              "displayName": "local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2624,
+        2432
+      ],
+      "id": "adb2b3cc-e580-4321-a561-5877d8f9dd11",
+      "name": "exclui_reuniao_com_cliente"
+    },
+    {
+      "parameters": {
+        "name": "exclui_reuniao_especifica",
+        "description": "Função que deleta um eventos (reunião) para o advogado com o ID do evento e iCalUID do advogado",
+        "workflowId": {
+          "__rl": true,
+          "value": "bktGOu4TyGrHvSJ3",
+          "mode": "list",
+          "cachedResultName": "ToolsEventGoogleCalendar-Adv"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `Email do cliente`, 'string') }}",
+            "function": "exclui_reuniao_especifica",
+            "phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone', `Telefone do cliente`, 'string') }}",
+            "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('name', `Nome do cliente`, 'string') }}",
+            "event_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('event_id', `ID do evento que será apagado`, 'string') }}",
+            "local": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('local', `Local onde será o evento`, 'string') }}",
+            "observacao": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('observacao', `Observação sobre o cliente`, 'string') }}",
+            "iCalUID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('iCalUID', `iCalUID da agenda do profissional que devemos apagar/cancelar o agendamento`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date_slots",
+              "displayName": "date_slots",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "startDate",
+              "displayName": "startDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "duration",
+              "displayName": "duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "local",
+              "displayName": "local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        2816,
+        2416
+      ],
+      "id": "b591639e-9ddd-46e2-976d-a252e279ec44",
+      "name": "exclui_reuniao_especifica"
+    },
+    {
+      "parameters": {
+        "name": "atualiza_data_da_reuniao",
+        "description": "Função que atualiza a data um evento (reunião) para o advogado com o ID do evento e iCalUID do advogado",
+        "workflowId": {
+          "__rl": true,
+          "value": "bktGOu4TyGrHvSJ3",
+          "mode": "list",
+          "cachedResultName": "ToolsEventGoogleCalendar-Adv"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `Email do cliente`, 'string') }}",
+            "function": "atualiza_data_da_reuniao",
+            "phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone', `Telefone do cliente`, 'string') }}",
+            "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('name', `Nome do cliente`, 'string') }}",
+            "event_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('event_id', `ID do evento que será atualizado`, 'string') }}",
+            "local": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('local', `Local onde será o evento`, 'string') }}",
+            "observacao": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('observacao', `Observação sobre o cliente`, 'string') }}",
+            "iCalUID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('iCalUID', `iCalUID da agenda do profissional que devemos apagar/cancelar o agendamento`, 'string') }}",
+            "date_slots": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date_slots', `Nova data para o evento informado pelo cliente`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date_slots",
+              "displayName": "date_slots",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "startDate",
+              "displayName": "startDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "duration",
+              "displayName": "duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "local",
+              "displayName": "local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        3024,
+        2432
+      ],
+      "id": "5b83675b-e86a-40a0-bff5-ce994fe29591",
+      "name": "atualiza_data_da_reuniao"
+    },
+    {
+      "parameters": {
+        "name": "atualiza_cliente",
+        "description": "Função que atualiza os dados do cliente pelo numero do telefone",
+        "workflowId": {
+          "__rl": true,
+          "value": "Bn9akrocrJ9KvwP3",
+          "mode": "list",
+          "cachedResultName": "gestaoCliente"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "function": "atualizar",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `E-mail do cliente`, 'string') }}",
+            "telefone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('telefone', `Telefone do Cliente`, 'string') }}",
+            "nome": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nome', `Nome do Cliente`, 'string') }}",
+            "numero": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('numero', `Número do Celular do Cliente`, 'string') }}",
+            "endereco": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('endereco', `Endereço do Cliente`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "numero",
+              "displayName": "numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "endereco",
+              "displayName": "endereco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "cep",
+              "displayName": "cep",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "cpf",
+              "displayName": "cpf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "lat",
+              "displayName": "lat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "long",
+              "displayName": "long",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1792,
+        2432
+      ],
+      "id": "b0e677a5-2722-48ee-a03d-31444c744154",
+      "name": "atualiza_cliente"
+    },
+    {
+      "parameters": {
+        "name": "lista_slots_tempo",
+        "description": "Função que lista os slots de tempo para um determinado advogado, ele recebe uma data dataInicio, ID da agenda do advogado List_iCalUID",
+        "workflowId": {
+          "__rl": true,
+          "value": "UPdmUGQK8RgFx4XC",
+          "mode": "list",
+          "cachedResultName": "gestaoAgendasAdvocacia"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', `Email do cliente`, 'string') }}",
+            "function": "lista_slots_tempo",
+            "iCalUID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('iCalUID', `iCalUID da agenda do advogado que devemos consultar os SLOTs de tempo disponíveis para agendamento`, 'string') }}",
+            "dateSlots": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dateSlots', `Data de Slot a ser reservada`, 'string') }}",
+            "dataInicio": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('dataInicio', `Data de Inicio da reunião`, 'string') }}",
+            "duracao": "1",
+            "telefone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('telefone', `Telefone do Cliente`, 'string') }}",
+            "nome": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nome', `Nome do Cliente`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dateSlots",
+              "displayName": "dateSlots",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "iCalUID",
+              "displayName": "iCalUID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "dataInicio",
+              "displayName": "dataInicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "duracao",
+              "displayName": "duracao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "local",
+              "displayName": "local",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "function",
+              "displayName": "function",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "id_do_evento",
+              "displayName": "id_do_evento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1984,
+        2432
+      ],
+      "id": "a42bbaae-ddee-4b61-88ef-2d821b47d960",
+      "name": "lista_slots_tempo"
+    },
+    {
+      "parameters": {
+        "path": "sdr-advocacia"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        2096
+      ],
+      "id": "cd0183b8-7c59-48e4-9f4f-aa05eabd0f4c",
+      "name": "MCP Server - Gestão Advocacia",
+      "webhookId": "541a0c94-a9e9-43dc-8a88-50f53602e4ad",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 620,
+        "width": 1700,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        2032
+      ],
+      "id": "8e01776e-4623-4b0a-be18-a5ac020fd532",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "▇▇▕▇▇▕▕▇▇▇▕▇▇▇▕▕▕▇▇▕▇▇▕▇▕▕▇▕▇▕▕▕▕▇▇▇▇▇▕▇▕▕▇▇▕▕▕▇▇▇▕▇▇▇▇▕▇▕▕▇▕▇▇▇▕▕▕▇▇▕\n▇▕▇▕▇▕▇▕▕▕▕▇▕▕▇▕▕▇▕▇▕▇▕▇▕▕▇▕▇▕▕▕▕▕▕▇▕▕▕▇▕▇▕▕▇▕▇▕▕▕▕▇▕▕▕▕▇▇▕▇▕▇▕▕▇▕▇▕▕▇\n▇▕▇▕▇▕▇▕▕▕▕▇▇▇▕▕▕▇▕▇▕▇▕▇▕▕▇▕▇▕▕▕▕▕▕▇▕▕▕▇▕▇▇▇▇▕▇▕▇▇▕▇▇▇▕▕▇▕▇▇▕▇▕▕▇▕▇▇▇▇\n▇▕▕▕▇▕▇▕▕▕▕▇▕▕▕▕▕▇▕▕▕▇▕▇▕▕▇▕▇▕▕▕▕▕▕▇▕▕▕▇▕▇▕▕▇▕▇▕▕▇▕▇▕▕▕▕▇▕▕▇▕▇▕▕▇▕▇▕▕▇\n▇▕▕▕▇▕▕▇▇▇▕▇▕▕▕▕▕▇▕▕▕▇▕▕▇▇▕▕▇▇▇▇▕▕▕▇▕▕▕▇▕▇▕▕▇▕▕▇▇▕▕▇▇▇▇▕▇▕▕▇▕▇▇▇▕▕▇▕▕▇\n▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕▕",
+        "height": 136,
+        "width": 1028,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        1920
+      ],
+      "id": "3b6f4ae0-a746-4f5f-b953-abf9dd420bdc",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {
+    "Inicio": [
+      {
+        "json": {
+          "function": "atualizar",
+          "telefone": "5511982561489",
+          "nome": "Ric Neves",
+          "email": "r.nevesbraga@gmail.com",
+          "numero": "1458",
+          "endereco": "Rua Flor de Cactus",
+          "cep": "06728-330",
+          "cpf": null,
+          "lat": null,
+          "long": null
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Retorna o Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConsultaCep": {
+      "main": [
+        [
+          {
+            "node": "Valida se Encontrou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inicio": {
+      "main": [
+        [
+          {
+            "node": "Seta Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Cliente": {
+      "main": [
+        [
+          {
+            "node": "Roteador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se Encontrou Cliente": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Junta Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Junta Dados": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valida se Encontrou": {
+      "main": [
+        [
+          {
+            "node": "Junta Dados1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Avisa que o Cep não foi localizado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Junta Dados1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza o Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avisa que o Cep não foi localizado": {
+      "main": [
+        [
+          {
+            "node": "Seta Retorno do Fluxo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Seta Dados para gravar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se existe": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Atualiza Cliente": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Atualiza o Cliente": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Seta Dados": {
+      "main": [
+        [
+          {
+            "node": "Busca Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Roteador": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verifica se Encontrou Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ConsultaCep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seta Dados para gravar": {
+      "main": [
+        [
+          {
+            "node": "Verifica se existe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agenda_nova_reuniao": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lista_reunioes_do_cliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exclui_reuniao_com_cliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exclui_reuniao_especifica": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza_data_da_reuniao": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualiza_cliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lista_slots_tempo": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server - Gestão Advocacia",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "26be3a56-7367-4d14-bca5-af0423189082",
+  "meta": {
+    "instanceId": "078c5e58209b0e064da2b48eb1104acbbb559b9ca0c3510746cbc05aca35c13a"
+  },
+  "id": "QbGiQEGGdTwD0HCr",
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T20:31:44.560Z",
+      "createdAt": "2025-12-03T20:31:44.560Z",
+      "id": "grahGeXFCasU3xAL",
+      "name": "formacao-agentes-n8n"
+    },
+    {
+      "updatedAt": "2025-12-27T15:26:02.375Z",
+      "createdAt": "2025-12-27T15:26:02.375Z",
+      "id": "iYYXMmYAEu8xwrlm",
+      "name": "supabase"
+    },
+    {
+      "updatedAt": "2025-12-27T15:26:02.376Z",
+      "createdAt": "2025-12-27T15:26:02.376Z",
+      "id": "vKEUvJTuV7oHapp4",
+      "name": "agendamento-mcp"
+    }
+  ]
+}

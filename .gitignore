@@ -1,3 +1,13 @@
+node_modules/
+.env
+package-lock.json
 .DS_Store
-R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/
-R-RECURSOS/conteudo/
+Sem título.canvas
+"Sem título.canvas"
+criar
+node_modules
+R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/Coletor de Dados.json
+R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/4-Scrape_business_leads_from_Google_Maps_using_OpenAI_and_Google_Sheets__Use_for_free.json
+R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/1_Blog_AgenteSeo.json
+R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/Agente Blog - Principal.json
+R-RECURSOS/99-AUTOMACOES-PRONTAS/workflows-n8n/Agente Blog - Principal (1).json

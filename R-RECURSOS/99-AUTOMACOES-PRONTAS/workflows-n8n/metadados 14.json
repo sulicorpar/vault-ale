@@ -1,0 +1,19 @@
+{
+  "albumData": {
+    "title": "Scrapbook Photos",
+    "description": "Scrapbook Photos",
+    "access": "public",
+    "location": "",
+    "date": {
+      "timestamp": "1371056372",
+      "formatted": "12 de jun. de 2013 16:59:32 UTC"
+    },
+    "geoData": {
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "altitude": 0.0,
+      "latitudeSpan": 0.0,
+      "longitudeSpan": 0.0
+    }
+  }
+}
