@@ -183,6 +183,12 @@
   },
   "active": "ec62d44cf6408305",
   "lastOpenFiles": [
+    "P-PROJETOS/Marília Taube/MARILIA-TAUBE.md",
+    "P-PROJETOS/Marília Taube/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
+    "P-PROJETOS/MMC Carajás/MMC-CARAJAS.md",
+    "P-PROJETOS/Aplike/00-BRIEFING/logo_APLIKE_vetor.cdr",
+    "P-PROJETOS/Aplike/00-BRIEFING/BRIEFING-MARILIA TAUBE.md",
+    "P-PROJETOS/Aplike/APLIKE.md",
     "P-PROJETOS/Gabriel Pinheiro/Gabriel Pinheiro.md",
     "P-PROJETOS/Gabriel Pinheiro/09-MATERIAIS",
     "P-PROJETOS/Gabriel Pinheiro/08-ENTREGAS",
@@ -193,7 +199,6 @@
     "P-PROJETOS/Gabriel Pinheiro/03-SEO",
     "P-PROJETOS/Gabriel Pinheiro/02-PROPOSTA",
     "P-PROJETOS/Gabriel Pinheiro/01-DIAGNOSTICO",
-    "P-PROJETOS/Gabriel Pinheiro/00-BRIEFING",
     "P-PROJETOS/OuzeX Soluções/OuzeX Soluções.md",
     "P-PROJETOS/Marília Taube/Marília Taube.md",
     "P-PROJETOS/Espaço Felicità/Espaço Felicità.md",
@@ -214,11 +219,6 @@
     "node_modules/@anthropic-ai/sdk/README.md",
     "node_modules/@anthropic-ai/sdk/CHANGELOG.md",
     "node_modules/whatwg-url/README.md",
-    "node_modules/webidl-conversions/README.md",
-    "node_modules/webidl-conversions/LICENSE.md",
-    "node_modules/web-streams-polyfill/README.md",
-    "node_modules/undici-types/README.md",
-    "node_modules/node-fetch/README.md",
     "Sem título.canvas"
   ]
 }

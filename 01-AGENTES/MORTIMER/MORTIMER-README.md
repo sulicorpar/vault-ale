@@ -169,3 +169,8 @@ Novo cliente: briefing no MORTIMER + `./novo_cliente.sh "NOME"` no VAULT (já cr
 - Sync automático MORTIMER → VAULT (sync_clientes.sh + launchd a cada 5 min)
 - Cliente cadastrado na interface gera pasta 00-09 automaticamente em P-PROJETOS
 - Log do sync: /tmp/mortimer-sync.log
+
+## v3.2 — 10/06/2026
+- DashboardView: tela dedicada com tarefas pendentes + botão Concluir
+- Próximas ações por cliente e propostas em andamento (clicáveis)
+- Faixa de stats do topo com dados reais do Supabase (refresh 60s)
