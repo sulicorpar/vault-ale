@@ -164,3 +164,8 @@ Novo cliente: briefing no MORTIMER + `./novo_cliente.sh "NOME"` no VAULT (já cr
 - API: GET/POST /api/clients + PUT /api/clients/:id
 - Formulário '+ Novo Cliente' na interface (sem build)
 - Tarefas de cliente persistem no banco
+
+## v3.1 — 10/06/2026
+- Sync automático MORTIMER → VAULT (sync_clientes.sh + launchd a cada 5 min)
+- Cliente cadastrado na interface gera pasta 00-09 automaticamente em P-PROJETOS
+- Log do sync: /tmp/mortimer-sync.log

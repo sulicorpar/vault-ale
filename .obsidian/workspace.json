@@ -11,10 +11,14 @@
             "id": "ec62d44cf6408305",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Visualização em gráfico"
+              "type": "markdown",
+              "state": {
+                "file": "01-AGENTES/MORTIMER/MORTIMER-README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "MORTIMER-README"
             }
           }
         ]
@@ -177,20 +181,29 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "42e5abc6525a584a",
+  "active": "ec62d44cf6408305",
   "lastOpenFiles": [
-    "01-AGENTES/MORTIMER/MORTIMER-README.md/MORTIMER-README.md",
-    "P-PROJETOS/Ojas/09-MATERIAIS",
-    "P-PROJETOS/Natusa/09-MATERIAIS",
-    "P-PROJETOS/MMC Carajas/09-MATERIAIS",
-    "P-PROJETOS/MARILIA TAUBE/09-MATERIAIS",
-    "P-PROJETOS/Lojas Viana/09-MATERIAIS",
-    "P-PROJETOS/Ellis Corretora/09-MATERIAIS",
-    "P-PROJETOS/CRN-9/09-MATERIAIS",
-    "P-PROJETOS/CMD/09-MATERIAIS",
-    "P-PROJETOS/BRAZILICIOUS/09-MATERIAIS",
-    "P-PROJETOS/APLIKE AUTOCENTRO/09-MATERIAIS",
+    "P-PROJETOS/Gabriel Pinheiro/Gabriel Pinheiro.md",
+    "P-PROJETOS/Gabriel Pinheiro/09-MATERIAIS",
+    "P-PROJETOS/Gabriel Pinheiro/08-ENTREGAS",
+    "P-PROJETOS/Gabriel Pinheiro/07-ACESSOS",
+    "P-PROJETOS/Gabriel Pinheiro/06-RELATORIOS",
+    "P-PROJETOS/Gabriel Pinheiro/05-GOOGLE-BUSINESS",
+    "P-PROJETOS/Gabriel Pinheiro/04-CONTEUDO-BLOG",
+    "P-PROJETOS/Gabriel Pinheiro/03-SEO",
+    "P-PROJETOS/Gabriel Pinheiro/02-PROPOSTA",
+    "P-PROJETOS/Gabriel Pinheiro/01-DIAGNOSTICO",
+    "P-PROJETOS/Gabriel Pinheiro/00-BRIEFING",
+    "P-PROJETOS/OuzeX Soluções/OuzeX Soluções.md",
+    "P-PROJETOS/Marília Taube/Marília Taube.md",
+    "P-PROJETOS/Espaço Felicità/Espaço Felicità.md",
+    "P-PROJETOS/Supregás/Supregás.md",
+    "P-PROJETOS/Artesani/Artesani.md",
+    "P-PROJETOS/MMC Carajás/MMC Carajás.md",
+    "P-PROJETOS/Nutrolife/Nutrolife.md",
+    "P-PROJETOS/Aplike/Aplike.md",
     "01-AGENTES/MORTIMER/MORTIMER-README.md",
+    "01-AGENTES/MORTIMER/MORTIMER-README.md/MORTIMER-README.md",
     "MORTIMER-README.md",
     "INDEX-CENTRAL.md",
     "node_modules/@anthropic-ai/sdk/src/_vendor/partial-json-parser/README.md",
@@ -206,15 +219,6 @@
     "node_modules/web-streams-polyfill/README.md",
     "node_modules/undici-types/README.md",
     "node_modules/node-fetch/README.md",
-    "node_modules/node-fetch/LICENSE.md",
-    "node_modules/node-domexception/README.md",
-    "node_modules/ms/readme.md",
-    "node_modules/ms/license.md",
-    "node_modules/mime-types/README.md",
-    "node_modules/mime-types/HISTORY.md",
-    "node_modules/mime-db/README.md",
-    "node_modules/mime-db/HISTORY.md",
-    "node_modules/math-intrinsics/README.md",
     "Sem título.canvas"
   ]
 }
