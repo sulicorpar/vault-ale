@@ -158,3 +158,9 @@ Todas em `/opt/mortimer/backend/.env` no VPS (e cópia em `~/mortimer-webapp/.en
 | **Antigravity IDE** | Edição de código e navegação do VAULT |
 
 Novo cliente: briefing no MORTIMER + `./novo_cliente.sh "NOME"` no VAULT (já cria 00-BRIEFING a 09-MATERIAIS).
+
+## v3.0 — 10/06/2026
+- Clientes migrados para Supabase (tabela mortimer_clients)
+- API: GET/POST /api/clients + PUT /api/clients/:id
+- Formulário '+ Novo Cliente' na interface (sem build)
+- Tarefas de cliente persistem no banco
